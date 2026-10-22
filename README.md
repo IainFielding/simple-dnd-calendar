@@ -94,6 +94,12 @@ work as the system's own calendar does. Its settings are under **Game Settings â
 
 Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButtons` hook, appear in the bar too.
 
+### Styles
+
+Each player picks how the calendar looks under **Calendar Style**: **Gilded Night**, gold on a night sky (the
+default); **Parchment**, bronze and ink on paper under a painted sky; or **Underdark**, steel on dark stone under a
+cavern's glow.
+
 ### Long Summer Days
 
 Turn on **Long Summer Days** and sunrise and sunset move with the seasons: sixteen hours of daylight at midsummer
@@ -118,6 +124,7 @@ changed, and a scene with its darkness locked in its lighting settings is left a
 | Setting | Default | |
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
+| Calendar Style | Gilded Night | Gilded Night, Parchment or Underdark. Each player picks for themselves. |
 | Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
 | Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
 | Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |

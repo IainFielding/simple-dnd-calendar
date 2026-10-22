@@ -242,6 +242,29 @@ test("the active scene darkens at night, once the GM turns it on", async ctx => 
   await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": false }));
 });
 
+test("each player picks the calendar's style for themselves", async ({ gm, player }) => {
+  const look = session => session.eval(() => {
+    const root = document.getElementById("sdc-calendar");
+    const panel = getComputedStyle(root.querySelector(".sdc-bar")).backgroundColor;
+    const bowl = getComputedStyle(root.querySelector(".sdc-stop-bowl-inner")).stopColor;
+    return { theme: root.dataset.theme, panel, bowl };
+  });
+  const gilded = await look(player);
+  assertEqual(gilded.theme, "gilded", "the default style");
+
+  for ( const theme of ["parchment", "stone"] ) {
+    await setClientSettings(player, { theme });
+    const styled = await look(player);
+    assertEqual(styled.theme, theme, "the style picked");
+    assert(styled.panel !== gilded.panel, `${theme} has the default panel: ${styled.panel}`);
+    assert(styled.bowl !== gilded.bowl, `${theme} has the default sky: ${styled.bowl}`);
+    assertEqual((await look(gm)).theme, "gilded", `the GM's style while the player has ${theme}`);
+  }
+
+  await player.reload();
+  assertEqual((await look(player)).theme, "stone", "the style after a reload");
+});
+
 /* -------------------------------------------- */
 /*  Controls                                    */
 /* -------------------------------------------- */

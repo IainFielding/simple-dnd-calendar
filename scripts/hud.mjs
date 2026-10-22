@@ -227,6 +227,7 @@ export function createCalendarHUD(CalendarHUD) {
     async _onRender(context, options) {
       if ( options.parts.includes("core") ) this.#bindCore();
       this.element.classList.toggle("expanded", this.expanded);
+      this.element.dataset.theme = game.settings.get(MODULE_ID, "theme");
       await super._onRender(context, options);
     }
 

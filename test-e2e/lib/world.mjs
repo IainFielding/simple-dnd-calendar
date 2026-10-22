@@ -117,7 +117,7 @@ export async function resetWorld(gm, player) {
   }, MODULE_ID);
   for ( const session of [gm, player] ) {
     await session.eval(async moduleId => {
-      const want = { animate: false, expanded: true };
+      const want = { animate: false, expanded: true, theme: "gilded" };
       for ( const [key, value] of Object.entries(want) ) {
         if ( game.settings.get(moduleId, key) !== value ) await game.settings.set(moduleId, key, value);
       }

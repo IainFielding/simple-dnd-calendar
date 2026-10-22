@@ -18,18 +18,18 @@
             <svg viewBox="0 0 {{ sky.width }} {{ sky.height }}" width="{{ sky.width }}" height="{{ sky.height }}" aria-hidden="true">
                 <defs>
                     <radialGradient id="sdc-bowl-fill" gradientUnits="userSpaceOnUse" cx="{{ sky.cx }}" cy="{{ sky.cy }}" r="{{ sky.bowl }}">
-                        <stop offset="0.55" stop-color="#2a2d6c"/>
-                        <stop offset="1" stop-color="#0a0b20"/>
+                        <stop offset="0.55" class="sdc-stop-bowl-inner"/>
+                        <stop offset="1" class="sdc-stop-bowl-outer"/>
                     </radialGradient>
                     <radialGradient id="sdc-day-fill" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="{{ sky.wheel }}">
-                        <stop offset="0" stop-color="#fff6d6"/>
-                        <stop offset="0.6" stop-color="#ffc874"/>
-                        <stop offset="1" stop-color="#e9813f"/>
+                        <stop offset="0" class="sdc-stop-day-0"/>
+                        <stop offset="0.6" class="sdc-stop-day-1"/>
+                        <stop offset="1" class="sdc-stop-day-2"/>
                     </radialGradient>
                     <radialGradient id="sdc-night-fill" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="{{ sky.wheel }}">
-                        <stop offset="0" stop-color="#b9b5ff"/>
-                        <stop offset="0.6" stop-color="#6c63e0"/>
-                        <stop offset="1" stop-color="#2f2a8e"/>
+                        <stop offset="0" class="sdc-stop-night-0"/>
+                        <stop offset="0.6" class="sdc-stop-night-1"/>
+                        <stop offset="1" class="sdc-stop-night-2"/>
                     </radialGradient>
                     <clipPath id="sdc-bowl-clip"><path d="{{ bowlPath }}"/></clipPath>
                     <clipPath id="sdc-day-clip"><path class="sdc-wheel-day-clip" d="{{ dayFace.face }}"/></clipPath>

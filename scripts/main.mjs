@@ -22,6 +22,24 @@ Hooks.once("init", () => {
     default: true
   });
 
+  game.settings.register(MODULE_ID, "theme", {
+    name: "SDC.Settings.Theme.Name",
+    hint: "SDC.Settings.Theme.Hint",
+    scope: "client",
+    config: true,
+    type: String,
+    choices: {
+      gilded: "SDC.Settings.Theme.Gilded",
+      parchment: "SDC.Settings.Theme.Parchment",
+      stone: "SDC.Settings.Theme.Stone"
+    },
+    default: "gilded",
+    onChange: theme => {
+      const element = dnd5e.ui.calendar?.element;
+      if ( element ) element.dataset.theme = theme;
+    }
+  });
+
   game.settings.register(MODULE_ID, "seasonTrim", {
     name: "SDC.Settings.SeasonTrim.Name",
     hint: "SDC.Settings.SeasonTrim.Hint",

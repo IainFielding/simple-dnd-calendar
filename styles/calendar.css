@@ -16,6 +16,20 @@
   --sdc-bar-height: 40px;
   --sdc-visual-height: 162px;
   --sdc-glow: transparent;
+  --sdc-text-shadow: rgb(0 0 0 / 80%);
+  --sdc-dropdown: rgb(18 17 30 / 92%);
+  --sdc-dropdown-border: #4b4865;
+  --sdc-bowl-inner: #2a2d6c;
+  --sdc-bowl-outer: #0a0b20;
+  --sdc-bowl-ring: rgb(165 172 255 / 16%);
+  --sdc-star: #e2e5ff;
+  --sdc-day-0: #fff6d6;
+  --sdc-day-1: #ffc874;
+  --sdc-day-2: #e9813f;
+  --sdc-night-0: #b9b5ff;
+  --sdc-night-1: #6c63e0;
+  --sdc-night-2: #2f2a8e;
+  --sdc-moon-dark: #1c1b33;
 
   position: relative;
   display: grid;
@@ -75,7 +89,7 @@
   font-size: 19px;
   letter-spacing: 0.08em;
   color: var(--sdc-text);
-  text-shadow: 0 0 6px rgb(0 0 0 / 80%);
+  text-shadow: 0 0 6px var(--sdc-text-shadow);
   z-index: 2;
 }
 
@@ -133,7 +147,7 @@
 #sdc-calendar .sdc-control:hover,
 #sdc-calendar .sdc-control:focus-visible {
   color: var(--sdc-gold-light);
-  text-shadow: 0 0 8px rgb(239 213 148 / 70%);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--sdc-gold-light) 70%, transparent);
   outline: none;
 }
 
@@ -173,8 +187,8 @@
 #sdc-calendar .sdc-dropdown .sdc-control {
   width: 42px;
   height: 22px;
-  background: rgb(18 17 30 / 92%);
-  border: 1px solid #4b4865;
+  background: var(--sdc-dropdown);
+  border: 1px solid var(--sdc-dropdown-border);
   border-radius: 4px;
   font-family: var(--font-body);
   font-size: 10px;
@@ -278,9 +292,17 @@
   overflow: visible;
 }
 
-#sdc-calendar .sdc-bowl-ring { fill: none; stroke: rgb(165 172 255 / 16%); stroke-width: 1; }
+#sdc-calendar .sdc-bowl-ring { fill: none; stroke: var(--sdc-bowl-ring); stroke-width: 1; }
 #sdc-calendar .sdc-bowl-ring.dashed { stroke-dasharray: 2 5; }
-#sdc-calendar .sdc-star { fill: #e2e5ff; }
+#sdc-calendar .sdc-star { fill: var(--sdc-star); }
+#sdc-calendar .sdc-stop-bowl-inner { stop-color: var(--sdc-bowl-inner); }
+#sdc-calendar .sdc-stop-bowl-outer { stop-color: var(--sdc-bowl-outer); }
+#sdc-calendar .sdc-stop-day-0 { stop-color: var(--sdc-day-0); }
+#sdc-calendar .sdc-stop-day-1 { stop-color: var(--sdc-day-1); }
+#sdc-calendar .sdc-stop-day-2 { stop-color: var(--sdc-day-2); }
+#sdc-calendar .sdc-stop-night-0 { stop-color: var(--sdc-night-0); }
+#sdc-calendar .sdc-stop-night-1 { stop-color: var(--sdc-night-1); }
+#sdc-calendar .sdc-stop-night-2 { stop-color: var(--sdc-night-2); }
 #sdc-calendar .sdc-wheel-ring { fill: none; stroke: rgb(255 255 255 / 30%); stroke-width: 1; }
 #sdc-calendar .sdc-ray { fill: rgb(255 255 255 / 38%); }
 #sdc-calendar .sdc-night-star { fill: rgb(255 255 255 / 85%); }
@@ -306,7 +328,7 @@
 }
 
 #sdc-calendar .sdc-moon svg { display: block; }
-#sdc-calendar .sdc-moon .dark { fill: #1c1b33; }
+#sdc-calendar .sdc-moon .dark { fill: var(--sdc-moon-dark); }
 #sdc-calendar .sdc-moon .lit { fill: var(--moon-color); }
 #sdc-calendar .sdc-moon .edge { fill: none; stroke: rgb(255 255 255 / 35%); stroke-width: 1; }
 
@@ -352,6 +374,61 @@
 #sdc-calendar .sdc-corner i[hidden] { display: none; }
 #sdc-calendar .sdc-festival-icon { color: var(--sdc-gold-light); }
 #sdc-calendar .sdc-moon-event-icon { color: #dfe3ff; }
+
+/* ---------------------------------------------------------------------------------------------- */
+/*  Themes                                                                                        */
+/*                                                                                                */
+/*  Gilded Night is the default above. Parchment is a map-maker's calendar in ink and bronze on   */
+/*  paper under a painted sky; Underdark is cold steel on dark stone, under a cavern's glow.      */
+/* ---------------------------------------------------------------------------------------------- */
+
+#sdc-calendar[data-theme="parchment"] {
+  --sdc-gold: #8a5a2b;
+  --sdc-gold-light: #6b3f17;
+  --sdc-gold-dark: #b98a55;
+  --sdc-panel: rgb(234 220 188 / 95%);
+  --sdc-text: #3b2a1a;
+  --sdc-text-shadow: rgb(255 248 230 / 70%);
+  --sdc-dropdown: rgb(240 228 200 / 97%);
+  --sdc-dropdown-border: #b98a55;
+  --sdc-bowl-inner: #8fb3d1;
+  --sdc-bowl-outer: #46688f;
+  --sdc-bowl-ring: rgb(255 250 235 / 30%);
+  --sdc-star: #fffaf0;
+  --sdc-day-0: #fff9e6;
+  --sdc-day-1: #f4d38c;
+  --sdc-day-2: #d99a52;
+  --sdc-night-0: #9ea3c9;
+  --sdc-night-1: #5d6496;
+  --sdc-night-2: #343a66;
+  --sdc-moon-dark: #3a4466;
+}
+
+#sdc-calendar[data-theme="parchment"] .sdc-control:hover,
+#sdc-calendar[data-theme="parchment"] .sdc-control:focus-visible {
+  text-shadow: 0 0 6px rgb(255 240 200 / 90%);
+}
+
+#sdc-calendar[data-theme="stone"] {
+  --sdc-gold: #8e9ba3;
+  --sdc-gold-light: #d3e1e8;
+  --sdc-gold-dark: #4c565c;
+  --sdc-panel: rgb(34 36 40 / 92%);
+  --sdc-text: #d7e0e4;
+  --sdc-dropdown: rgb(30 32 36 / 95%);
+  --sdc-dropdown-border: #59646b;
+  --sdc-bowl-inner: #17403f;
+  --sdc-bowl-outer: #050d10;
+  --sdc-bowl-ring: rgb(120 230 210 / 16%);
+  --sdc-star: #a5f3e4;
+  --sdc-day-0: #f6f1dc;
+  --sdc-day-1: #d9c99a;
+  --sdc-day-2: #a38c5a;
+  --sdc-night-0: #8fd6cf;
+  --sdc-night-1: #3b8580;
+  --sdc-night-2: #1a3f45;
+  --sdc-moon-dark: #142326;
+}
 
 /* ---------------------------------------------------------------------------------------------- */
 /*  Season Trim                                                                                   */
