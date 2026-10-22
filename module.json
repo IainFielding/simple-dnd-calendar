@@ -34,6 +34,13 @@
   "styles": [
     "styles/calendar.css"
   ],
+  "media": [
+    {
+      "type": "setup",
+      "url": "modules/sogrom-simple-dnd-calendar/assets/cover.jpg",
+      "loop": false
+    }
+  ],
   "languages": [
     {
       "lang": "en",

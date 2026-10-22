@@ -61,6 +61,12 @@ try {
   // A full Selûne riding high on a winter's night, then the same day at noon and at dusk.
   await setTime(ctx, { year: 1501, day: 30, hour: 0, minute: 10 });
   await shoot(gm, "night");
+
+  // The same night, taller, for the module's artwork on Foundry's setup screen (see "media" in module.json).
+  fs.mkdirSync("assets", { recursive: true });
+  await gm.page.screenshot({ path: "assets/cover.jpg", type: "jpeg", quality: 88, clip: { ...CLIP, height: 416 } });
+  console.log("  assets/cover.jpg");
+
   await setTime(ctx, { year: 1525, day: 120, hour: 12, minute: 0 });
   await shoot(gm, "day");
   await setTime(ctx, { year: 1525, day: 250, hour: 18, minute: 30 });

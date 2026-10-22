@@ -53,6 +53,17 @@ just the bar, and the calendar remembers this for each player.
 
 ![Collapsed to the bar](docs/screenshots/collapsed.png)
 
+## Installing
+
+In Foundry's setup screen, go to **Add-on Modules → Install Module**, paste this manifest URL into **Manifest URL**
+and click **Install**:
+
+```
+https://github.com/IainFielding/simple-dnd-calendar/releases/latest/download/module.json
+```
+
+Then turn on **Simple D&D Calendar** under **Manage Modules** in a D&D 5e world.
+
 ## Setting Up
 
 The module uses D&D 5e's calendar, so the calendar, the date and time formats, and daily recovery as time passes all
