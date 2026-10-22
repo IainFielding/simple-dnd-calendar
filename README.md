@@ -81,12 +81,19 @@ work as the system's own calendar does. Its settings are under **Game Settings â
 
 Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButtons` hook, appear in the bar too.
 
+### Darkness
+
+Turn on **Darken Scenes at Night** and the active scene's darkness follows the sun: dark at night, light by day,
+darkening through the hour after sunset and lightening through the hour before sunrise. Only the active scene is
+changed, and a scene with its darkness locked in its lighting settings is left alone.
+
 ### Settings
 
 | Setting | Default | |
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
 | Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
+| Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun. The GM picks. |
 
 ## For Developers
 

@@ -50,6 +50,28 @@ describe("the day wheel", () => {
     expect(sky.dayPhase(16.5, 8, 16)).toBe("dusk");
   });
 
+  it("darkens the scene through dusk and lightens it through dawn", () => {
+    expect(sky.darkness(2)).toBe(1);
+    expect(sky.darkness(5)).toBe(1);
+    expect(sky.darkness(5.5)).toBe(0.5);
+    expect(sky.darkness(6)).toBe(0);
+    expect(sky.darkness(12)).toBe(0);
+    expect(sky.darkness(18)).toBe(0);
+    expect(sky.darkness(18.5)).toBe(0.5);
+    expect(sky.darkness(19)).toBe(1);
+    expect(sky.darkness(23)).toBe(1);
+  });
+
+  it("eases into and out of the dark", () => {
+    expect(sky.darkness(18.25)).toBeLessThan(0.25);
+    expect(sky.darkness(18.75)).toBeGreaterThan(0.75);
+  });
+
+  it("darkens by the calendar's own sunrise and sunset", () => {
+    expect(sky.darkness(7, 8, 16)).toBe(1);
+    expect(sky.darkness(16.5, 8, 16)).toBe(0.5);
+  });
+
   it("puts the sun on the right-hand horizon at sunrise, overhead at noon and on the left at sunset", () => {
     expect(sky.sunSkyAngle(0.25)).toBeCloseTo(0);
     expect(sky.sunSkyAngle(0.5)).toBeCloseTo(Math.PI / 2);

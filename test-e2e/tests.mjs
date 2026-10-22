@@ -178,6 +178,28 @@ test("Selûne rides the bowl when she is up, with her phase", async ctx => {
   assertEqual(calendar.moons, [], "moons at noon");
 });
 
+test("the active scene darkens at night, once the GM turns it on", async ctx => {
+  const { gm } = ctx;
+  const darkness = () => gm.eval(() => game.scenes.active.environment.darknessLevel);
+  await gm.eval(() => game.scenes.active.update({ "environment.darknessLevel": 0, "environment.darknessLock": false }));
+  await setTime(ctx, { year: 1525, day: 100, hour: 23 });
+  assertEqual(await darkness(), 0, "darkness before it is turned on");
+
+  await gm.eval(moduleId => game.settings.set(moduleId, "sceneDarkness", true), MODULE_ID);
+  await waitFor(gm, () => game.scenes.active.environment.darknessLevel === 1, null, "the scene to darken at night");
+  await setTime(ctx, { year: 1525, day: 101, hour: 12 });
+  await waitFor(gm, () => game.scenes.active.environment.darknessLevel === 0, null, "the scene to lighten at noon");
+  await setTime(ctx, { year: 1525, day: 101, hour: 18, minute: 30 });
+  await waitFor(gm, () => game.scenes.active.environment.darknessLevel === 0.5, null, "half dark half way through dusk");
+
+  // A scene with its darkness locked is left as it is.
+  await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": true }));
+  await setTime(ctx, { year: 1525, day: 101, hour: 23 });
+  await gm.page.waitForTimeout(300);
+  assertEqual(await darkness(), 0.5, "a locked scene's darkness");
+  await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": false }));
+});
+
 /* -------------------------------------------- */
 /*  Controls                                    */
 /* -------------------------------------------- */

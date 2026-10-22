@@ -46,6 +46,10 @@
       "SeasonTrim": {
         "Name": "Dress the Frame for the Season",
         "Hint": "Trim the calendar's frame for the season, for everyone: frost and icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn."
+      },
+      "SceneDarkness": {
+        "Name": "Darken Scenes at Night",
+        "Hint": "Keep the active scene's darkness in step with the sun: dark at night, light by day, darkening through the hour after sunset and lightening through the hour before sunrise. Scenes with their darkness locked are left alone."
       }
     },
     "Enable": {

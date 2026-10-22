@@ -1,4 +1,5 @@
 import { MODULE_ID } from "./constants.mjs";
+import { registerDarknessHooks, syncDarkness } from "./darkness.mjs";
 import { createCalendarHUD } from "./hud.mjs";
 import { MOONS } from "./moons.mjs";
 import * as sky from "./sky.mjs";
@@ -27,6 +28,16 @@ Hooks.once("init", () => {
     onChange: () => dnd5e.ui.calendar?.refresh?.()
   });
 
+  game.settings.register(MODULE_ID, "sceneDarkness", {
+    name: "SDC.Settings.SceneDarkness.Name",
+    hint: "SDC.Settings.SceneDarkness.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: () => syncDarkness()
+  });
+
   game.settings.register(MODULE_ID, "expanded", {
     scope: "client",
     config: false,
@@ -40,6 +51,8 @@ Hooks.once("init", () => {
     type: Boolean,
     default: false
   });
+
+  registerDarknessHooks();
 
   const CalendarHUD = dnd5e.applications?.calendar?.CalendarHUD;
   if ( !CalendarHUD ) {

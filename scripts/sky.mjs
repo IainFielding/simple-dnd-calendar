@@ -75,6 +75,22 @@ export function dayPhase(hour, sunrise = 6, sunset = 18) {
   return "night";
 }
 
+/**
+ * How dark a scene is at an hour, from 0 in daylight to 1 at night. It darkens through dusk, the hour after sunset,
+ * and lightens through dawn, the hour before sunrise, easing in and out of each.
+ * @param {number} hour            Decimal hours since midnight.
+ * @param {number} [sunrise=6]     Sunrise, in hours.
+ * @param {number} [sunset=18]     Sunset, in hours.
+ * @returns {number}
+ */
+export function darkness(hour, sunrise = 6, sunset = 18) {
+  const ease = t => (1 - Math.cos(Math.PI * Math.min(Math.max(t, 0), 1))) / 2;
+  if ( (hour >= sunrise - 1) && (hour <= sunrise) ) return round(1 - ease(hour - (sunrise - 1)));
+  if ( (hour > sunrise) && (hour < sunset) ) return 0;
+  if ( (hour >= sunset) && (hour <= sunset + 1) ) return round(ease(hour - sunset));
+  return 1;
+}
+
 /* -------------------------------------------- */
 /*  Seasons                                     */
 /* -------------------------------------------- */

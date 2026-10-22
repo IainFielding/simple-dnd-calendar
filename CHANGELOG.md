@@ -2,6 +2,13 @@
 
 All notable changes to Simple D&D Calendar.
 
+## Unreleased
+
+### New
+
+- **Scenes darken at night.** Turn on **Darken Scenes at Night** and the active scene's darkness follows the sun,
+  darkening through dusk and lightening through dawn. Scenes with their darkness locked are left alone.
+
 ## 1.0.0 — 2026-10-22
 
 ### New
