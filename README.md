@@ -18,7 +18,8 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
   autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
   it for the season's name.
 - **The season's trim.** The frame is dressed for the season along the bar's edge and the bowl's rim: frost and
-  icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn.
+  icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. The GM can turn
+  it off under **Dress the Frame for the Season**.
 - **The day wheel.** Half day, half night. It turns through the day: the day half comes round from the right in
   the morning, sits at the bottom at noon, and leaves to the left in the evening. The icon on its rim shows dawn,
   day, dusk or night.
@@ -84,7 +85,8 @@ Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButto
 
 | Setting | Default | |
 | --- | --- | --- |
-| Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. |
+| Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
+| Dress the Frame for the Season | On | Trim the frame for the season. The GM picks, for everyone. |
 
 ## For Developers
 

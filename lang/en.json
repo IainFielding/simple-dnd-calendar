@@ -42,6 +42,10 @@
       "Animate": {
         "Name": "Animate Time Changes",
         "Hint": "Run the clock, turn the wheel and move the moons through a change of time, rather than jumping straight to the new time."
+      },
+      "SeasonTrim": {
+        "Name": "Dress the Frame for the Season",
+        "Hint": "Trim the calendar's frame for the season, for everyone: frost and icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn."
       }
     },
     "Enable": {

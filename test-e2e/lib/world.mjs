@@ -104,12 +104,15 @@ export async function resetFixtures(gm) {
 /* -------------------------------------------- */
 
 /**
- * Put each user's calendar back as the tests expect it: shown, open and not animating; and close
+ * Put each user's calendar back as the tests expect it: shown, open, not animating and dressed for the season; and close
  * any windows a test left open.
  * @param {import("./session.mjs").Session} gm
  * @param {import("./session.mjs").Session} player
  */
 export async function resetWorld(gm, player) {
+  await gm.eval(async moduleId => {
+    if ( !game.settings.get(moduleId, "seasonTrim") ) await game.settings.set(moduleId, "seasonTrim", true);
+  }, MODULE_ID);
   for ( const session of [gm, player] ) {
     await session.eval(async moduleId => {
       const want = { animate: false, expanded: true };

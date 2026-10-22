@@ -127,6 +127,26 @@ test("the season dresses the frame and festivals show beside the bowl", async ct
     "on Midwinter");
 });
 
+test("the GM can leave the frame undressed, for everyone", async ctx => {
+  const { gm, player } = ctx;
+  await setTime(ctx, { year: 1525, day: 30, hour: 12 });
+  const trim = session => session.eval(() => {
+    const root = document.getElementById("sdc-calendar");
+    return { kind: root.dataset.season || null, pieces: root.querySelectorAll(".sdc-trim-bar > *, .sdc-trim-bowl > *").length > 0 };
+  });
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", false), MODULE_ID);
+  for ( const session of [gm, player] ) {
+    await waitFor(session, () => !document.getElementById("sdc-calendar")?.dataset.season, undefined, "the trim to go");
+    assertEqual(await trim(session), { kind: null, pieces: false }, "with the trim off");
+  }
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", true), MODULE_ID);
+  for ( const session of [gm, player] ) {
+    await waitFor(session, () => document.getElementById("sdc-calendar")?.dataset.season === "winter", undefined,
+      "the trim to come back");
+    assertEqual(await trim(session), { kind: "winter", pieces: true }, "with the trim on");
+  }
+});
+
 test("the season band slides through the year", async ctx => {
   const positions = [];
   for ( const day of [0, 90, 180] ) {

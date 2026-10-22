@@ -17,6 +17,16 @@ Hooks.once("init", () => {
     default: true
   });
 
+  game.settings.register(MODULE_ID, "seasonTrim", {
+    name: "SDC.Settings.SeasonTrim.Name",
+    hint: "SDC.Settings.SeasonTrim.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: () => dnd5e.ui.calendar?.refresh?.()
+  });
+
   game.settings.register(MODULE_ID, "expanded", {
     scope: "client",
     config: false,

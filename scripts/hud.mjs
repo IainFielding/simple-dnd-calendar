@@ -277,6 +277,16 @@ export function createCalendarHUD(CalendarHUD) {
 
     /* -------------------------------------------- */
 
+    /**
+     * Redraw everything at the time shown, such as after a setting that changes the picture.
+     */
+    refresh() {
+      this.#text = {};
+      this.#draw(this.#shown ?? game.time.worldTime);
+    }
+
+    /* -------------------------------------------- */
+
     /** @inheritDoc */
     _onClose(options) {
       super._onClose(options);
@@ -360,7 +370,7 @@ export function createCalendarHUD(CalendarHUD) {
       const seasonKey = season ? season.name : "";
       if ( this.#text.season !== seasonKey ) {
         this.#text.season = seasonKey;
-        const kind = sky.seasonKind(seasonKey) ?? "";
+        const kind = game.settings.get(MODULE_ID, "seasonTrim") ? (sky.seasonKind(seasonKey) ?? "") : "";
         el.season.dataset.tooltip = season ? _loc(season.name) : "";
         if ( this.element.dataset.season !== kind ) {
           this.element.dataset.season = kind;
