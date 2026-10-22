@@ -50,10 +50,93 @@ describe("the day wheel", () => {
     expect(sky.dayPhase(16.5, 8, 16)).toBe("dusk");
   });
 
+  it("puts the sun on the horizon at sunrise and sunset, high by day and low by night", () => {
+    expect(sky.sunHeight(6)).toBeCloseTo(0);
+    expect(sky.sunHeight(18)).toBeCloseTo(0);
+    expect(sky.sunHeight(12)).toBeCloseTo(sky.SUN_HEIGHT);
+    expect(sky.sunHeight(0)).toBeCloseTo(-sky.SUN_HEIGHT);
+    expect(sky.sunHeight(9)).toBeGreaterThan(0);
+    expect(sky.sunHeight(21)).toBeLessThan(0);
+  });
+
+  it("is light by day and dark at night", () => {
+    expect(sky.darkness(12)).toBe(0);
+    expect(sky.darkness(15)).toBe(0);
+    expect(sky.darkness(0)).toBe(1);
+    expect(sky.darkness(22)).toBe(1);
+  });
+
+  it("fades through the late afternoon and twilight, a third dark at sunset", () => {
+    const dusk = [16.5, 17, 17.5, 18, 18.5, 19, 19.5].map(h => sky.darkness(h));
+    for ( let i = 1; i < dusk.length; i++ ) expect(dusk[i]).toBeGreaterThanOrEqual(dusk[i - 1]);
+    expect(sky.darkness(17)).toBeGreaterThan(0);
+    expect(sky.darkness(17)).toBeLessThan(0.1);
+    expect(sky.darkness(18)).toBe(0.3);
+    expect(sky.darkness(18.5)).toBeGreaterThan(0.5);
+    expect(sky.darkness(18.5)).toBeLessThan(0.85);
+    expect(sky.darkness(19.5)).toBe(1);
+  });
+
+  it("lightens through dawn as it darkened through dusk", () => {
+    for ( const h of [0.5, 1, 1.5] ) expect(sky.darkness(6 - h)).toBeCloseTo(sky.darkness(18 + h));
+  });
+
+  it("fades as long every evening, whatever the length of the day", () => {
+    for ( const h of [-1, -0.5, 0, 0.5, 1] ) {
+      expect(sky.darkness(16 + h, 8, 16)).toBeCloseTo(sky.darkness(18 + h));
+      expect(sky.darkness(20 + h, 4, 20)).toBeCloseTo(sky.darkness(18 + h));
+    }
+  });
+
+  it("is lighter under a full moon high in the sky, and not under a moon that has set", () => {
+    expect(sky.moonlight(0, [0.5])).toBeCloseTo(1);
+    expect(sky.moonlight(0, [0])).toBe(0);
+    expect(sky.moonlight(0, [0.25])).toBeCloseTo(0);
+    expect(sky.darkness(0, 6, 18, 24, sky.moonlight(0, [0.5]))).toBe(1 - sky.MOONLIGHT);
+    expect(sky.darkness(0, 6, 18, 24, sky.moonlight(0, [0.5, 0]))).toBe(1 - sky.MOONLIGHT);
+  });
+
   it("puts the sun on the right-hand horizon at sunrise, overhead at noon and on the left at sunset", () => {
     expect(sky.sunSkyAngle(0.25)).toBeCloseTo(0);
     expect(sky.sunSkyAngle(0.5)).toBeCloseTo(Math.PI / 2);
     expect(sky.sunSkyAngle(0.75)).toBeCloseTo(Math.PI);
+  });
+});
+
+describe("the length of the day", () => {
+  it("has its longest day halfway from the start of spring to the start of autumn", () => {
+    expect(sky.midsummer(calendar)).toBe(170.5);
+  });
+
+  it("has sixteen hours of daylight at midsummer and eight at midwinter", () => {
+    expect(sky.daylight(calendar, { day: 170.5 })).toEqual({ sunrise: 4, sunset: 20 });
+    expect(sky.daylight(calendar, { day: 350.5 })).toEqual({ sunrise: 8, sunset: 16 });
+  });
+
+  it("has even days and nights at the equinoxes", () => {
+    const { sunrise, sunset } = sky.daylight(calendar, { day: 80.5 });
+    expect(sunrise).toBeCloseTo(6, 1);
+    expect(sunset).toBeCloseTo(18, 1);
+  });
+
+  it("keeps a quarter of the day either side of noon for a calendar without seasons", () => {
+    const plain = makeCalendar({ months: [{ ordinal: 1, days: 300 }] });
+    expect(sky.midsummer(plain)).toBe(null);
+    expect(sky.daylight(plain, { day: 100 })).toEqual({ sunrise: 6, sunset: 18 });
+  });
+
+  it("finds midsummer from summer, or from winter, when the other seasons are missing", () => {
+    const months = [{ ordinal: 1, days: 360 }];
+    const summer = makeCalendar({ months, seasons: [{ name: "Summer", dayStart: 151, dayEnd: 240 }] });
+    expect(sky.midsummer(summer)).toBe(150);
+    const winter = makeCalendar({ months, seasons: [{ name: "Winter", dayStart: 331, dayEnd: 60 }] });
+    expect(sky.midsummer(winter)).toBe(150);
+  });
+
+  it("draws the day face on the bottom of the wheel, as wide as the day is long", () => {
+    expect(sky.dayFacePaths(6, 18, 24, 100)).toEqual({ face: "M0,0 L100,0 A100 100 0 0 1 -100,0 Z", edges: "M100,0 L0,0 L-100,0" });
+    expect(sky.dayFacePaths(4, 20, 24, 100).face).toBe("M0,0 L86.6,-50 A100 100 0 1 1 -86.6,-50 Z");
+    expect(sky.dayFacePaths(8, 16, 24, 100).face).toBe("M0,0 L86.6,50 A100 100 0 0 1 -86.6,50 Z");
   });
 });
 
@@ -162,6 +245,33 @@ describe("the moons", () => {
   it("finds its place on the bowl", () => {
     expect(sky.orbitPoint(Math.PI / 2, { x: 160, y: -40, r: 128 })).toEqual({ x: 160, y: 88 });
     expect(sky.orbitPoint(0, { x: 160, y: -40, r: 128 })).toEqual({ x: 288, y: -40 });
+  });
+
+  it("knows the days a moon is full or new", () => {
+    // New at the start of year 1, so full fifteen days later.
+    const moon = { id: "m", name: "M", period: 30, color: "#ffffff", epoch: { year: 1 } };
+    const start = calendar.componentsToTime({ year: 1 });
+    const on = day => sky.moonEvents(calendar, [moon], start + (day * DAY));
+    expect(on(0)).toEqual({ full: [], new: [moon] });
+    expect(on(14)).toEqual({ full: [], new: [] });
+    expect(on(15)).toEqual({ full: [moon], new: [] });
+    expect(on(16)).toEqual({ full: [], new: [] });
+    expect(on(30)).toEqual({ full: [], new: [moon] });
+  });
+
+  it("finds a full moon that falls part way through the day", () => {
+    const moon = { id: "m", name: "M", period: 30, color: "#ffffff", epoch: { year: 1, hour: 12 } };
+    const start = calendar.componentsToTime({ year: 1 });
+    expect(sky.moonEvents(calendar, [moon], start + (15 * DAY)).full).toEqual([moon]);
+    expect(sky.moonEvents(calendar, [moon], start + (14 * DAY)).full).toEqual([]);
+  });
+
+  it("finds moons full together", () => {
+    const a = { id: "a", name: "A", period: 28, color: "#ffffff", epoch: { year: 1 }, epochPhase: 0.5 };
+    const b = { id: "b", name: "B", period: 91, color: "#ffffff", epoch: { year: 1 }, epochPhase: 0.5 };
+    const start = calendar.componentsToTime({ year: 1 });
+    expect(sky.moonEvents(calendar, [a, b], start).full).toEqual([a, b]);
+    expect(sky.moonEvents(calendar, [a, b], start + (28 * DAY)).full).toEqual([a]);
   });
 
   describe("its lit face", () => {

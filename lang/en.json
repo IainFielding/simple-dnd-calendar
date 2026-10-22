@@ -20,6 +20,16 @@
       "LastQuarter": "Last Quarter",
       "WaningCrescent": "Waning Crescent"
     },
+    "MoonForecast": {
+      "FullToday": "full today",
+      "FullTomorrow": "full tomorrow, {date}",
+      "FullIn": "full in {days} days, {date}"
+    },
+    "MoonEvent": {
+      "Full": "{moon} is full",
+      "FullTogether": "{moons} are full together",
+      "New": "{moon} is new"
+    },
     "Moon": {
       "Moon": "The Moon",
       "Selune": "Selûne",
@@ -43,10 +53,39 @@
         "Name": "Animate Time Changes",
         "Hint": "Run the clock, turn the wheel and move the moons through a change of time, rather than jumping straight to the new time."
       },
+      "Theme": {
+        "Name": "Calendar Style",
+        "Hint": "How the calendar looks, for you: gold on a night sky, bronze and ink on parchment, or steel on Underdark stone.",
+        "Gilded": "Gilded Night",
+        "Parchment": "Parchment",
+        "Stone": "Underdark"
+      },
       "SeasonTrim": {
         "Name": "Dress the Frame for the Season",
         "Hint": "Trim the calendar's frame for the season, for everyone: frost and icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn."
+      },
+      "SceneDarkness": {
+        "Name": "Darken Scenes at Night",
+        "Hint": "Keep the active scene's darkness in step with the sky: light by day, fading through the late afternoon and twilight as the sun sinks, dark at night, and a little lighter under a bright moon. Scenes with their darkness locked are left alone."
+      },
+      "SeasonalDaylight": {
+        "Name": "Long Summer Days",
+        "Hint": "Move sunrise and sunset with the seasons: sixteen hours of daylight at midsummer and eight at midwinter. D&D 5e's dawn and dusk recovery, the day wheel and the scene's darkness all follow."
+      },
+      "AnnounceDays": {
+        "Name": "Announce Each Dawn",
+        "Hint": "Post each new day to the chat as the sun rises on it, with the date, the start of a season, and any festival. A jump over several days posts only the last."
       }
+    },
+    "Chat": {
+      "Speaker": "The Calendar",
+      "GMOnly": "Only the GM can move the time.",
+      "Usage": "Try {command} 8 hours, {command} 1 day 6 hours, or {command} dawn, noon, dusk or midnight."
+    },
+    "Announce": {
+      "Title": "Dawn on {date}",
+      "Weekday": "It is {day}.",
+      "Season": "The first day of {season}."
     },
     "Enable": {
       "Title": "Turn On the Calendar?",

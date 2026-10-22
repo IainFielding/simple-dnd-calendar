@@ -75,6 +75,89 @@ export function dayPhase(hour, sunrise = 6, sunset = 18) {
   return "night";
 }
 
+/**
+ * How high the sun climbs, and how far it sinks, in degrees. It rises and sinks at the same rate whatever the season,
+ * along a quarter sine over a quarter of the day either side of the horizon, so the light fades as long every
+ * evening: in a 24-hour day, civil twilight ends some twenty-five minutes after sunset, and night falls in earnest
+ * after seventy.
+ */
+export const SUN_HEIGHT = 60;
+
+/**
+ * How dark it is with the sun at each height, in degrees: falling a little through the late afternoon, about a third
+ * dark at sunset, and deepening through civil, nautical and astronomical twilight to full night.
+ * @type {[number, number][]}
+ */
+export const DARKNESS_BY_SUN_HEIGHT = [[20, 0], [8, 0.1], [0, 0.3], [-6, 0.6], [-12, 0.85], [-18, 1]];
+
+/**
+ * How much the brightest moon lifts the dark of night: a full moon high overhead makes the night this much lighter.
+ */
+export const MOONLIGHT = 0.2;
+
+/**
+ * The sun's height above the horizon at an hour, in degrees: 0 at sunrise and sunset, rising and sinking at the same
+ * rate every day towards {@link SUN_HEIGHT} above or below, and no further than halfway through a short day or night.
+ * @param {number} hour             Decimal hours since midnight.
+ * @param {number} [sunrise=6]      Sunrise, in hours.
+ * @param {number} [sunset=18]      Sunset, in hours.
+ * @param {number} [hoursPerDay=24]
+ * @returns {number}
+ */
+export function sunHeight(hour, sunrise = 6, sunset = 18, hoursPerDay = 24) {
+  const day = wrap(sunset - sunrise, hoursPerDay);
+  const sinceSunrise = wrap(hour - sunrise, hoursPerDay);
+  const up = sinceSunrise <= day;
+  // Hours from the nearer of sunrise and sunset.
+  const fromHorizon = up ? Math.min(sinceSunrise, day - sinceSunrise)
+    : Math.min(sinceSunrise - day, hoursPerDay - sinceSunrise);
+  const height = SUN_HEIGHT * Math.sin(Math.PI * Math.min(fromHorizon / (hoursPerDay / 2), 0.5));
+  return up ? height : -height;
+}
+
+/**
+ * How dark a scene is at an hour, from 0 in daylight towards 1 on a moonless night. The light fades through the late
+ * afternoon and twilight by the height of the sun, and comes back the same way before sunrise.
+ * @param {number} hour             Decimal hours since midnight.
+ * @param {number} [sunrise=6]      Sunrise, in hours.
+ * @param {number} [sunset=18]      Sunset, in hours.
+ * @param {number} [hoursPerDay=24]
+ * @param {number} [moonlight=0]    How much moonlight there is, from {@link moonlight}.
+ * @returns {number}
+ */
+export function darkness(hour, sunrise = 6, sunset = 18, hoursPerDay = 24, moonlight = 0) {
+  const height = sunHeight(hour, sunrise, sunset, hoursPerDay);
+  const points = DARKNESS_BY_SUN_HEIGHT;
+  let dark = 1;
+  if ( height >= points[0][0] ) dark = 0;
+  else {
+    for ( let i = 1; i < points.length; i++ ) {
+      const [high, from] = points[i - 1];
+      const [low, to] = points[i];
+      if ( height < low ) continue;
+      dark = from + ((to - from) * (high - height) / (high - low));
+      break;
+    }
+  }
+  return round(dark * (1 - (MOONLIGHT * moonlight)));
+}
+
+/**
+ * How much moonlight there is, from 0 with no moon up to 1 with a full moon at the top of the sky: the brightest moon's
+ * lit face, by how high it rides.
+ * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
+ * @param {number[]} phases  The phase of each moon, from {@link moonPhase}.
+ * @returns {number}
+ */
+export function moonlight(fraction, phases) {
+  let light = 0;
+  for ( const phase of phases ) {
+    const angle = moonSkyAngle(fraction, phase);
+    if ( aboveHorizon(angle) ) light = Math.max(light, illumination(phase) * Math.sin(angle));
+  }
+  return light;
+}
+
 /* -------------------------------------------- */
 /*  Seasons                                     */
 /* -------------------------------------------- */
@@ -177,6 +260,79 @@ export function seasonGradient(calendar) {
   return `linear-gradient(90deg, ${all.map(s => `${s.color} ${round(s.at * 100)}%`).join(", ")})`;
 }
 
+/* -------------------------------------------- */
+/*  Daylight                                    */
+/* -------------------------------------------- */
+
+/**
+ * How far the length of the day swings either side of half a day through the year, as a fraction of a whole day:
+ * sixteen hours of daylight at midsummer and eight at midwinter, in a 24-hour day.
+ */
+export const DAYLIGHT_SWING = 1 / 6;
+
+/**
+ * The day of the year with the most daylight, counted from 0: halfway from the start of spring to the start of
+ * autumn, so the solstice when the seasons start at the equinoxes. Failing that, the start of summer, or half a
+ * year from the start of winter.
+ * @param {object} calendar
+ * @returns {number|null}  Null when the calendar's seasons don't say.
+ */
+export function midsummer(calendar) {
+  const year = calendar.days.daysPerYear;
+  const ranges = seasonRanges(calendar);
+  const start = kind => ranges.find(r => seasonKind(r.name) === kind)?.start ?? null;
+  const spring = start("spring");
+  const fall = start("fall");
+  if ( (spring !== null) && (fall !== null) ) return wrap(spring + (wrap(fall - spring, year) / 2), year);
+  const summer = start("summer");
+  if ( summer !== null ) return summer;
+  const winter = start("winter");
+  return winter === null ? null : wrap(winter + (year / 2), year);
+}
+
+/**
+ * Sunrise and sunset on a day, with long days in summer and short ones in winter, either side of noon. A calendar
+ * whose seasons don't say when summer is has sunrise and sunset a quarter of the day either side of noon all year.
+ * @param {object} calendar
+ * @param {{day: number, leapYear?: boolean}} components  The day's time components.
+ * @param {number} [midsummerDay]  The day of the year with the most daylight, if already worked out.
+ * @returns {{sunrise: number, sunset: number}}  In hours.
+ */
+export function daylight(calendar, components, midsummerDay = midsummer(calendar)) {
+  const { hoursPerDay, daysPerYear, daysPerLeapYear } = calendar.days;
+  const noon = hoursPerDay / 2;
+  let length = noon;
+  if ( midsummerDay !== null ) {
+    const days = components.leapYear ? (daysPerLeapYear ?? daysPerYear) : daysPerYear;
+    length += DAYLIGHT_SWING * hoursPerDay * Math.cos(TAU * (components.day - midsummerDay) / days);
+  }
+  return { sunrise: round(noon - (length / 2)), sunset: round(noon + (length / 2)) };
+}
+
+/**
+ * The SVG paths for the day wheel's day face and its edges, for a wheel of radius `r` drawn about (0, 0) with noon
+ * at the bottom. The wheel turns a whole turn a day, so daylight takes up its share of the turn, from where the
+ * wheel's lowest point will be at sunrise round to where it will be at sunset.
+ * @param {number} sunrise   In hours.
+ * @param {number} sunset    In hours.
+ * @param {number} hoursPerDay
+ * @param {number} r
+ * @returns {{face: string, edges: string}}
+ */
+export function dayFacePaths(sunrise, sunset, hoursPerDay, r) {
+  const at = hour => {
+    const a = (270 - (hour / hoursPerDay * 360)) * Math.PI / 180;
+    return `${round(r * Math.cos(a))},${round(r * Math.sin(a))}`;
+  };
+  const span = wrap(sunset - sunrise, hoursPerDay) / hoursPerDay * 360;
+  const from = at(sunset);
+  const to = at(sunrise);
+  return {
+    face: `M0,0 L${from} A${r} ${r} 0 ${span > 180 ? 1 : 0} 1 ${to} Z`,
+    edges: `M${from} L0,0 L${to}`
+  };
+}
+
 /**
  * How far through its year a moment is, from 0 at the first moment of the year towards 1.
  * @param {object} calendar
@@ -243,6 +399,40 @@ export function moonPhase(calendar, moon, time, epoch = epochTime(calendar, moon
  */
 export function phaseName(phase) {
   return PHASES[Math.round(wrap(phase, 1) * 8) % 8];
+}
+
+/**
+ * The moons that are full or new on a day: those whose phase passes full (0.5) or new (0) between the day's
+ * midnight and the next.
+ * @param {object} calendar
+ * @param {MoonConfig[]} moons
+ * @param {number} midnight  World time of the day's start.
+ * @returns {{full: MoonConfig[], new: MoonConfig[]}}
+ */
+export function moonEvents(calendar, moons, midnight) {
+  const events = { full: [], new: [] };
+  for ( const moon of moons ) {
+    const phase = moonPhase(calendar, moon, midnight);
+    // A day runs from its midnight up to, but not including, the next; the margin keeps a phase that falls on the
+    // stroke of midnight on the day it starts.
+    const step = (1 / moon.period) - 1e-9;
+    if ( wrap(0.5 - phase, 1) < step ) events.full.push(moon);
+    if ( wrap(-phase, 1) < step ) events.new.push(moon);
+  }
+  return events;
+}
+
+/**
+ * The world time of a moon's next full moon after a world time.
+ * @param {object} calendar
+ * @param {MoonConfig} moon
+ * @param {number} time      World time in seconds.
+ * @param {number} [epoch]   The moon's epoch as a world time, if already worked out.
+ * @returns {number}
+ */
+export function nextFullMoon(calendar, moon, time, epoch = epochTime(calendar, moon)) {
+  const days = wrap(0.5 - moonPhase(calendar, moon, time, epoch), 1) * moon.period;
+  return time + Math.round(days * secondsPerDay(calendar));
 }
 
 /**

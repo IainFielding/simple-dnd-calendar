@@ -2,6 +2,31 @@
 
 All notable changes to Simple D&D Calendar.
 
+## Unreleased
+
+### New
+
+- **Scenes darken at night.** Turn on **Darken Scenes at Night** and the active scene's darkness follows the sky:
+  the light fades through the late afternoon and twilight by the height of the sun, and a bright moon lifts the dark
+  of night a little. Scenes with their darkness locked are left alone.
+- **Long summer days.** Turn on **Long Summer Days** and sunrise and sunset move with the seasons, from sixteen hours
+  of daylight at midsummer to eight at midwinter. The day wheel, the scene's darkness, and D&D 5e's dawn and dusk
+  recovery all follow.
+- **Chat commands.** `/date` whispers you the date, the season, any festival and the moons' phases. The GM can move
+  the time with `/advance` and `/rewind`, by an amount (`/advance 8 hours`, `/rewind 1d 6h`) or to the next or last
+  dawn, noon, dusk or midnight (`/advance dawn`).
+- **Each dawn in the chat.** Turn on **Announce Each Dawn** and each new day is posted as the sun rises, with its
+  date, the start of a season and any festival.
+- **Full and new moons are marked** beside the bowl on the day they fall, and so are moons full together, such as
+  Luna and Celene on Needfest. `/date` and the dawn in the chat say so too.
+- **When's the next full moon?** Hover the season band for each moon's phase and the date it is next full.
+- **Calendar styles.** Each player can pick **Gilded Night** (the default), **Parchment** or **Underdark** under
+  **Calendar Style**.
+
+### Changed
+
+- The bar is solid in every style, rather than letting the scene show through.
+
 ## 1.0.0 — 2026-10-22
 
 ### New

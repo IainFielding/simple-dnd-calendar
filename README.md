@@ -16,7 +16,7 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 - **The bar.** The day of the week and the time, in the time format you picked in D&D 5e's calendar preferences.
 - **The season band.** The date, written across a band of the year's colours (green spring, gold summer, orange
   autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
-  it for the season's name.
+  it for the season's name and each moon's phase, with when it is next full.
 - **The season's trim.** The frame is dressed for the season along the bar's edge and the bowl's rim: frost and
   icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. Off by default;
   the GM can turn it on for everyone under **Dress the Frame for the Season**.
@@ -26,6 +26,8 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 - **The moons.** Each moon of the world's calendar rides the bowl while it's up, showing its phase. A full moon rides
   highest at midnight; a new moon keeps company with the sun. Hover one for its name and phase.
 - **Festivals** are marked beside the bowl, such as Midwinter or Needfest.
+- **Full and new moons** are marked beside the bowl on the day they fall, and so are moons full together, such as
+  Luna and Celene on Needfest. Hover the moon for which. `/date` and the dawn in the chat say so too.
 
 ![Noon in spring](docs/screenshots/day.png)
 
@@ -51,6 +53,17 @@ The GM has the time controls at either end of the bar, as D&D 5e's own calendar 
   Turn this off under **Animate Time Changes** if you'd rather it jumped.
 
 ![The GM's advance drop-down](docs/screenshots/advance.png)
+
+### From the Chat
+
+| Command | Who | |
+| --- | --- | --- |
+| `/date` | Everyone | Whispers you the date, the time, the season, any festival, and the moons' phases and when each is next full. |
+| `/advance 8 hours` | GM | Moves the time on. Amounts can be combined and shortened: `/advance 1 day 6 hours`, `/advance 1d 6h`. A number on its own is hours, and `/advance` on its own is an hour. |
+| `/advance dawn` | GM | Moves on to the next dawn, noon, dusk or midnight. |
+| `/rewind 90 minutes` | GM | Moves the time back, by an amount or to the last dawn, noon, dusk or midnight. |
+
+Units are seconds, minutes, hours, days and weeks, where a week is the calendar's own week.
 
 Players get buttons for their character sheet and the party sheet. The **caret** beside them hides the sky, leaving
 just the bar, and the calendar remembers this for each player.
@@ -81,12 +94,59 @@ work as the system's own calendar does. Its settings are under **Game Settings â
 
 Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButtons` hook, appear in the bar too.
 
+### Styles
+
+Each player picks how the calendar looks under **Calendar Style**: **Gilded Night**, gold on a night sky (the
+default); **Parchment**, bronze and ink on paper under a painted sky; or **Underdark**, steel on dark stone under a
+cavern's glow.
+
+| Gilded Night | Parchment | Underdark |
+| --- | --- | --- |
+| ![Gilded Night](docs/screenshots/style-gilded.png) | ![Parchment](docs/screenshots/style-parchment.png) | ![Underdark](docs/screenshots/style-stone.png) |
+
+### Long Summer Days
+
+Turn on **Long Summer Days** and sunrise and sunset move with the seasons: sixteen hours of daylight at midsummer
+and eight at midwinter. The longest day falls halfway between the start of spring and the start of autumn, which
+is the summer solstice on the Calendar of Harptos. The day half of the wheel grows and shrinks to match, and as the
+module changes the calendar's own sunrise and sunset, D&D 5e's dawn and dusk recovery follows too.
+
+![Noon a few days after midwinter: the day half of the wheel is narrower, with night showing either side of it](docs/screenshots/winter-day.png)
+
+### Each Dawn in the Chat
+
+Turn on **Announce Each Dawn** and each new day is posted to the chat as the sun rises on it, with its date, the
+start of a season and any festival. Moving the time over several days posts only the last, and rewinding posts
+nothing.
+
+### Darkness
+
+Turn on **Darken Scenes at Night** and the active scene's darkness follows the sky. The light fades by the height
+of the sun, as it does outdoors, and comes back the same way before sunrise:
+
+| | Darkness |
+| --- | --- |
+| Until about an hour and a quarter before sunset | Full daylight |
+| The late afternoon | A first dimming, to a tenth by half an hour before sunset |
+| Sunset | About a third dark |
+| Half an hour after sunset, as civil twilight ends | Two-thirds dark |
+| About an hour and a quarter after sunset | Night |
+
+The fade takes as long every evening, whatever the season. At night, a bright moon high in the sky lifts the dark
+a little: a full moon overhead leaves the scene four-fifths dark rather than black. Only the active scene is
+changed, and a scene with its darkness locked in its lighting settings is left alone. Macros can read the darkness
+for the current time with `game.modules.get("sogrom-simple-dnd-calendar").api.darknessNow()`.
+
 ### Settings
 
 | Setting | Default | |
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
+| Calendar Style | Gilded Night | Gilded Night, Parchment or Underdark. Each player picks for themselves. |
 | Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
+| Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
+| Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |
+| Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun and the moons. The GM picks. |
 
 ## For Developers
 

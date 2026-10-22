@@ -12,25 +12,27 @@
         </div>
         <div class="sdc-corner sdc-right">
             <i class="sdc-festival-icon fa-solid fa-star-christmas" hidden></i>
+            <i class="sdc-moon-event-icon fa-solid fa-moon" hidden></i>
         </div>
         <div class="sdc-sky">
             <svg viewBox="0 0 {{ sky.width }} {{ sky.height }}" width="{{ sky.width }}" height="{{ sky.height }}" aria-hidden="true">
                 <defs>
                     <radialGradient id="sdc-bowl-fill" gradientUnits="userSpaceOnUse" cx="{{ sky.cx }}" cy="{{ sky.cy }}" r="{{ sky.bowl }}">
-                        <stop offset="0.55" stop-color="#2a2d6c"/>
-                        <stop offset="1" stop-color="#0a0b20"/>
+                        <stop offset="0.55" class="sdc-stop-bowl-inner"/>
+                        <stop offset="1" class="sdc-stop-bowl-outer"/>
                     </radialGradient>
                     <radialGradient id="sdc-day-fill" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="{{ sky.wheel }}">
-                        <stop offset="0" stop-color="#fff6d6"/>
-                        <stop offset="0.6" stop-color="#ffc874"/>
-                        <stop offset="1" stop-color="#e9813f"/>
+                        <stop offset="0" class="sdc-stop-day-0"/>
+                        <stop offset="0.6" class="sdc-stop-day-1"/>
+                        <stop offset="1" class="sdc-stop-day-2"/>
                     </radialGradient>
                     <radialGradient id="sdc-night-fill" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="{{ sky.wheel }}">
-                        <stop offset="0" stop-color="#b9b5ff"/>
-                        <stop offset="0.6" stop-color="#6c63e0"/>
-                        <stop offset="1" stop-color="#2f2a8e"/>
+                        <stop offset="0" class="sdc-stop-night-0"/>
+                        <stop offset="0.6" class="sdc-stop-night-1"/>
+                        <stop offset="1" class="sdc-stop-night-2"/>
                     </radialGradient>
                     <clipPath id="sdc-bowl-clip"><path d="{{ bowlPath }}"/></clipPath>
+                    <clipPath id="sdc-day-clip"><path class="sdc-wheel-day-clip" d="{{ dayFace.face }}"/></clipPath>
                 </defs>
 
                 {{!-- The bowl of the sky --}}
@@ -44,15 +46,15 @@
                 {{!-- The day wheel, drawn about its own centre and turned through the day --}}
                 <g transform="translate({{ sky.cx }} {{ sky.cy }})">
                     <g class="sdc-wheel">
-                        <path d="M-{{ sky.wheel }},0 A{{ sky.wheel }} {{ sky.wheel }} 0 0 1 {{ sky.wheel }},0 Z" fill="url(#sdc-night-fill)"/>
-                        <path d="M-{{ sky.wheel }},0 A{{ sky.wheel }} {{ sky.wheel }} 0 0 0 {{ sky.wheel }},0 Z" fill="url(#sdc-day-fill)"/>
+                        <circle r="{{ sky.wheel }}" fill="url(#sdc-night-fill)"/>
+                        {{#each nightStars}}<circle class="sdc-night-star" cx="{{ x }}" cy="{{ y }}" r="{{ r }}"/>{{/each}}
+                        <path class="sdc-wheel-day" d="{{ dayFace.face }}" fill="url(#sdc-day-fill)"/>
                         <circle class="sdc-wheel-ring" r="88"/>
                         <circle class="sdc-wheel-ring" r="58"/>
-                        {{#each rays}}<polygon class="sdc-ray" points="{{ this }}"/>{{/each}}
-                        {{#each nightStars}}<circle class="sdc-night-star" cx="{{ x }}" cy="{{ y }}" r="{{ r }}"/>{{/each}}
+                        <g clip-path="url(#sdc-day-clip)">{{#each rays}}<polygon class="sdc-ray" points="{{ this }}"/>{{/each}}</g>
                         <circle class="sdc-wheel-rim" r="{{ sky.wheel }}"/>
                         {{#each ticks}}<polygon class="sdc-tick" points="{{ this }}"/>{{/each}}
-                        <line class="sdc-wheel-axis" x1="-{{ sky.wheel }}" y1="0" x2="{{ sky.wheel }}" y2="0"/>
+                        <path class="sdc-wheel-axis" d="{{ dayFace.edges }}"/>
                     </g>
                 </g>
 

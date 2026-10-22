@@ -1,3 +1,4 @@
+import { festivalName, formatComponents, moonEventLabels, moonForecast, worldMoons } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 import { seasonTrim, seededRandom } from "./trim.mjs";
@@ -214,6 +215,7 @@ export function createCalendarHUD(CalendarHUD) {
         bowlPath: `M${(cx - halfChord).toFixed(1)},0 A${bowl} ${bowl} 0 0 0 ${(cx + halfChord).toFixed(1)},0 Z`,
         rimPath: `M${(cx - halfChord).toFixed(1)},0 A${bowl} ${bowl} 0 0 0 ${(cx + halfChord).toFixed(1)},0`,
         stars, ticks, rays, nightStars,
+        dayFace: sky.dayFacePaths(6, 18, 24, wheel),
         seasonGradient: sky.seasonGradient(game.time.calendar),
         seasonWidth: SEASON_BAR_WIDTH * 3
       };
@@ -225,6 +227,7 @@ export function createCalendarHUD(CalendarHUD) {
     async _onRender(context, options) {
       if ( options.parts.includes("core") ) this.#bindCore();
       this.element.classList.toggle("expanded", this.expanded);
+      this.element.dataset.theme = game.settings.get(MODULE_ID, "theme");
       await super._onRender(context, options);
     }
 
@@ -240,10 +243,14 @@ export function createCalendarHUD(CalendarHUD) {
         date: find(".sdc-date"),
         season: find(".sdc-season"),
         wheel: find(".sdc-wheel"),
+        wheelDay: find(".sdc-wheel-day"),
+        wheelDayClip: find(".sdc-wheel-day-clip"),
+        wheelAxis: find(".sdc-wheel-axis"),
         phase: find(".sdc-phase"),
         barTrim: find(".sdc-trim-bar"),
         bowlTrim: find(".sdc-trim-bowl"),
         festivalIcon: find(".sdc-festival-icon"),
+        moonEventIcon: find(".sdc-moon-event-icon"),
         moons: find(".sdc-moons")
       };
       this.#text = {};
@@ -371,7 +378,7 @@ export function createCalendarHUD(CalendarHUD) {
       if ( this.#text.season !== seasonKey ) {
         this.#text.season = seasonKey;
         const kind = game.settings.get(MODULE_ID, "seasonTrim") ? (sky.seasonKind(seasonKey) ?? "") : "";
-        el.season.dataset.tooltip = season ? _loc(season.name) : "";
+        el.season.dataset.seasonName = season ? _loc(season.name) : "";
         if ( this.element.dataset.season !== kind ) {
           this.element.dataset.season = kind;
           const trim = seasonTrim(kind);
@@ -386,10 +393,21 @@ export function createCalendarHUD(CalendarHUD) {
       const year = sky.yearFraction(calendar, components, fraction);
       el.season.style.backgroundPositionX = `${Math.round((SEASON_BAR_WIDTH / 2) - (year * SEASON_BAR_WIDTH * 3))}px`;
 
-      // The wheel, and the part of the day.
+      // The wheel, its day face as long as the day, and the part of the day.
       el.wheel.setAttribute("transform", `rotate(${sky.wheelRotation(fraction).toFixed(2)})`);
-      const hour = fraction * calendar.days.hoursPerDay;
-      const phase = sky.dayPhase(hour, calendar.sunrise?.(components) ?? 6, calendar.sunset?.(components) ?? 18);
+      const hoursPerDay = calendar.days.hoursPerDay;
+      const hour = fraction * hoursPerDay;
+      const sunrise = calendar.sunrise?.(components) ?? (hoursPerDay * 0.25);
+      const sunset = calendar.sunset?.(components) ?? (hoursPerDay * 0.75);
+      const daylight = `${sunrise.toFixed(2)}-${sunset.toFixed(2)}`;
+      if ( this.#text.daylight !== daylight ) {
+        this.#text.daylight = daylight;
+        const { face, edges } = sky.dayFacePaths(sunrise, sunset, hoursPerDay, SKY.wheel);
+        el.wheelDay.setAttribute("d", face);
+        el.wheelDayClip.setAttribute("d", face);
+        el.wheelAxis.setAttribute("d", edges);
+      }
+      const phase = sky.dayPhase(hour, sunrise, sunset);
       if ( this.#text.phase !== phase ) {
         this.#text.phase = phase;
         el.phase.className = `sdc-phase ${PHASE_ICONS[phase]}`;
@@ -403,6 +421,20 @@ export function createCalendarHUD(CalendarHUD) {
         this.#text.festival = festival;
         el.festivalIcon.hidden = !festival;
         el.festivalIcon.dataset.tooltip = festival;
+      }
+
+      // Any full or new moons today, beside the festival; and on the band, the season and each moon's phase and
+      // when it is next full.
+      const today = Math.floor(time / sky.secondsPerDay(calendar));
+      if ( this.#text.moonDay !== today ) {
+        this.#text.moonDay = today;
+        const escape = foundry.utils.escapeHTML;
+        const events = moonEventLabels(time);
+        el.moonEventIcon.hidden = !events.length;
+        el.moonEventIcon.dataset.tooltip = events.map(escape).join("<br>");
+        const forecast = moonForecast(time).map(line => `<span class="sdc-forecast">${escape(line)}</span>`);
+        el.season.dataset.tooltip = [`<strong>${escape(el.season.dataset.seasonName)}</strong>`, ...forecast]
+          .join("<br>");
       }
 
       // The moons, riding the bowl while they are above the horizon.
@@ -467,44 +499,3 @@ export function createCalendarHUD(CalendarHUD) {
     }
   };
 }
-
-/* -------------------------------------------- */
-/*  Helpers                                     */
-/* -------------------------------------------- */
-
-/**
- * Format time components with the date or time format the user picked in D&D 5e's calendar preferences.
- * @param {object} calendar
- * @param {object} components
- * @param {"date"|"time"} kind
- * @returns {string}
- */
-function formatComponents(calendar, components, kind) {
-  const prefs = game.settings.get("dnd5e", "calendarPreferences");
-  const formatter = CONFIG.DND5E.calendar.formatters.find(f => f.value === prefs.formatters[kind]);
-  return formatter ? calendar.format(components, formatter.formatter) : "";
-}
-
-/**
- * The name of the festival falling on a day, if any: a festival day of the Calendar of Harptos, or a day in one of
- * the festival weeks of the Calendar of Greyhawk.
- * @param {object} calendar
- * @param {object} components
- * @returns {string}
- */
-function festivalName(calendar, components) {
-  const festival = calendar.findFestivalDay?.(components);
-  if ( festival ) return _loc(festival.name);
-  const month = calendar.months.values[components.month];
-  return month?.name.includes(".Festival.") ? _loc(month.name) : "";
-}
-
-/**
- * The moons of the world's calendar.
- * @returns {object[]}
- */
-function worldMoons() {
-  const key = game.settings.get("dnd5e", "calendar");
-  return game.modules.get(MODULE_ID).api.moons[key] ?? [];
-}
-

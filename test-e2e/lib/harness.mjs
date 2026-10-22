@@ -174,11 +174,14 @@ export function readCalendar(session) {
       date: text(".sdc-date"),
       wheel: root.querySelector(".sdc-wheel")?.getAttribute("transform"),
       phase: root.querySelector(".sdc-phase")?.dataset.phase,
-      season: root.querySelector(".sdc-season")?.dataset.tooltip || null,
+      season: root.querySelector(".sdc-season")?.dataset.seasonName || null,
+      seasonTooltip: root.querySelector(".sdc-season")?.dataset.tooltip || null,
       seasonKind: root.dataset.season || null,
       festival: root.querySelector(".sdc-festival-icon")?.hidden ? null
         : root.querySelector(".sdc-festival-icon")?.dataset.tooltip,
       moons: visibleMoons.map(m => m.dataset.tooltip),
+      moonEvents: root.querySelector(".sdc-moon-event-icon")?.hidden ? null
+        : root.querySelector(".sdc-moon-event-icon")?.dataset.tooltip,
       controls: [...root.querySelectorAll(".sdc-controls > .calendar-button > button")].map(b => b.dataset.action)
     };
   });

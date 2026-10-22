@@ -176,6 +176,116 @@ test("Selûne rides the bowl when she is up, with her phase", async ctx => {
   await setTime(ctx, { year: 1501, day: 30, hour: 12 });
   calendar = await readCalendar(ctx.player);
   assertEqual(calendar.moons, [], "moons at noon");
+
+  // The day she is full on, the 30th of Hammer (day 29, counted from 0), is marked beside the bowl.
+  await setTime(ctx, { year: 1501, day: 29, hour: 12 });
+  assertEqual((await readCalendar(ctx.player)).moonEvents, "Selûne is full", "the moon's event on the 30th of Hammer");
+  await setTime(ctx, { year: 1501, day: 30, hour: 12 });
+  assertEqual((await readCalendar(ctx.player)).moonEvents, null, "the moon's event the day after");
+  await setTime(ctx, { year: 1501, day: 37, hour: 12 });
+  assertEqual((await readCalendar(ctx.player)).moonEvents, null, "the moon's event a week later");
+});
+
+test("summer days are long and winter days short, once the GM turns it on", async ctx => {
+  const { gm, player } = ctx;
+  const read = session => session.eval(() => {
+    const calendar = game.time.calendar;
+    const root = document.getElementById("sdc-calendar");
+    return {
+      sunrise: calendar.sunrise(game.time.components),
+      phase: root.querySelector(".sdc-phase").dataset.phase,
+      face: root.querySelector(".sdc-wheel-day").getAttribute("d")
+    };
+  });
+
+  // Kythorn 20, the summer solstice, at five in the morning.
+  await setTime(ctx, { year: 1525, day: 170, hour: 5 });
+  const even = await read(player);
+  assertEqual([even.sunrise, even.phase], [6, "dawn"], "sunrise and phase before it is turned on");
+
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", true), MODULE_ID);
+  for ( const session of [gm, player] ) {
+    await waitFor(session, () => document.querySelector("#sdc-calendar .sdc-phase").dataset.phase === "day", null,
+      "five in the morning to be daytime at midsummer");
+  }
+  const summer = await read(player);
+  assert(Math.abs(summer.sunrise - 4) < 0.05, `midsummer sunrise: ${summer.sunrise}`);
+  assert(summer.face !== even.face, "the day face did not grow");
+  assert(summer.face.includes(" 1 1 "), `the day face is not more than half the wheel: ${summer.face}`);
+
+  // At midwinter, seven in the morning is still before dawn.
+  await setTime(ctx, { year: 1525, day: 350, hour: 7, minute: 30 });
+  const winter = await read(player);
+  assert(Math.abs(winter.sunrise - 8) < 0.05, `midwinter sunrise: ${winter.sunrise}`);
+  assertEqual(winter.phase, "dawn", "half past seven at midwinter");
+});
+
+test("the active scene darkens at night, once the GM turns it on", async ctx => {
+  const { gm } = ctx;
+  const darkness = () => gm.eval(() => game.scenes.active.environment.darknessLevel);
+  const settle = async what => {
+    await gm.page.waitForTimeout(300);
+    return waitFor(gm, moduleId => {
+      const level = game.scenes.active.environment.darknessLevel;
+      return Math.abs(level - game.modules.get(moduleId).api.darknessNow()) < 0.01 ? String(level) : null;
+    }, MODULE_ID, what).then(Number);
+  };
+  await gm.eval(() => game.scenes.active.update({ "environment.darknessLevel": 0, "environment.darknessLock": false }));
+
+  // A moonless midnight: Selûne is new on the 15th of Hammer 1501 DR.
+  await setTime(ctx, { year: 1501, day: 14, hour: 0 });
+  assertEqual(await darkness(), 0, "darkness before it is turned on");
+  await gm.eval(moduleId => game.settings.set(moduleId, "sceneDarkness", true), MODULE_ID);
+  assertEqual(await settle("a moonless midnight"), 1, "a moonless midnight");
+
+  await setTime(ctx, { year: 1501, day: 14, hour: 12 });
+  assertEqual(await settle("noon"), 0, "noon");
+
+  // Through dusk the light fades by degrees.
+  const dusk = [];
+  for ( const [hour, minute] of [[17, 0], [18, 0], [18, 30], [19, 30]] ) {
+    await setTime(ctx, { year: 1501, day: 14, hour, minute });
+    dusk.push(await settle(`${hour}:${minute}`));
+  }
+  assert((dusk[0] > 0) && (dusk[0] < 0.1), `late afternoon: ${dusk}`);
+  assertEqual(dusk[1], 0.3, "sunset");
+  assert((dusk[2] > 0.5) && (dusk[2] < 0.85), `half an hour after sunset: ${dusk}`);
+  assertEqual(dusk[3], 1, "an hour and a half after sunset");
+
+  // Under a full moon the night is a little lighter: Selûne is full on the 30th of Hammer.
+  await setTime(ctx, { year: 1501, day: 30, hour: 0 });
+  const full = await settle("a moonlit midnight");
+  assert((full > 0.75) && (full < 0.9), `a moonlit midnight: ${full}`);
+
+  // A scene with its darkness locked is left as it is.
+  await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": true }));
+  await setTime(ctx, { year: 1501, day: 30, hour: 12 });
+  await gm.page.waitForTimeout(300);
+  assertEqual(await darkness(), full, "a locked scene's darkness");
+  await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": false }));
+});
+
+test("each player picks the calendar's style for themselves", async ({ gm, player }) => {
+  const look = session => session.eval(() => {
+    const root = document.getElementById("sdc-calendar");
+    const panel = getComputedStyle(root.querySelector(".sdc-bar")).backgroundColor;
+    const bowl = getComputedStyle(root.querySelector(".sdc-stop-bowl-inner")).stopColor;
+    return { theme: root.dataset.theme, panel, bowl };
+  });
+  const gilded = await look(player);
+  assertEqual(gilded.theme, "gilded", "the default style");
+
+  for ( const theme of ["parchment", "stone"] ) {
+    await setClientSettings(player, { theme });
+    const styled = await look(player);
+    assertEqual(styled.theme, theme, "the style picked");
+    assert(styled.panel !== gilded.panel, `${theme} has the default panel: ${styled.panel}`);
+    assert(styled.bowl !== gilded.bowl, `${theme} has the default sky: ${styled.bowl}`);
+    assertEqual((await look(gm)).theme, "gilded", `the GM's style while the player has ${theme}`);
+  }
+
+  await player.reload();
+  assertEqual((await look(player)).theme, "stone", "the style after a reload");
 });
 
 /* -------------------------------------------- */
@@ -230,6 +340,20 @@ test("the Set Date button opens D&D 5e's Set Date dialog", async ({ gm }) => {
   await gm.page.locator("#sdc-calendar button[data-action=setDate]").click();
   await waitFor(gm, () => [...foundry.applications.instances.values()]
     .some(a => a.rendered && (a.constructor.name === "SetDateDialog")), null, "the Set Date dialog");
+});
+
+test("the season band's tooltip gives the season and when each moon is next full", async ctx => {
+  // Selûne is full on the 30th of Hammer 1501 DR, day 29 counted from 0.
+  await setTime(ctx, { year: 1501, day: 24, hour: 12 });
+  let tooltip = (await readCalendar(ctx.player)).seasonTooltip;
+  assert(tooltip.startsWith("<strong>Winter</strong>"), `the tooltip does not start with the season: ${tooltip}`);
+  assert(tooltip.includes("Selûne: Waxing Gibbous, full in 5 days"), `the tooltip's forecast: ${tooltip}`);
+  await setTime(ctx, { year: 1501, day: 28, hour: 12 });
+  tooltip = (await readCalendar(ctx.player)).seasonTooltip;
+  assert(tooltip.includes("full tomorrow"), `the tooltip the day before: ${tooltip}`);
+  await setTime(ctx, { year: 1501, day: 29, hour: 6 });
+  tooltip = (await readCalendar(ctx.player)).seasonTooltip;
+  assert(tooltip.includes("Full Moon, full today"), `the tooltip on the day: ${tooltip}`);
 });
 
 test("buttons other modules add with D&D 5e's hook appear and work", async ({ gm }) => {
@@ -288,6 +412,89 @@ test("the calendar follows the user's choice to hide it", async ({ player }) => 
   await waitFor(player, () => !document.getElementById("sdc-calendar"), null, "the calendar to close");
 });
 
+test("/date whispers the date and the sky, and /advance and /rewind move the time for the GM", async ctx => {
+  const { gm, player } = ctx;
+  const say = (session, message) => session.eval(message => ui.chat.processMessage(message), message);
+
+  // Selûne is full on the 30th of Hammer 1501 DR.
+  const start = await setTime(ctx, { year: 1501, day: 30, hour: 0 });
+  const messages = await player.eval(() => game.messages.size);
+  await say(player, "/date");
+  const card = await waitFor(player, n => {
+    const message = game.messages.contents.at(-1);
+    return (game.messages.size > n) && message.content.includes("sdc-chat")
+      ? { content: message.content, whisper: message.whisper } : null;
+  }, messages, "the date to be whispered");
+  const playerId = await player.eval(() => game.user.id);
+  assertEqual(card.whisper, [playerId], "who /date is whispered to");
+  for ( const text of ["1501", "Winter", "Selûne: Full Moon"] ) {
+    assert(card.content.includes(text), `/date does not say ${text}: ${card.content}`);
+  }
+
+  await say(gm, "/advance 1 day 6 hours");
+  await waitFor(gm, t => game.time.worldTime === t, start + (30 * 3600), "/advance 1 day 6 hours");
+  await say(gm, "/rewind 90 minutes");
+  await waitFor(gm, t => game.time.worldTime === t, start + (28.5 * 3600), "/rewind 90 minutes");
+  await say(gm, "/advance dawn");
+  await waitFor(gm, t => game.time.worldTime === t, start + (30 * 3600), "/advance dawn");
+  await say(gm, "/advance");
+  await waitFor(gm, t => game.time.worldTime === t, start + (31 * 3600), "/advance on its own");
+
+  // Players can't move the time.
+  await say(player, "/advance 8 hours");
+  await player.page.waitForTimeout(500);
+  assertEqual(await gm.eval(() => game.time.worldTime), start + (31 * 3600), "the time after a player's /advance");
+});
+
+test("each dawn is announced in the chat, once the GM turns it on", async ctx => {
+  const { gm, player } = ctx;
+  const cards = () => player.eval(() => game.messages.contents.filter(m => m.content.includes("sdc-daybreak"))
+    .map(m => m.content));
+  const before = (await cards()).length;
+
+  // Nothing is posted over a dawn while it is turned off.
+  await setTime(ctx, { year: 1525, day: 120, hour: 22 });
+  await gm.eval(() => game.time.advance(10 * 3600));
+  await gm.page.waitForTimeout(500);
+  assertEqual((await cards()).length, before, "cards before it is turned on");
+
+  await gm.eval(moduleId => game.settings.set(moduleId, "announceDays", true), MODULE_ID);
+  await gm.eval(() => game.time.advance(2 * 3600));
+  await gm.page.waitForTimeout(500);
+  assertEqual((await cards()).length, before, "cards after time passes without a sunrise");
+
+  // A jump over three dawns posts only the last.
+  await gm.eval(() => game.time.advance(3 * 86400));
+  await waitFor(player, n => game.messages.contents.filter(m => m.content.includes("sdc-daybreak")).length === n,
+    before + 1, "the dawn to be announced");
+  const card = (await cards()).at(-1);
+  const expected = await gm.eval(() => game.time.calendar.format(game.time.components, "formatMonthDayYear"));
+  assert(card.includes(expected), `the card does not say ${expected}: ${card}`);
+
+  // Rewinding over a dawn doesn't announce it.
+  await gm.eval(() => game.time.advance(-86400));
+  await gm.page.waitForTimeout(500);
+  assertEqual((await cards()).length, before + 1, "cards after rewinding");
+});
+
+test("the dawn that starts a season or a festival says so", async ctx => {
+  const { gm, player } = ctx;
+  await gm.eval(moduleId => game.settings.set(moduleId, "announceDays", true), MODULE_ID);
+  const count = () => player.eval(() => game.messages.contents.filter(m => m.content.includes("sdc-daybreak")).length);
+  const announce = async day => {
+    await setTime(ctx, { year: 1525, day: day - 1, hour: 12 });
+    const before = await count();
+    await gm.eval(() => game.time.advance(86400));
+    return waitFor(player, n => {
+      const cards = game.messages.contents.filter(m => m.content.includes("sdc-daybreak"));
+      return (cards.length > n) ? cards.at(-1).content : null;
+    }, before, "the dawn to be announced");
+  };
+  // Midwinter, the day after the 30th of Hammer, and the 19th of Ches, the first day of spring.
+  assert((await announce(30)).includes("Midwinter"), "Midwinter is not announced");
+  assert((await announce(78)).includes("The first day of Spring"), "the first day of spring is not announced");
+});
+
 /* -------------------------------------------- */
 /*  Other Calendars                             */
 /* -------------------------------------------- */
@@ -301,6 +508,7 @@ test("the Calendar of Greyhawk has Luna and Celene", async ctx => {
     await setTime(ctx, { year: 576, day: 3, hour: 0 });
     const calendar = await readCalendar(player);
     assertEqual([...calendar.moons].sort(), ["Celene: Full Moon", "Luna: Full Moon"], "moons");
+    assertEqual(calendar.moonEvents, "Luna and Celene are full together", "the moons' event");
     assertEqual(calendar.festival, "Needfest", "festival");
   } finally {
     if ( await useCalendar(gm, "harptos") ) await player.reload();

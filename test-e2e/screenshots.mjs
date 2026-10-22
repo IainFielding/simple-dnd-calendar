@@ -90,6 +90,23 @@ try {
   await shoot(gm, "collapsed", { ...CLIP, height: 70 });
   await gm.page.locator("#sdc-calendar button[data-action=toggleCalendar]").click();
 
+  // The season's trim is off by default, and off for the rest of the shots, which show the calendar as it is set up.
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", false), MODULE_ID);
+
+  // Each style, at the same midnight as the first shot, to set side by side.
+  await setTime(ctx, { year: 1501, day: 30, hour: 0, minute: 10 });
+  for ( const theme of ["gilded", "parchment", "stone"] ) {
+    await gm.eval(({ moduleId, theme }) => game.settings.set(moduleId, "theme", theme), { moduleId: MODULE_ID, theme });
+    await shoot(gm, `style-${theme}`);
+  }
+  await gm.eval(moduleId => game.settings.set(moduleId, "theme", "gilded"), MODULE_ID);
+
+  // A short winter day, a few days after the solstice, with Long Summer Days on.
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", true), MODULE_ID);
+  await setTime(ctx, { year: 1525, day: 358, hour: 12, minute: 0 });
+  await shoot(gm, "winter-day");
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", false), MODULE_ID);
+
   // The whole screen, for context.
   await gm.page.mouse.move(5, 900);
   await gm.page.screenshot({ path: `${OUT}/screen.png` });
