@@ -429,6 +429,32 @@
 #sdc-calendar .sdc-fallen.rust { fill: #b4562a; }
 #sdc-calendar .sdc-fallen.loose { opacity: 0.85; }
 
+/* ---------------------------------------------------------------------------------------------- */
+/*  Chat                                                                                          */
+/* ---------------------------------------------------------------------------------------------- */
+
+.chat-message .sdc-chat h3 {
+  margin: 0 0 4px;
+  font-family: "Modesto Condensed", var(--font-body), serif;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  border: none;
+}
+
+.chat-message .sdc-chat p {
+  margin: 2px 0;
+}
+
+.chat-message .sdc-chat i {
+  width: 16px;
+  text-align: center;
+  opacity: 0.75;
+}
+
+.chat-message .sdc-chat .sdc-chat-when {
+  font-style: italic;
+}
+
 @keyframes sdc-twinkle {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }

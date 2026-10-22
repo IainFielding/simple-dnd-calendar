@@ -11,6 +11,9 @@ All notable changes to Simple D&D Calendar.
 - **Long summer days.** Turn on **Long Summer Days** and sunrise and sunset move with the seasons, from sixteen hours
   of daylight at midsummer to eight at midwinter. The day wheel, the scene's darkness, and D&D 5e's dawn and dusk
   recovery all follow.
+- **Chat commands.** `/date` whispers you the date, the season, any festival and the moons' phases. The GM can move
+  the time with `/advance` and `/rewind`, by an amount (`/advance 8 hours`, `/rewind 1d 6h`) or to the next or last
+  dawn, noon, dusk or midnight (`/advance dawn`).
 
 ## 1.0.0 — 2026-10-22
 

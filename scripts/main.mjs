@@ -1,3 +1,4 @@
+import { registerChatCommands } from "./chat.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import { registerDarknessHooks, syncDarkness } from "./darkness.mjs";
 import { patchDaylight } from "./daylight.mjs";
@@ -68,6 +69,7 @@ Hooks.once("init", () => {
 
   patchDaylight(CONFIG.time.worldCalendarClass);
   registerDarknessHooks();
+  registerChatCommands();
 
   const CalendarHUD = dnd5e.applications?.calendar?.CalendarHUD;
   if ( !CalendarHUD ) {

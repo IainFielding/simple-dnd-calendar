@@ -56,6 +56,11 @@
         "Hint": "Move sunrise and sunset with the seasons: sixteen hours of daylight at midsummer and eight at midwinter. D&D 5e's dawn and dusk recovery, the day wheel and the scene's darkness all follow."
       }
     },
+    "Chat": {
+      "Speaker": "The Calendar",
+      "GMOnly": "Only the GM can move the time.",
+      "Usage": "Try {command} 8 hours, {command} 1 day 6 hours, or {command} dawn, noon, dusk or midnight."
+    },
     "Enable": {
       "Title": "Turn On the Calendar?",
       "Content": "Simple D&D Calendar shows D&D 5e's calendar, which is turned off in this world. Turn it on now? You can change this later under Game Settings → Configure Calendar.",

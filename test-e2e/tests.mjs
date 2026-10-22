@@ -344,6 +344,38 @@ test("the calendar follows the user's choice to hide it", async ({ player }) => 
   await waitFor(player, () => !document.getElementById("sdc-calendar"), null, "the calendar to close");
 });
 
+test("/date whispers the date and the sky, and /advance and /rewind move the time for the GM", async ctx => {
+  const { gm, player } = ctx;
+  const say = (session, message) => session.eval(message => ui.chat.processMessage(message), message);
+
+  // Selûne is full on the 30th of Hammer 1501 DR.
+  const start = await setTime(ctx, { year: 1501, day: 30, hour: 0 });
+  await say(player, "/date");
+  const card = await waitFor(player, () => {
+    const message = game.messages.contents.at(-1);
+    return message?.content.includes("sdc-chat") ? { content: message.content, whisper: message.whisper } : null;
+  }, null, "the date to be whispered");
+  const playerId = await player.eval(() => game.user.id);
+  assertEqual(card.whisper, [playerId], "who /date is whispered to");
+  for ( const text of ["1501", "Winter", "Selûne: Full Moon"] ) {
+    assert(card.content.includes(text), `/date does not say ${text}: ${card.content}`);
+  }
+
+  await say(gm, "/advance 1 day 6 hours");
+  await waitFor(gm, t => game.time.worldTime === t, start + (30 * 3600), "/advance 1 day 6 hours");
+  await say(gm, "/rewind 90 minutes");
+  await waitFor(gm, t => game.time.worldTime === t, start + (28.5 * 3600), "/rewind 90 minutes");
+  await say(gm, "/advance dawn");
+  await waitFor(gm, t => game.time.worldTime === t, start + (30 * 3600), "/advance dawn");
+  await say(gm, "/advance");
+  await waitFor(gm, t => game.time.worldTime === t, start + (31 * 3600), "/advance on its own");
+
+  // Players can't move the time.
+  await say(player, "/advance 8 hours");
+  await player.page.waitForTimeout(500);
+  assertEqual(await gm.eval(() => game.time.worldTime), start + (31 * 3600), "the time after a player's /advance");
+});
+
 /* -------------------------------------------- */
 /*  Other Calendars                             */
 /* -------------------------------------------- */

@@ -1,0 +1,75 @@
+import { MODULE_ID } from "./constants.mjs";
+import * as sky from "./sky.mjs";
+
+/**
+ * Helpers for reading the world calendar, shared by the calendar HUD and the chat.
+ */
+
+/**
+ * Format time components with the date or time format the user picked in D&D 5e's calendar preferences, or with
+ * one of D&D 5e's formatters by name.
+ * @param {object} calendar
+ * @param {object} components
+ * @param {"date"|"time"} kind
+ * @param {string} [value]  A formatter's value in `CONFIG.DND5E.calendar.formatters`, rather than the user's pick.
+ * @returns {string}
+ */
+export function formatComponents(calendar, components, kind, value) {
+  const formatters = CONFIG.DND5E.calendar.formatters;
+  const prefs = game.settings.get("dnd5e", "calendarPreferences");
+  const formatter = (value && formatters.find(f => f.value === value))
+    ?? formatters.find(f => f.value === prefs.formatters[kind]);
+  return formatter ? calendar.format(components, formatter.formatter) : "";
+}
+
+/**
+ * The name of the festival falling on a day, if any: a festival day of the Calendar of Harptos, or a day in one of
+ * the festival weeks of the Calendar of Greyhawk.
+ * @param {object} calendar
+ * @param {object} components
+ * @returns {string}
+ */
+export function festivalName(calendar, components) {
+  const festival = calendar.findFestivalDay?.(components);
+  if ( festival ) return _loc(festival.name);
+  const month = calendar.months.values[components.month];
+  return month?.name.includes(".Festival.") ? _loc(month.name) : "";
+}
+
+/**
+ * The moons of the world's calendar.
+ * @returns {import("./sky.mjs").MoonConfig[]}
+ */
+export function worldMoons() {
+  const key = game.settings.get("dnd5e", "calendar");
+  return game.modules.get(MODULE_ID).api?.moons[key] ?? [];
+}
+
+/**
+ * Each of the world's moons and its phase at a world time.
+ * @param {number} [time]  World time in seconds, by default now.
+ * @returns {{moon: import("./sky.mjs").MoonConfig, name: string, phase: number, phaseName: string}[]}
+ */
+export function moonPhases(time = game.time.worldTime) {
+  const calendar = game.time.calendar;
+  return worldMoons().map(moon => {
+    const phase = sky.moonPhase(calendar, moon, time);
+    return { moon, name: _loc(moon.name), phase, phaseName: _loc(`SDC.MoonPhase.${sky.phaseName(phase)}`) };
+  });
+}
+
+/**
+ * The world time a moment of the day falls at: the next one after a world time, or the last one before it.
+ * @param {number} time      World time in seconds.
+ * @param {number} hour      Decimal hours since midnight.
+ * @param {1|-1} direction   1 for the next, -1 for the last.
+ * @returns {number}
+ */
+export function nextHour(time, hour, direction) {
+  const calendar = game.time.calendar;
+  const day = sky.secondsPerDay(calendar);
+  const target = hour / calendar.days.hoursPerDay * day;
+  const now = sky.wrap(time, day);
+  const delta = sky.wrap((target - now) * direction, day) || day;
+  return time + (delta * direction);
+}

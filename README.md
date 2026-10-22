@@ -52,6 +52,17 @@ The GM has the time controls at either end of the bar, as D&D 5e's own calendar 
 
 ![The GM's advance drop-down](docs/screenshots/advance.png)
 
+### From the Chat
+
+| Command | Who | |
+| --- | --- | --- |
+| `/date` | Everyone | Whispers you the date, the time, the season, any festival, and the moons' phases. |
+| `/advance 8 hours` | GM | Moves the time on. Amounts can be combined and shortened: `/advance 1 day 6 hours`, `/advance 1d 6h`. A number on its own is hours, and `/advance` on its own is an hour. |
+| `/advance dawn` | GM | Moves on to the next dawn, noon, dusk or midnight. |
+| `/rewind 90 minutes` | GM | Moves the time back, by an amount or to the last dawn, noon, dusk or midnight. |
+
+Units are seconds, minutes, hours, days and weeks, where a week is the calendar's own week.
+
 Players get buttons for their character sheet and the party sheet. The **caret** beside them hides the sky, leaving
 just the bar, and the calendar remembers this for each player.
 

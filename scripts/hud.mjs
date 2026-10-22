@@ -1,3 +1,4 @@
+import { festivalName, formatComponents, worldMoons } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 import { seasonTrim, seededRandom } from "./trim.mjs";
@@ -482,44 +483,3 @@ export function createCalendarHUD(CalendarHUD) {
     }
   };
 }
-
-/* -------------------------------------------- */
-/*  Helpers                                     */
-/* -------------------------------------------- */
-
-/**
- * Format time components with the date or time format the user picked in D&D 5e's calendar preferences.
- * @param {object} calendar
- * @param {object} components
- * @param {"date"|"time"} kind
- * @returns {string}
- */
-function formatComponents(calendar, components, kind) {
-  const prefs = game.settings.get("dnd5e", "calendarPreferences");
-  const formatter = CONFIG.DND5E.calendar.formatters.find(f => f.value === prefs.formatters[kind]);
-  return formatter ? calendar.format(components, formatter.formatter) : "";
-}
-
-/**
- * The name of the festival falling on a day, if any: a festival day of the Calendar of Harptos, or a day in one of
- * the festival weeks of the Calendar of Greyhawk.
- * @param {object} calendar
- * @param {object} components
- * @returns {string}
- */
-function festivalName(calendar, components) {
-  const festival = calendar.findFestivalDay?.(components);
-  if ( festival ) return _loc(festival.name);
-  const month = calendar.months.values[components.month];
-  return month?.name.includes(".Festival.") ? _loc(month.name) : "";
-}
-
-/**
- * The moons of the world's calendar.
- * @returns {object[]}
- */
-function worldMoons() {
-  const key = game.settings.get("dnd5e", "calendar");
-  return game.modules.get(MODULE_ID).api.moons[key] ?? [];
-}
-

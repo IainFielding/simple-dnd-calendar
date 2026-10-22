@@ -17,7 +17,8 @@ const foundryGlobals = {
   Hooks: "readonly",
   ui: "readonly",
   canvas: "readonly",
-  _loc: "readonly"
+  _loc: "readonly",
+  ChatMessage: "readonly"
 };
 
 export default [
