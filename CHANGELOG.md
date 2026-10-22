@@ -11,7 +11,7 @@ All notable changes to Simple D&D Calendar.
 - **Moons** for each of D&D 5e's calendars, showing their phases as they cross the sky: Selûne; Luna and Celene; the
   twelve moons of Eberron; and Earth's Moon.
 - **The frame dressed for the season**: frost and icicles in winter, a flowering vine in spring, sunflowers in
-  summer, and fallen leaves in autumn. The GM can turn it off with **Dress the Frame for the Season**.
+  summer, and fallen leaves in autumn. Off by default; the GM can turn it on with **Dress the Frame for the Season**.
 - **Festival days** marked beside the bowl.
 - **Changes of time play out**, with the clock running and the wheel and moons moving, unless **Animate Time
   Changes** is turned off.

@@ -9,7 +9,7 @@
  */
 
 import fs from "node:fs";
-import { GM_USER, PLAYER_USER, WORLD } from "./config.mjs";
+import { GM_USER, MODULE_ID, PLAYER_USER, WORLD } from "./config.mjs";
 import { setTime } from "./lib/harness.mjs";
 import { startFoundry } from "./lib/server.mjs";
 import { Session } from "./lib/session.mjs";
@@ -36,6 +36,8 @@ try {
   player = await Session.open(PLAYER_USER, { scale: 2 });
   const ctx = { gm, player };
   await resetWorld(gm, player);
+  // The season's trim is off by default; it is on in the screenshots, to show it.
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", true), MODULE_ID);
 
   // The backdrop: the hand-made "screenshot" scene, shown to everyone, with the game unpaused so no banner covers it.
   const backdrop = await gm.eval(async () => {
