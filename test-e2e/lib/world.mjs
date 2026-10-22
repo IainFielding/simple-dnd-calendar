@@ -114,7 +114,9 @@ export async function resetWorld(gm, player) {
     for ( const key of ["sceneDarkness", "seasonalDaylight", "announceDays"] ) {
       if ( game.settings.get(moduleId, key) ) await game.settings.set(moduleId, key, false);
     }
-    if ( game.settings.get(moduleId, "seasonTrim") !== "none" ) await game.settings.set(moduleId, "seasonTrim", "none");
+    for ( const key of ["seasonTrim", "barTrim"] ) {
+      if ( game.settings.get(moduleId, key) !== "none" ) await game.settings.set(moduleId, key, "none");
+    }
   }, MODULE_ID);
   for ( const session of [gm, player] ) {
     await session.eval(async moduleId => {

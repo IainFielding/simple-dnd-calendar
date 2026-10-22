@@ -61,18 +61,19 @@
         "Stone": "Underdark"
       },
       "SeasonTrim": {
-        "Name": "Dress the Frame",
-        "Hint": "Trim the calendar's frame, for everyone. Follow the seasons as the year turns, with festivals dressed for the day; keep to one season all year; or dress the bar for your adventure.",
-        "Group": {
-          "Seasons": "Seasons",
-          "Adventures": "Adventures"
-        },
+        "Name": "Dress the Sky for the Season",
+        "Hint": "Trim the rim of the sky about the day wheel, for everyone: frost and icicles for winter, a flowering vine for spring, sunflowers for summer, and fallen leaves for autumn. Follow the seasons as the year turns, with festivals dressed for the day, or keep to one season all year.",
         "None": "None",
         "Follow": "Follow the Seasons",
         "Winter": "Just Winter",
         "Spring": "Just Spring",
         "Summer": "Just Summer",
-        "Fall": "Just Autumn",
+        "Fall": "Just Autumn"
+      },
+      "BarTrim": {
+        "Name": "Dress the Bar for Your Adventure",
+        "Hint": "Trim the calendar's bar for the adventure you're running, for everyone.",
+        "None": "None",
         "Ravenloft": "Curse of Strahd",
         "Feywild": "The Wild Beyond the Witchlight",
         "Avernus": "Descent into Avernus",

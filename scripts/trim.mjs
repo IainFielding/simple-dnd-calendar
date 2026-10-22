@@ -4,53 +4,55 @@ import { BAR_MIDDLE, BAR_OUTLINE, BOWL_OUTLINE, seededRandom } from "./trim-path
 import { SEASONS } from "./trim-seasons.mjs";
 
 /**
- * The trim along the calendar's frame: the season's, a festival's for the day, or an adventure's all year round.
+ * The calendar's trim: the sky's, round the bowl about the day wheel, for the season or a festival; and the bar's,
+ * along its lower edge, for an adventure.
  */
 
 export { BAR_OUTLINE, BOWL_OUTLINE, seededRandom };
 export { festivalTrimKind } from "./trim-festivals.mjs";
 
 /**
- * The GM's choices for the frame's trim, in the groups the setting shows them in: none, the season of the day, one
- * season all year round, or an adventure's.
- * @type {Record<string, string[]>}
+ * The GM's choices for the sky's trim: none, the season of the day, or one season all year round.
+ * @type {string[]}
  */
-export const TRIM_GROUPS = {
-  "": ["none", "follow"],
-  seasons: ["winter", "spring", "summer", "fall"],
-  adventures: Object.keys(ADVENTURES)
-};
-
-/** @type {string[]} */
-export const TRIM_CHOICES = Object.values(TRIM_GROUPS).flat();
-
-/** Every trim, by kind. */
-const TRIMS = { ...SEASONS, ...FESTIVALS, ...ADVENTURES };
+export const SKY_TRIM_CHOICES = ["none", "follow", ...Object.keys(SEASONS)];
 
 /**
- * The trim for a season, a festival, or an adventure, for the bar and the bowl. An adventure's is drawn along the
- * bar alone.
- * @param {string|null} kind  A season ("winter", "spring", "summer", "fall"), a festival, or an adventure.
- * @returns {{bar: string, bowl: string}}  SVG markup for each, empty for no known kind.
+ * The GM's choices for the bar's trim: none, or an adventure's.
+ * @type {string[]}
  */
-export function frameTrim(kind) {
-  if ( !Object.hasOwn(TRIMS, kind) ) return { bar: "", bowl: "" };
-  const draw = TRIMS[kind];
-  const middle = p => ((p.x > BAR_MIDDLE[0]) && (p.x < BAR_MIDDLE[1]) ? " middle" : "");
-  return {
-    bar: draw(BAR_OUTLINE, seededRandom(11), middle),
-    bowl: ADVENTURES[kind] ? "" : draw(BOWL_OUTLINE, seededRandom(23), () => "")
-  };
+export const BAR_TRIM_CHOICES = ["none", ...Object.keys(ADVENTURES)];
+
+/**
+ * The sky's trim for a season or a festival, round the bowl's rim.
+ * @param {string|null} kind  A season ("winter", "spring", "summer", "fall"), or a festival.
+ * @returns {string}  SVG markup, empty for no known kind.
+ */
+export function skyTrim(kind) {
+  const draw = Object.hasOwn(SEASONS, kind) ? SEASONS[kind] : Object.hasOwn(FESTIVALS, kind) ? FESTIVALS[kind] : null;
+  return draw ? draw(BOWL_OUTLINE, seededRandom(23), () => "") : "";
 }
 
 /**
- * The kind of trim to dress the frame in.
+ * The bar's trim for an adventure, along its lower edge. Pieces over the date are marked "middle", so they can be
+ * left bare while the sky shows.
+ * @param {string|null} kind  An adventure.
+ * @returns {string}  SVG markup, empty for no known kind.
+ */
+export function barTrim(kind) {
+  if ( !Object.hasOwn(ADVENTURES, kind) ) return "";
+  const middle = p => ((p.x > BAR_MIDDLE[0]) && (p.x < BAR_MIDDLE[1]) ? " middle" : "");
+  return ADVENTURES[kind](BAR_OUTLINE, seededRandom(11), middle);
+}
+
+/**
+ * The kind of trim to dress the sky in.
  * @param {string|boolean} choice   The GM's choice. `true` is the setting from before it had choices, when it was on.
  * @param {string|null} season      The kind of the current season, for "follow".
  * @param {string|null} [festival]  The kind of trim for today's festival, if any, which "follow" puts up for the day.
  * @returns {string|null}
  */
-export function trimKind(choice, season, festival = null) {
+export function skyTrimKind(choice, season, festival = null) {
   if ( (choice === true) || (choice === "true") || (choice === "follow") ) return festival ?? season ?? null;
-  return Object.hasOwn(SEASONS, choice) || Object.hasOwn(ADVENTURES, choice) ? choice : null;
+  return Object.hasOwn(SEASONS, choice) ? choice : null;
 }

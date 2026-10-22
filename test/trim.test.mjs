@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BAR_OUTLINE, BOWL_OUTLINE, festivalTrimKind, frameTrim, TRIM_CHOICES, TRIM_GROUPS, trimKind }
+import { BAR_OUTLINE, BAR_TRIM_CHOICES, barTrim, BOWL_OUTLINE, festivalTrimKind, SKY_TRIM_CHOICES, skyTrim, skyTrimKind }
   from "../scripts/trim.mjs";
 
 describe("the season trim", () => {
@@ -19,31 +19,34 @@ describe("the season trim", () => {
     expect(BOWL_OUTLINE.at(BOWL_OUTLINE.length).y).toBeCloseTo(0);
   });
 
-  it("dresses the frame for each kind of season", () => {
+  it("dresses the sky about the day wheel for each kind of season", () => {
     const pieces = { winter: "sdc-icicle", spring: "sdc-blossom", summer: "sdc-sunflower", fall: "sdc-fallen" };
     for ( const [kind, piece] of Object.entries(pieces) ) {
-      const trim = frameTrim(kind);
-      expect(trim.bar).toContain(piece);
-      expect(trim.bowl).toContain(piece);
-      expect(trim.bowl).not.toContain("middle");
+      const trim = skyTrim(kind);
+      expect(trim).toContain(piece);
+      expect(trim).not.toContain("middle");
     }
   });
 
   it("leaves the bar over the date marked, so it can be left bare", () => {
-    expect(frameTrim("fall").bar).toContain(" middle");
+    expect(barTrim("chult")).toContain(" middle");
   });
 
   it("comes out the same each time", () => {
-    expect(frameTrim("spring")).toEqual(frameTrim("spring"));
+    expect(skyTrim("spring")).toEqual(skyTrim("spring"));
+    expect(barTrim("feywild")).toEqual(barTrim("feywild"));
   });
 
-  it("draws nothing for a season of no known kind", () => {
-    expect(frameTrim(null)).toEqual({ bar: "", bowl: "" });
+  it("draws nothing for no known kind, and keeps the sky's and the bar's apart", () => {
+    expect(skyTrim(null)).toBe("");
+    expect(barTrim(null)).toBe("");
+    expect(skyTrim("ravenloft")).toBe("");
+    expect(barTrim("winter")).toBe("");
   });
 });
 
 describe("the festivals' and adventures' trim", () => {
-  it("dresses the frame for each festival of D&D 5e's calendars", () => {
+  it("dresses the sky for each festival of D&D 5e's calendars", () => {
     const festivals = {
       "DND5E.CALENDAR.Harptos.Festival.Midwinter": "midwinter",
       "DND5E.CALENDAR.Greyhawk.Festival.Needfest": "midwinter",
@@ -58,60 +61,55 @@ describe("the festivals' and adventures' trim", () => {
     };
     for ( const [name, kind] of Object.entries(festivals) ) {
       expect(festivalTrimKind(name)).toBe(kind);
-      const trim = frameTrim(kind);
-      expect(trim.bar).not.toBe("");
-      expect(trim.bowl).not.toBe("");
+      expect(skyTrim(kind), kind).toMatch(/^<.*>$/s);
+      expect(skyTrim(kind), kind).not.toMatch(/NaN|undefined/);
     }
     expect(festivalTrimKind("")).toBeNull();
   });
 
-  it("dresses the bar alone for each adventure", () => {
-    for ( const kind of TRIM_GROUPS.adventures ) {
-      const trim = frameTrim(kind);
-      expect(trim.bar, kind).toMatch(/^<.*>$/s);
-      expect(trim.bar, kind).not.toMatch(/NaN|undefined/);
-      expect(trim.bowl, kind).toBe("");
+  it("dresses the bar for each adventure", () => {
+    for ( const kind of BAR_TRIM_CHOICES.slice(1) ) {
+      expect(barTrim(kind), kind).toMatch(/^<.*>$/s);
+      expect(barTrim(kind), kind).not.toMatch(/NaN|undefined/);
     }
   });
 
-  it("draws no festival or season with NaN or undefined in it", () => {
-    for ( const kind of ["winter", "spring", "summer", "fall", "midwinter", "greengrass", "midsummer", "shieldmeet",
-      "harvest", "moonfeast"] ) {
-      const { bar, bowl } = frameTrim(kind);
-      expect(bar + bowl, kind).not.toMatch(/NaN|undefined/);
-    }
+  it("draws no season with NaN or undefined in it", () => {
+    for ( const kind of ["winter", "spring", "summer", "fall"] ) expect(skyTrim(kind), kind).not.toMatch(/NaN|undefined/);
   });
 });
 
 describe("the GM's choice of trim", () => {
-  it("offers every choice once", () => {
-    expect(new Set(TRIM_CHOICES).size).toBe(TRIM_CHOICES.length);
-    expect(TRIM_CHOICES.slice(0, 2)).toEqual(["none", "follow"]);
+  it("offers every choice once, none first", () => {
+    for ( const choices of [SKY_TRIM_CHOICES, BAR_TRIM_CHOICES] ) {
+      expect(new Set(choices).size).toBe(choices.length);
+      expect(choices[0]).toBe("none");
+    }
+    expect(SKY_TRIM_CHOICES).toEqual(["none", "follow", "winter", "spring", "summer", "fall"]);
   });
 
   it("puts up a festival's trim for the day while following the seasons", () => {
-    expect(trimKind("follow", "winter", "midwinter")).toBe("midwinter");
-    expect(trimKind("winter", "winter", "midwinter")).toBe("winter");
-    expect(trimKind("ravenloft", "winter", "midwinter")).toBe("ravenloft");
-    expect(trimKind("none", "winter", "midwinter")).toBeNull();
+    expect(skyTrimKind("follow", "winter", "midwinter")).toBe("midwinter");
+    expect(skyTrimKind("winter", "winter", "midwinter")).toBe("winter");
+    expect(skyTrimKind("none", "winter", "midwinter")).toBeNull();
   });
 
   it("is bare by default", () => {
-    expect(trimKind("none", "winter")).toBeNull();
+    expect(skyTrimKind("none", "winter")).toBeNull();
   });
 
   it("follows the seasons", () => {
-    expect(trimKind("follow", "spring")).toBe("spring");
-    expect(trimKind("follow", null)).toBeNull();
+    expect(skyTrimKind("follow", "spring")).toBe("spring");
+    expect(skyTrimKind("follow", null)).toBeNull();
   });
 
   it("keeps to one season all year", () => {
-    for ( const kind of ["winter", "spring", "summer", "fall"] ) expect(trimKind(kind, "summer")).toBe(kind);
+    for ( const kind of ["winter", "spring", "summer", "fall"] ) expect(skyTrimKind(kind, "summer")).toBe(kind);
   });
 
   it("follows the seasons for a world that turned the old setting on", () => {
-    expect(trimKind(true, "fall")).toBe("fall");
-    expect(trimKind("true", "fall")).toBe("fall");
-    expect(trimKind(false, "fall")).toBeNull();
+    expect(skyTrimKind(true, "fall")).toBe("fall");
+    expect(skyTrimKind("true", "fall")).toBe("fall");
+    expect(skyTrimKind(false, "fall")).toBeNull();
   });
 });

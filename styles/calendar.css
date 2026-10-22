@@ -433,30 +433,30 @@
 /* ---------------------------------------------------------------------------------------------- */
 /*  Frame Trim                                                                                    */
 /*                                                                                                */
-/*  The frame dressed along the bar's lower edge and the bowl's rim, for the season or a          */
-/*  festival; or along the bar alone, for an adventure.                                           */
+/*  The bowl's rim dressed about the day wheel for the season or a festival; or the bar's lower    */
+/*  edge dressed for an adventure.                                                                */
 /* ---------------------------------------------------------------------------------------------- */
 
-#sdc-calendar[data-trim="winter"] { --sdc-glow: rgb(170 220 255 / 38%); }
-#sdc-calendar[data-trim="spring"] { --sdc-glow: rgb(160 225 140 / 26%); }
-#sdc-calendar[data-trim="summer"] { --sdc-glow: rgb(255 205 90 / 34%); }
-#sdc-calendar[data-trim="fall"] { --sdc-glow: rgb(235 125 55 / 32%); }
-#sdc-calendar[data-trim="midwinter"] { --sdc-glow: rgb(220 60 60 / 30%); }
-#sdc-calendar[data-trim="greengrass"] { --sdc-glow: rgb(150 230 120 / 30%); }
-#sdc-calendar[data-trim="midsummer"] { --sdc-glow: rgb(255 180 70 / 40%); }
-#sdc-calendar[data-trim="shieldmeet"] { --sdc-glow: rgb(110 150 240 / 30%); }
-#sdc-calendar[data-trim="harvest"] { --sdc-glow: rgb(230 175 70 / 34%); }
-#sdc-calendar[data-trim="moonfeast"] { --sdc-glow: rgb(200 215 255 / 34%); }
-#sdc-calendar[data-trim="ravenloft"] { --sdc-glow: rgb(150 20 30 / 34%); }
-#sdc-calendar[data-trim="feywild"] { --sdc-glow: rgb(240 140 220 / 32%); }
-#sdc-calendar[data-trim="avernus"] { --sdc-glow: rgb(255 80 20 / 44%); }
-#sdc-calendar[data-trim="icewind"] { --sdc-glow: rgb(170 225 255 / 46%); }
-#sdc-calendar[data-trim="arcana"] { --sdc-glow: rgb(110 190 255 / 40%); }
-#sdc-calendar[data-trim="thay"] { --sdc-glow: rgb(200 20 40 / 40%); }
-#sdc-calendar[data-trim="warcraft"] { --sdc-glow: rgb(240 190 80 / 36%); }
-#sdc-calendar[data-trim="vecna"] { --sdc-glow: rgb(150 60 220 / 40%); }
-#sdc-calendar[data-trim="chult"] { --sdc-glow: rgb(80 200 110 / 32%); }
-#sdc-calendar[data-trim="obelisk"] { --sdc-glow: rgb(120 230 140 / 34%); }
+#sdc-calendar[data-sky-trim="winter"] { --sdc-glow: rgb(170 220 255 / 38%); }
+#sdc-calendar[data-sky-trim="spring"] { --sdc-glow: rgb(160 225 140 / 26%); }
+#sdc-calendar[data-sky-trim="summer"] { --sdc-glow: rgb(255 205 90 / 34%); }
+#sdc-calendar[data-sky-trim="fall"] { --sdc-glow: rgb(235 125 55 / 32%); }
+#sdc-calendar[data-sky-trim="midwinter"] { --sdc-glow: rgb(220 60 60 / 30%); }
+#sdc-calendar[data-sky-trim="greengrass"] { --sdc-glow: rgb(150 230 120 / 30%); }
+#sdc-calendar[data-sky-trim="midsummer"] { --sdc-glow: rgb(255 180 70 / 40%); }
+#sdc-calendar[data-sky-trim="shieldmeet"] { --sdc-glow: rgb(110 150 240 / 30%); }
+#sdc-calendar[data-sky-trim="harvest"] { --sdc-glow: rgb(230 175 70 / 34%); }
+#sdc-calendar[data-sky-trim="moonfeast"] { --sdc-glow: rgb(200 215 255 / 34%); }
+#sdc-calendar[data-bar-trim="ravenloft"] { --sdc-glow: rgb(150 20 30 / 34%); }
+#sdc-calendar[data-bar-trim="feywild"] { --sdc-glow: rgb(240 140 220 / 32%); }
+#sdc-calendar[data-bar-trim="avernus"] { --sdc-glow: rgb(255 80 20 / 44%); }
+#sdc-calendar[data-bar-trim="icewind"] { --sdc-glow: rgb(170 225 255 / 46%); }
+#sdc-calendar[data-bar-trim="arcana"] { --sdc-glow: rgb(110 190 255 / 40%); }
+#sdc-calendar[data-bar-trim="thay"] { --sdc-glow: rgb(200 20 40 / 40%); }
+#sdc-calendar[data-bar-trim="warcraft"] { --sdc-glow: rgb(240 190 80 / 36%); }
+#sdc-calendar[data-bar-trim="vecna"] { --sdc-glow: rgb(150 60 220 / 40%); }
+#sdc-calendar[data-bar-trim="chult"] { --sdc-glow: rgb(80 200 110 / 32%); }
+#sdc-calendar[data-bar-trim="obelisk"] { --sdc-glow: rgb(120 230 140 / 34%); }
 
 #sdc-calendar .sdc-trim {
   position: absolute;

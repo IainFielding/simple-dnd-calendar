@@ -6,6 +6,10 @@
  * Uses the end-to-end harness's world and fixtures, with the canvas on so the calendar hangs over a scene. A scene
  * named "screenshot" in the test world, added by hand, is the backdrop: it is activated and viewed for the shots.
  * Without one, the fixtures' blank scene is used.
+ *
+ * Each sky and bar trim is shot too, into docs/screenshots/trims. To take only those:
+ *
+ *   npm run docs:screenshots -- --trims
  */
 
 import fs from "node:fs";
@@ -20,6 +24,9 @@ process.env.SDC_CANVAS = "1";
 
 const OUT = "docs/screenshots";
 fs.mkdirSync(OUT, { recursive: true });
+
+/** Take only the trims' shots. */
+const TRIMS_ONLY = process.argv.includes("--trims");
 
 /** The calendar and a margin around it, for a cropped shot. */
 const CLIP = { x: 480, y: 0, width: 640, height: 230 };
@@ -36,8 +43,6 @@ try {
   player = await Session.open(PLAYER_USER, { scale: 2 });
   const ctx = { gm, player };
   await resetWorld(gm, player);
-  // The season's trim is off by default; it is on in the screenshots, to show it.
-  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "follow"), MODULE_ID);
 
   // The backdrop: the hand-made "screenshot" scene, shown to everyone, with the game unpaused so no banner covers it.
   const backdrop = await gm.eval(async () => {
@@ -59,6 +64,35 @@ try {
     await session.page.screenshot({ path: `${OUT}/${name}.png`, clip });
     console.log(`  ${OUT}/${name}.png`);
   };
+
+  if ( !TRIMS_ONLY ) await docShots(ctx, shoot);
+  await trimShots(ctx, shoot);
+
+  // The whole screen, for context.
+  if ( !TRIMS_ONLY ) {
+    await gm.page.mouse.move(5, 900);
+    await gm.page.screenshot({ path: `${OUT}/screen.png` });
+    console.log(`  ${OUT}/screen.png`);
+  }
+} finally {
+  await player?.close();
+  await gm?.close({ shutDownWorld: true });
+  await server.stop();
+}
+
+/* -------------------------------------------- */
+
+/**
+ * The shots in the README: the calendar through the day, the GM's controls, collapsed, each style, and a short
+ * winter day.
+ * @param {{gm: Session, player: Session}} ctx
+ * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
+ */
+async function docShots(ctx, shoot) {
+  const { gm } = ctx;
+
+  // The season's trim is off by default; it is on in these first shots, to show it.
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "follow"), MODULE_ID);
 
   // A full Selûne riding high on a winter's night, then the same day at noon and at dusk.
   await setTime(ctx, { year: 1501, day: 30, hour: 0, minute: 10 });
@@ -106,15 +140,91 @@ try {
   await setTime(ctx, { year: 1525, day: 358, hour: 12, minute: 0 });
   await shoot(gm, "winter-day");
   await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", false), MODULE_ID);
+}
 
-  // The whole screen, for context.
-  await gm.page.mouse.move(5, 900);
-  await gm.page.screenshot({ path: `${OUT}/screen.png` });
-  console.log(`  ${OUT}/screen.png`);
-} finally {
-  await player?.close();
-  await gm?.close({ shutDownWorld: true });
-  await server.stop();
+/* -------------------------------------------- */
+
+/**
+ * A shot of each trim: the sky's for each season and each festival of the Calendar of Harptos, and the bar's for
+ * each adventure, with the bar collapsed too so its whole length shows.
+ * @param {{gm: Session, player: Session}} ctx
+ * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
+ */
+async function trimShots(ctx, shoot) {
+  const { gm } = ctx;
+  const set = (key, value) => gm.eval(({ moduleId, key, value }) => game.settings.set(moduleId, key, value),
+    { moduleId: MODULE_ID, key, value });
+  fs.mkdirSync(`${OUT}/trims`, { recursive: true });
+
+  // The seasons, mid-season, and each festival on its day, at dusk.
+  await set("barTrim", "none");
+  await set("seasonTrim", "follow");
+  const seasons = { winter: [1525, 15], spring: [1525, 100], summer: [1525, 180], fall: [1525, 300] };
+  for ( const [kind, [year, day]] of Object.entries(seasons) ) {
+    await setTime(ctx, { year, day, hour: 19, minute: 0 });
+    await expectSkyTrim(gm, kind);
+    await shoot(gm, `trims/sky-${kind}`);
+  }
+  const festivals = { midwinter: "Midwinter", greengrass: "Greengrass", midsummer: "Midsummer",
+    shieldmeet: "Shieldmeet", harvest: "Highharvestide", moonfeast: "FeastOfTheMoon" };
+  for ( const [kind, festival] of Object.entries(festivals) ) {
+    const { year, day } = await festivalDay(gm, 1524, festival);
+    await setTime(ctx, { year, day, hour: 19, minute: 0 });
+    await expectSkyTrim(gm, kind);
+    await shoot(gm, `trims/festival-${kind}`);
+  }
+
+  // Each adventure on the bar, with the sky bare, open and then collapsed.
+  await set("seasonTrim", "none");
+  await setTime(ctx, { year: 1525, day: 100, hour: 21, minute: 0 });
+  const adventures = await gm.eval(moduleId => Object.keys(game.settings.settings.get(`${moduleId}.barTrim`)?.choices ?? {})
+    .filter(k => k !== "none"), MODULE_ID);
+  for ( const kind of adventures ) {
+    await set("barTrim", kind);
+    await gm.page.waitForFunction(kind => document.getElementById("sdc-calendar")?.dataset.barTrim === kind, kind);
+    await shoot(gm, `trims/bar-${kind}`);
+    await gm.page.locator("#sdc-calendar button[data-action=toggleCalendar]").click();
+    await gm.page.waitForTimeout(400);
+    await shoot(gm, `trims/bar-${kind}-collapsed`, { ...CLIP, height: 80 });
+    await gm.page.locator("#sdc-calendar button[data-action=toggleCalendar]").click();
+    await gm.page.waitForTimeout(400);
+  }
+  await set("barTrim", "none");
+}
+
+/**
+ * The first day a festival of the Calendar of Harptos falls on, from a year onwards. Shieldmeet falls only in leap
+ * years.
+ * @param {Session} gm
+ * @param {number} from      The year to look from.
+ * @param {string} festival  The last part of its name's localization key, such as "Midwinter".
+ * @returns {Promise<{year: number, day: number}>}
+ */
+async function festivalDay(gm, from, festival) {
+  const found = await gm.eval(({ from, festival }) => {
+    const calendar = game.time.calendar;
+    for ( let year = from; year < from + 8; year++ ) {
+      const y = year - calendar.years.yearZero;
+      for ( let day = 0; day < 400; day++ ) {
+        const components = calendar.timeToComponents(calendar.componentsToTime({ year: y, day, hour: 12, minute: 0 }));
+        if ( components.year !== y ) break;
+        if ( calendar.findFestivalDay?.(components)?.name.endsWith(`.${festival}`) ) return { year, day };
+      }
+    }
+    return null;
+  }, { from, festival });
+  if ( !found ) throw new Error(`${festival} doesn't fall within eight years of ${from}.`);
+  return found;
+}
+
+/**
+ * Check the calendar shows the sky's trim expected, so a shot isn't taken of the wrong one.
+ * @param {Session} gm
+ * @param {string} kind
+ */
+async function expectSkyTrim(gm, kind) {
+  await gm.page.waitForFunction(kind => document.getElementById("sdc-calendar")?.dataset.skyTrim === kind, kind,
+    { timeout: 10_000 });
 }
 
 /**

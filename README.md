@@ -17,12 +17,14 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 - **The season band.** The date, written across a band of the year's colours (green spring, gold summer, orange
   autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
   it for the season's name and each moon's phase, with when it is next full.
-- **The frame's trim.** The frame is dressed for the season along the bar's edge and the bowl's rim: frost and
+- **The sky's trim.** The bowl's rim, about the day wheel, is dressed for the season: frost and
   icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. On a festival it
   is dressed for the day: holly and bells for Midwinter or Needfest, grass and daisies for Greengrass or Growfest,
   lanterns for Midsummer or Richfest, bunting and shields for Shieldmeet, wheat and apples for Highharvestide or
-  Brewfest, and moonflowers and silver crescents for the Feast of the Moon. Off by default; under **Dress the Frame**
-  the GM can have it follow the seasons, keep to just one all year, or dress the bar for an adventure, for everyone.
+  Brewfest, and moonflowers and silver crescents for the Feast of the Moon. Off by default; under **Dress the Sky for
+  the Season** the GM can have it follow the seasons or keep to just one all year, for everyone.
+- **The adventure's trim.** The bar can be dressed for the adventure you're running, under **Dress the Bar for Your
+  Adventure**, alongside the sky's trim or on its own. See [Adventure Trims](#adventure-trims).
 - **The day wheel.** Half day, half night. It turns through the day: the day half comes round from the right in
   the morning, sits at the bottom at noon, and leaves to the left in the evening. The icon on its rim shows dawn,
   day, dusk or night.
@@ -146,14 +148,15 @@ for the current time with `game.modules.get("sogrom-simple-dnd-calendar").api.da
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
 | Calendar Style | Gilded Night | Gilded Night, Parchment or Underdark. Each player picks for themselves. |
-| Dress the Frame | None | Follow the Seasons (with festivals), Just Winter, Spring, Summer or Autumn all year, or an adventure. The GM picks, for everyone. |
+| Dress the Sky for the Season | None | Follow the Seasons (with festivals), or Just Winter, Spring, Summer or Autumn all year. The GM picks, for everyone. |
+| Dress the Bar for Your Adventure | None | One of the adventures below. The GM picks, for everyone. |
 | Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
 | Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |
 | Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun and the moons. The GM picks. |
 
 #### Adventure Trims
 
-An adventure's trim dresses the bar alone, leaving the sky clear for the moons.
+Under **Dress the Bar for Your Adventure**, the bar is dressed for one of these:
 
 | Adventure | Trim |
 | --- | --- |
