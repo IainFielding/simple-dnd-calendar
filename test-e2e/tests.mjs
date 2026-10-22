@@ -117,34 +117,56 @@ test("the icon on the wheel shows the part of the day", async ctx => {
   assertEqual(phases, { "2:0": "night", "5:30": "dawn", "12:0": "day", "18:30": "dusk" }, "phases");
 });
 
-test("the season dresses the frame and festivals show beside the bowl", async ctx => {
-  await ctx.gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", true), MODULE_ID);
+test("the season dresses the frame, festivals dress it for the day, and show beside the bowl", async ctx => {
+  await ctx.gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "follow"), MODULE_ID);
   await setTime(ctx, { year: 1525, day: 100, hour: 12 });
   let calendar = await readCalendar(ctx.gm);
-  assertEqual([calendar.season, calendar.seasonKind, calendar.festival], ["Spring", "spring", null], "in Tarsakh");
+  assertEqual([calendar.season, calendar.trim, calendar.festival], ["Spring", "spring", null], "in Tarsakh");
   await setTime(ctx, { year: 1525, day: 30, hour: 12 });
   calendar = await readCalendar(ctx.gm);
-  assertEqual([calendar.season, calendar.seasonKind, calendar.festival], ["Winter", "winter", "Midwinter"],
+  assertEqual([calendar.season, calendar.trim, calendar.festival], ["Winter", "midwinter", "Midwinter"],
     "on Midwinter");
+  await setTime(ctx, { year: 1525, day: 31, hour: 12 });
+  calendar = await readCalendar(ctx.gm);
+  assertEqual([calendar.trim, calendar.festival], ["winter", null], "the day after");
+});
+
+test("an adventure dresses the bar alone, all year", async ctx => {
+  await ctx.gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "ravenloft"), MODULE_ID);
+  await setTime(ctx, { year: 1525, day: 100, hour: 12 });
+  await waitFor(ctx.player, () => document.getElementById("sdc-calendar")?.dataset.trim === "ravenloft", undefined,
+    "the adventure's trim");
+  const trim = await ctx.player.eval(() => {
+    const root = document.getElementById("sdc-calendar");
+    return { kind: root.dataset.trim, bar: root.querySelectorAll(".sdc-trim-bar > *").length > 0,
+      bowl: root.querySelectorAll(".sdc-trim-bowl > *").length };
+  });
+  assertEqual(trim, { kind: "ravenloft", bar: true, bowl: 0 }, "Curse of Strahd in spring");
 });
 
 test("the season's trim is off until the GM turns it on, for everyone", async ctx => {
   const { gm, player } = ctx;
-  await setTime(ctx, { year: 1525, day: 30, hour: 12 });
+  await setTime(ctx, { year: 1525, day: 20, hour: 12 });
   const trim = session => session.eval(() => {
     const root = document.getElementById("sdc-calendar");
-    return { kind: root.dataset.season || null, pieces: root.querySelectorAll(".sdc-trim-bar > *, .sdc-trim-bowl > *").length > 0 };
+    return { kind: root.dataset.trim || null, pieces: root.querySelectorAll(".sdc-trim-bar > *, .sdc-trim-bowl > *").length > 0 };
   });
   for ( const session of [gm, player] ) assertEqual(await trim(session), { kind: null, pieces: false }, "by default");
-  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", true), MODULE_ID);
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "follow"), MODULE_ID);
   for ( const session of [gm, player] ) {
-    await waitFor(session, () => document.getElementById("sdc-calendar")?.dataset.season === "winter", undefined,
+    await waitFor(session, () => document.getElementById("sdc-calendar")?.dataset.trim === "winter", undefined,
       "the trim to come");
     assertEqual(await trim(session), { kind: "winter", pieces: true }, "with the trim on");
   }
-  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", false), MODULE_ID);
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "summer"), MODULE_ID);
   for ( const session of [gm, player] ) {
-    await waitFor(session, () => !document.getElementById("sdc-calendar")?.dataset.season, undefined, "the trim to go");
+    await waitFor(session, () => document.getElementById("sdc-calendar")?.dataset.trim === "summer", undefined,
+      "summer's trim in winter");
+    assertEqual(await trim(session), { kind: "summer", pieces: true }, "with just summer");
+  }
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "none"), MODULE_ID);
+  for ( const session of [gm, player] ) {
+    await waitFor(session, () => !document.getElementById("sdc-calendar")?.dataset.trim, undefined, "the trim to go");
     assertEqual(await trim(session), { kind: null, pieces: false }, "with the trim off again");
   }
 });

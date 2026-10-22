@@ -431,16 +431,32 @@
 }
 
 /* ---------------------------------------------------------------------------------------------- */
-/*  Season Trim                                                                                   */
+/*  Frame Trim                                                                                    */
 /*                                                                                                */
-/*  The frame dressed for the season along the bar's lower edge and the bowl's rim: frost and     */
-/*  icicles, a flowering vine, sunflowers, or fallen leaves.                                      */
+/*  The frame dressed along the bar's lower edge and the bowl's rim, for the season or a          */
+/*  festival; or along the bar alone, for an adventure.                                           */
 /* ---------------------------------------------------------------------------------------------- */
 
-#sdc-calendar[data-season="winter"] { --sdc-glow: rgb(170 220 255 / 38%); }
-#sdc-calendar[data-season="spring"] { --sdc-glow: rgb(160 225 140 / 26%); }
-#sdc-calendar[data-season="summer"] { --sdc-glow: rgb(255 205 90 / 34%); }
-#sdc-calendar[data-season="fall"] { --sdc-glow: rgb(235 125 55 / 32%); }
+#sdc-calendar[data-trim="winter"] { --sdc-glow: rgb(170 220 255 / 38%); }
+#sdc-calendar[data-trim="spring"] { --sdc-glow: rgb(160 225 140 / 26%); }
+#sdc-calendar[data-trim="summer"] { --sdc-glow: rgb(255 205 90 / 34%); }
+#sdc-calendar[data-trim="fall"] { --sdc-glow: rgb(235 125 55 / 32%); }
+#sdc-calendar[data-trim="midwinter"] { --sdc-glow: rgb(220 60 60 / 30%); }
+#sdc-calendar[data-trim="greengrass"] { --sdc-glow: rgb(150 230 120 / 30%); }
+#sdc-calendar[data-trim="midsummer"] { --sdc-glow: rgb(255 180 70 / 40%); }
+#sdc-calendar[data-trim="shieldmeet"] { --sdc-glow: rgb(110 150 240 / 30%); }
+#sdc-calendar[data-trim="harvest"] { --sdc-glow: rgb(230 175 70 / 34%); }
+#sdc-calendar[data-trim="moonfeast"] { --sdc-glow: rgb(200 215 255 / 34%); }
+#sdc-calendar[data-trim="ravenloft"] { --sdc-glow: rgb(150 20 30 / 34%); }
+#sdc-calendar[data-trim="feywild"] { --sdc-glow: rgb(240 140 220 / 32%); }
+#sdc-calendar[data-trim="avernus"] { --sdc-glow: rgb(255 80 20 / 44%); }
+#sdc-calendar[data-trim="icewind"] { --sdc-glow: rgb(170 225 255 / 46%); }
+#sdc-calendar[data-trim="arcana"] { --sdc-glow: rgb(110 190 255 / 40%); }
+#sdc-calendar[data-trim="thay"] { --sdc-glow: rgb(200 20 40 / 40%); }
+#sdc-calendar[data-trim="warcraft"] { --sdc-glow: rgb(240 190 80 / 36%); }
+#sdc-calendar[data-trim="vecna"] { --sdc-glow: rgb(150 60 220 / 40%); }
+#sdc-calendar[data-trim="chult"] { --sdc-glow: rgb(80 200 110 / 32%); }
+#sdc-calendar[data-trim="obelisk"] { --sdc-glow: rgb(120 230 140 / 34%); }
 
 #sdc-calendar .sdc-trim {
   position: absolute;
@@ -457,8 +473,8 @@
 }
 
 /* The stretch of the bar over the date is left bare while the sky shows. */
-#sdc-calendar .sdc-trim .middle { transition: opacity 0.25s; }
-#sdc-calendar.expanded .sdc-trim .middle { opacity: 0; }
+#sdc-calendar .sdc-trim .middle { transition: opacity 0.25s, visibility 0.25s; }
+#sdc-calendar.expanded .sdc-trim .middle { opacity: 0; visibility: hidden; }
 
 /* Winter */
 #sdc-calendar .sdc-frost {
@@ -507,6 +523,157 @@
 #sdc-calendar .sdc-fallen.rust { fill: #b4562a; }
 #sdc-calendar .sdc-fallen.loose { opacity: 0.85; }
 
+/* Festivals */
+#sdc-calendar .sdc-garland { fill: none; stroke: #2f5a2a; stroke-width: 1.2; }
+#sdc-calendar .sdc-holly { fill: #2c6b34; }
+#sdc-calendar .sdc-holly.light { fill: #3f8a45; }
+#sdc-calendar .sdc-berries { fill: #d62a2a; }
+#sdc-calendar .sdc-bell { fill: #e9bf4a; stroke: #8a6418; stroke-width: 0.4; }
+#sdc-calendar .sdc-bell .clapper { fill: #8a6418; }
+#sdc-calendar .sdc-ribbon { fill: none; stroke: #c22a2a; stroke-width: 0.7; }
+#sdc-calendar .sdc-grass { fill: #6cbf4a; }
+#sdc-calendar .sdc-grass.light { fill: #9ad86a; }
+#sdc-calendar .sdc-grass.dark { fill: #3f8a2f; }
+#sdc-calendar .sdc-daisy { fill: #fdfbf3; }
+#sdc-calendar .sdc-daisy .heart { fill: #f2c230; }
+#sdc-calendar .sdc-cord { fill: none; stroke: #c4a46a; stroke-width: 0.6; }
+#sdc-calendar .sdc-lantern .string { stroke: #4a3a28; stroke-width: 0.5; }
+#sdc-calendar .sdc-lantern .cap { fill: #3b2d1d; }
+#sdc-calendar .sdc-lantern .glow { filter: drop-shadow(0 0 1.5px #ffb347); animation: sdc-flicker 3s ease-in-out infinite; }
+#sdc-calendar .sdc-lantern.gold .glow { fill: #ffd25a; }
+#sdc-calendar .sdc-lantern.red .glow { fill: #f0503a; }
+#sdc-calendar .sdc-lantern.orange .glow { fill: #ff9a3a; }
+#sdc-calendar .sdc-lantern.rose .glow { fill: #f77fa8; }
+#sdc-calendar .sdc-pennant.red,
+#sdc-calendar .sdc-shield.red path:first-child { fill: #c0392b; }
+#sdc-calendar .sdc-pennant.blue,
+#sdc-calendar .sdc-shield.blue path:first-child { fill: #2f5fb3; }
+#sdc-calendar .sdc-pennant.gold,
+#sdc-calendar .sdc-shield.gold path:first-child { fill: #e3b23c; }
+#sdc-calendar .sdc-pennant.white,
+#sdc-calendar .sdc-shield.white path:first-child { fill: #f2efe6; }
+#sdc-calendar .sdc-shield path:first-child { stroke: #5a4630; stroke-width: 0.6; }
+#sdc-calendar .sdc-shield .boss { fill: none; stroke: #5a4630; stroke-width: 0.7; }
+#sdc-calendar .sdc-twine { fill: none; stroke: #b08a4a; stroke-width: 0.9; }
+#sdc-calendar .sdc-wheat { fill: #e2b450; }
+#sdc-calendar .sdc-wheat .stalk { fill: none; stroke: #c99a3a; stroke-width: 0.5; }
+#sdc-calendar .sdc-apple { fill: #c8322a; }
+#sdc-calendar .sdc-apple .stem { stroke: #5a3a1e; stroke-width: 0.5; }
+#sdc-calendar .sdc-apple .leaf { stroke: #4f8a2f; stroke-width: 0.9; stroke-linecap: round; }
+#sdc-calendar .sdc-vine.night { stroke: #3a4a5e; }
+#sdc-calendar .sdc-leaf.night { fill: #4a5f6e; }
+#sdc-calendar .sdc-moonflower { fill: #eef3ff; animation: sdc-glow 4s ease-in-out infinite; }
+#sdc-calendar .sdc-moonflower .heart { fill: #b9c8ea; }
+#sdc-calendar .sdc-crescent { fill: #dfe6f2; stroke: #8b97ab; stroke-width: 0.3; }
+#sdc-calendar .sdc-crescent .sdc-ribbon { stroke: #b9c4d6; }
+
+/* Adventures: Curse of Strahd */
+#sdc-calendar .sdc-mist { fill: rgb(215 220 230 / 22%); filter: blur(1.5px); animation: sdc-drift 12s ease-in-out infinite; }
+#sdc-calendar .sdc-deadvine { fill: none; stroke: #74655a; stroke-width: 1.4; }
+#sdc-calendar .sdc-thorn { fill: #74655a; }
+#sdc-calendar .sdc-web { fill: none; stroke: rgb(235 235 240 / 70%); stroke-width: 0.4; }
+#sdc-calendar .sdc-spider { fill: #1c1a1a; }
+#sdc-calendar .sdc-spider .thread { stroke: rgb(230 230 235 / 55%); stroke-width: 0.3; }
+#sdc-calendar .sdc-spider .legs { fill: none; stroke: #1c1a1a; stroke-width: 0.5; }
+#sdc-calendar .sdc-bat { fill: #15121a; }
+
+/* The Wild Beyond the Witchlight */
+#sdc-calendar .sdc-ribbon-fey { fill: none; stroke-width: 1.3; stroke-linecap: round; }
+#sdc-calendar .sdc-ribbon-fey.pink { stroke: #f08ac8; }
+#sdc-calendar .sdc-ribbon-fey.teal { stroke: #5fd3c8; }
+#sdc-calendar .sdc-toadstool .stem { fill: #f3ead6; }
+#sdc-calendar .sdc-toadstool .cap { fill: #d8322d; }
+#sdc-calendar .sdc-toadstool .spot { fill: #fff8ec; }
+#sdc-calendar .sdc-sparkle { fill: #ffd6f2; animation: sdc-twinkle 4s ease-in-out infinite; }
+#sdc-calendar .sdc-firefly {
+  fill: #e4ff8a;
+  filter: drop-shadow(0 0 1.5px #e4ff8a);
+  animation: sdc-twinkle 4s ease-in-out infinite;
+}
+
+/* Descent into Avernus */
+#sdc-calendar .sdc-hellglow { fill: none; stroke: #ff5a1a; stroke-width: 2; opacity: 0.6; filter: blur(1px); }
+#sdc-calendar .sdc-spike { fill: #2a2420; stroke: #6a4a3a; stroke-width: 0.3; }
+#sdc-calendar .sdc-link { fill: none; stroke: #5c5650; stroke-width: 0.7; }
+#sdc-calendar .sdc-link.side { stroke: #8a827a; }
+#sdc-calendar .sdc-ember {
+  fill: #ffb347;
+  filter: drop-shadow(0 0 1px #ff6a1a);
+  animation: sdc-rise 3s ease-out infinite;
+}
+
+/* Rime of the Frostmaiden */
+#sdc-calendar .sdc-snowcrust { fill: #f2f9ff; stroke: #cfe6f6; stroke-width: 0.4; }
+#sdc-calendar .sdc-flake {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  animation: sdc-fall 6s linear infinite;
+}
+
+/* Arcana Unleashed */
+#sdc-calendar .sdc-ley { fill: none; stroke: #7cc8ff; stroke-width: 0.6; stroke-dasharray: 10 3 2 3; opacity: 0.8; }
+#sdc-calendar .sdc-rune {
+  fill: none;
+  stroke: #9fd8ff;
+  stroke-width: 0.6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 1.2px #4aa8ff);
+  animation: sdc-glow 5s ease-in-out infinite;
+}
+#sdc-calendar .sdc-sigil { fill: none; stroke: #b7a6ff; stroke-width: 0.45; filter: drop-shadow(0 0 1px #7a5cff); }
+#sdc-calendar .sdc-spin { animation: sdc-spin 20s linear infinite; }
+#sdc-calendar .sdc-sparkle.arcane { fill: #cfe9ff; }
+
+/* Arcana Unleashed: Deadfall */
+#sdc-calendar .sdc-silk { fill: none; stroke: #9e1b24; stroke-width: 1.2; }
+#sdc-calendar .sdc-tassel .knot { fill: #d9a93a; }
+#sdc-calendar .sdc-tassel .fringe { fill: #b0202a; }
+#sdc-calendar .sdc-dagger .blade { fill: #c9ced6; }
+#sdc-calendar .sdc-dagger .guard,
+#sdc-calendar .sdc-dagger .grip { fill: none; stroke: #2a1a1a; stroke-width: 0.9; }
+#sdc-calendar .sdc-dagger .pommel { fill: #b0202a; }
+#sdc-calendar .sdc-rune.thay { stroke: #ff4a4a; filter: drop-shadow(0 0 1.2px #c0101a); }
+
+/* World of Warcraft */
+#sdc-calendar .sdc-plate { fill: #7a5a24; stroke: #e4bc5a; stroke-width: 0.5; }
+#sdc-calendar .sdc-plate-edge { fill: none; stroke: #f2d488; stroke-width: 0.4; opacity: 0.7; }
+#sdc-calendar .sdc-rivet { fill: #f6dc8c; stroke: #5a4018; stroke-width: 0.3; }
+#sdc-calendar .sdc-gem .setting { fill: #8a6628; stroke: #f0cc6a; stroke-width: 0.4; }
+#sdc-calendar .sdc-gem .shine { stroke: #fff; stroke-width: 0.5; stroke-linecap: round; opacity: 0.8; }
+#sdc-calendar .sdc-gem.green .stone { fill: #3fd16a; }
+#sdc-calendar .sdc-gem.blue .stone { fill: #3f8cff; }
+#sdc-calendar .sdc-gem.purple .stone { fill: #a35cff; }
+#sdc-calendar .sdc-gem.red .stone { fill: #e83a3a; }
+#sdc-calendar .sdc-claw { fill: #d9c9a0; stroke: #6a5530; stroke-width: 0.3; }
+
+/* Vecna: Eve of Ruin */
+#sdc-calendar .sdc-gloom { fill: none; stroke: #3a1450; stroke-width: 3; opacity: 0.7; filter: blur(1.2px); }
+#sdc-calendar .sdc-tendril { fill: none; stroke: #7a3aa8; stroke-width: 0.8; stroke-linecap: round; }
+#sdc-calendar .sdc-eye .lid { fill: #1a0f22; stroke: #8a4ac0; stroke-width: 0.5; }
+#sdc-calendar .sdc-eye .iris { fill: #c070ff; animation: sdc-glow 5s ease-in-out infinite; }
+#sdc-calendar .sdc-eye .pupil { fill: #0b0610; }
+#sdc-calendar .sdc-mote.necrotic { fill: #c79aff; }
+
+/* Tomb of Annihilation */
+#sdc-calendar .sdc-vine.jungle { stroke: #2f6a2a; stroke-width: 1.6; }
+#sdc-calendar .sdc-leaf.jungle { fill: #2f8a3a; }
+#sdc-calendar .sdc-leaf.jungle.light { fill: #4fb04a; }
+#sdc-calendar .sdc-liana > path:first-child { fill: none; stroke: #3a6a2a; stroke-width: 0.7; }
+#sdc-calendar .sdc-hibiscus.red { fill: #e5322d; }
+#sdc-calendar .sdc-hibiscus.orange { fill: #ff8a2a; }
+#sdc-calendar .sdc-hibiscus.magenta { fill: #d8338a; }
+#sdc-calendar .sdc-hibiscus .stamen { stroke: #ffd84a; stroke-width: 0.5; stroke-linecap: round; }
+#sdc-calendar .sdc-skull .bone { fill: #e8e0c8; }
+#sdc-calendar .sdc-skull .socket { fill: #2a2420; }
+
+/* Phandelver and Below: The Shattered Obelisk */
+#sdc-calendar .sdc-shard { fill: #23202c; stroke: #6aff8a; stroke-width: 0.35; filter: drop-shadow(0 0 1px #3ad86a); }
+#sdc-calendar .sdc-shard .facet { fill: none; stroke: #4a8a5a; stroke-width: 0.3; }
+#sdc-calendar .sdc-tentacle { fill: none; stroke: #a8619a; stroke-width: 1.5; stroke-linecap: round; }
+#sdc-calendar .sdc-mote.aberrant { fill: #8aff9a; }
+
 /* ---------------------------------------------------------------------------------------------- */
 /*  Chat                                                                                          */
 /* ---------------------------------------------------------------------------------------------- */
@@ -553,6 +720,39 @@
   50% { opacity: 1; }
 }
 
+@keyframes sdc-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes sdc-flicker {
+  0%, 100% { opacity: 0.85; }
+  40% { opacity: 1; }
+  45% { opacity: 0.7; }
+  55% { opacity: 0.95; }
+}
+
+@keyframes sdc-drift {
+  0%, 100% { translate: -4px 0; opacity: 0.5; }
+  50% { translate: 4px 1px; opacity: 1; }
+}
+
+@keyframes sdc-rise {
+  0% { translate: 0 3px; opacity: 0; }
+  20% { opacity: 1; }
+  100% { translate: 1px -12px; opacity: 0; }
+}
+
+@keyframes sdc-fall {
+  0% { translate: 0 -3px; opacity: 0; }
+  20% { opacity: 1; }
+  100% { translate: 2px 10px; opacity: 0; }
+}
+
+@keyframes sdc-spin {
+  to { rotate: 360deg; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #sdc-calendar .sdc-visual,
   #sdc-calendar .sdc-bar,
@@ -562,8 +762,21 @@
   }
 
   #sdc-calendar .sdc-glint,
-  #sdc-calendar .sdc-mote {
+  #sdc-calendar .sdc-mote,
+  #sdc-calendar .sdc-sparkle,
+  #sdc-calendar .sdc-firefly,
+  #sdc-calendar .sdc-ember,
+  #sdc-calendar .sdc-flake {
     animation: none;
     opacity: 0.8;
+  }
+
+  #sdc-calendar .sdc-lantern .glow,
+  #sdc-calendar .sdc-moonflower,
+  #sdc-calendar .sdc-mist,
+  #sdc-calendar .sdc-rune,
+  #sdc-calendar .sdc-spin,
+  #sdc-calendar .sdc-eye .iris {
+    animation: none;
   }
 }

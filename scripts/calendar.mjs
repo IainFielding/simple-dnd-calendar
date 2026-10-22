@@ -30,10 +30,21 @@ export function formatComponents(calendar, components, kind, value) {
  * @returns {string}
  */
 export function festivalName(calendar, components) {
+  const key = festivalKey(calendar, components);
+  return key ? _loc(key) : "";
+}
+
+/**
+ * The localization key of the festival falling on a day, if any, as {@link festivalName} finds it.
+ * @param {object} calendar
+ * @param {object} components
+ * @returns {string}
+ */
+export function festivalKey(calendar, components) {
   const festival = calendar.findFestivalDay?.(components);
-  if ( festival ) return _loc(festival.name);
+  if ( festival ) return festival.name;
   const month = calendar.months.values[components.month];
-  return month?.name.includes(".Festival.") ? _loc(month.name) : "";
+  return month?.name.includes(".Festival.") ? month.name : "";
 }
 
 /**

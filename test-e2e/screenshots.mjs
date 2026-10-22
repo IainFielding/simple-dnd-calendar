@@ -37,7 +37,7 @@ try {
   const ctx = { gm, player };
   await resetWorld(gm, player);
   // The season's trim is off by default; it is on in the screenshots, to show it.
-  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", true), MODULE_ID);
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "follow"), MODULE_ID);
 
   // The backdrop: the hand-made "screenshot" scene, shown to everyone, with the game unpaused so no banner covers it.
   const backdrop = await gm.eval(async () => {
@@ -91,7 +91,7 @@ try {
   await gm.page.locator("#sdc-calendar button[data-action=toggleCalendar]").click();
 
   // The season's trim is off by default, and off for the rest of the shots, which show the calendar as it is set up.
-  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", false), MODULE_ID);
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "none"), MODULE_ID);
 
   // Each style, at the same midnight as the first shot, to set side by side.
   await setTime(ctx, { year: 1501, day: 30, hour: 0, minute: 10 });

@@ -6,6 +6,7 @@ import { patchDaylight } from "./daylight.mjs";
 import { createCalendarHUD } from "./hud.mjs";
 import { MOONS } from "./moons.mjs";
 import * as sky from "./sky.mjs";
+import { TRIM_CHOICES, TRIM_GROUPS } from "./trim.mjs";
 
 /* -------------------------------------------- */
 /*  Initialization                              */
@@ -44,8 +45,12 @@ Hooks.once("init", () => {
     hint: "SDC.Settings.SeasonTrim.Hint",
     scope: "world",
     config: true,
-    type: Boolean,
-    default: false,
+    type: String,
+    choices: Object.fromEntries(Object.entries(TRIM_GROUPS).flatMap(([group, choices]) => choices.map(choice => [choice, {
+      label: `SDC.Settings.SeasonTrim.${choice.capitalize()}`,
+      group: group && `SDC.Settings.SeasonTrim.Group.${group.capitalize()}`
+    }]))),
+    default: "none",
     onChange: () => dnd5e.ui.calendar?.refresh?.()
   });
 
@@ -128,8 +133,22 @@ Hooks.once("setup", () => {
 /* -------------------------------------------- */
 
 Hooks.once("ready", () => {
+  migrateSeasonTrim();
   offerToEnable();
 });
+
+/* -------------------------------------------- */
+
+/**
+ * Dressing the frame was once on or off. Carry a world's old choice over: on follows the seasons.
+ */
+async function migrateSeasonTrim() {
+  if ( !game.user.isActiveGM ) return;
+  const choice = game.settings.get(MODULE_ID, "seasonTrim");
+  if ( TRIM_CHOICES.includes(choice) ) return;
+  const on = (choice === true) || (choice === "true");
+  await game.settings.set(MODULE_ID, "seasonTrim", on ? "follow" : "none");
+}
 
 /* -------------------------------------------- */
 
