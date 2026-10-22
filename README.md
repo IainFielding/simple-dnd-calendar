@@ -100,12 +100,18 @@ Each player picks how the calendar looks under **Calendar Style**: **Gilded Nigh
 default); **Parchment**, bronze and ink on paper under a painted sky; or **Underdark**, steel on dark stone under a
 cavern's glow.
 
+| Gilded Night | Parchment | Underdark |
+| --- | --- | --- |
+| ![Gilded Night](docs/screenshots/style-gilded.png) | ![Parchment](docs/screenshots/style-parchment.png) | ![Underdark](docs/screenshots/style-stone.png) |
+
 ### Long Summer Days
 
 Turn on **Long Summer Days** and sunrise and sunset move with the seasons: sixteen hours of daylight at midsummer
 and eight at midwinter. The longest day falls halfway between the start of spring and the start of autumn, which
 is the summer solstice on the Calendar of Harptos. The day half of the wheel grows and shrinks to match, and as the
 module changes the calendar's own sunrise and sunset, D&D 5e's dawn and dusk recovery follows too.
+
+![Noon a few days after midwinter: the day half of the wheel is narrower, with night showing either side of it](docs/screenshots/winter-day.png)
 
 ### Each Dawn in the Chat
 
