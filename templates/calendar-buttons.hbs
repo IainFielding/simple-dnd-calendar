@@ -1,0 +1,25 @@
+<menu>
+    {{#each buttons}}
+    <li class="calendar-button {{#if additional}}has-dropdown{{/if}}" data-control="{{ action }}">
+        {{> ".sdc-button" }}
+        {{#if additional}}
+        <menu class="sdc-dropdown">
+            {{#each additional}}
+            <li class="calendar-button">
+                {{> ".sdc-button" }}
+            </li>
+            {{/each}}
+        </menu>
+        {{/if}}
+    </li>
+    {{/each}}
+</menu>
+
+{{#*inline ".sdc-button"}}
+<button type="button" class="sdc-control {{#if label}}labelled{{/if}}" {{~#if action}} data-action="{{ action }}"{{/if}}
+        {{ dnd5e-dataset dataset }} data-index="{{ index }}"
+        {{~#if tooltip}} data-tooltip aria-label="{{ tooltip }}" data-tooltip-direction="{{ tooltipDirection }}"{{/if}}>
+    {{#if icon}}{{ dnd5e-icon icon }}{{/if}}
+    {{#if label}}{{ label }}{{/if}}
+</button>
+{{/inline}}

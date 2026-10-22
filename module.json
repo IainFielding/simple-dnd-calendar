@@ -1,0 +1,51 @@
+{
+  "id": "sogrom-simple-dnd-calendar",
+  "title": "Simple D&D Calendar",
+  "description": "A new look for D&D 5e's calendar: a framed bar across the top of the screen with the time and the time controls, and beneath it a band of the year's seasons and a bowl of sky with a day wheel that turns through the day and moons that wax and wane.",
+  "version": "#{VERSION}#",
+  "compatibility": {
+    "minimum": "14.359",
+    "maximum": "14.999",
+    "verified": "14.369"
+  },
+  "authors": [
+    {
+      "name": "Iain Fielding",
+      "url": "https://iainfielding.com",
+      "discord": "Sogrom"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "6.0.0",
+          "maximum": "6.99.99",
+          "verified": "6.0.6"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/calendar.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "LICENSE",
+  "bugs": "https://github.com/IainFielding/simple-dnd-calendar/issues",
+  "changelog": "https://github.com/IainFielding/simple-dnd-calendar/blob/main/CHANGELOG.md",
+  "readme": "https://github.com/IainFielding/simple-dnd-calendar#readme"
+}

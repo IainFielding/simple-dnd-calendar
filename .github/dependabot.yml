@@ -1,0 +1,22 @@
+# This file controls the configuration for the "Dependabot" service, used to keep dependencies updated.
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# See the above link for the reason why "directory" is set to "/"
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    open-pull-requests-limit: 10
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  # Dev tooling (lint, unit tests, the e2e harness). None of it ships in the module archive, but it
+  # runs on contributors' machines and in CI, so security fixes matter. Grouped into one PR a week
+  # to keep the noise down.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      dev-tooling:
+        patterns: ["*"]

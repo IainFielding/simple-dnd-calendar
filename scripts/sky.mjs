@@ -1,0 +1,317 @@
+/**
+ * The sky maths behind the calendar's picture: where the day wheel points, which part of the day it is, where the
+ * season bar sits, and the phase and place of each moon.
+ *
+ * Everything here is a pure function of a world time and a calendar, so it runs the same in the browser and in the
+ * unit tests. A "calendar" is Foundry's CalendarData, or anything with the same `days`, `months` and `seasons`.
+ */
+
+export const TAU = Math.PI * 2;
+
+/**
+ * Wrap a number into [0, n).
+ * @param {number} value
+ * @param {number} n
+ * @returns {number}
+ */
+export function wrap(value, n) {
+  return ((value % n) + n) % n;
+}
+
+/**
+ * The number of seconds in one day of a calendar.
+ * @param {object} calendar
+ * @returns {number}
+ */
+export function secondsPerDay(calendar) {
+  const { secondsPerMinute, minutesPerHour, hoursPerDay } = calendar.days;
+  return secondsPerMinute * minutesPerHour * hoursPerDay;
+}
+
+/**
+ * How far through its day a world time is, from 0 at midnight towards 1 at the next midnight.
+ * @param {object} calendar
+ * @param {number} time  World time in seconds.
+ * @returns {number}
+ */
+export function dayFraction(calendar, time) {
+  const day = secondsPerDay(calendar);
+  return wrap(time, day) / day;
+}
+
+/**
+ * The day wheel's rotation in degrees. The wheel is drawn with its day half at the bottom, the part that shows, so
+ * it turns that half to the bottom at noon and the night half there at midnight. Through the morning the day half
+ * comes round from the right; through the evening it leaves to the left.
+ * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
+ * @returns {number}
+ */
+export function wheelRotation(fraction) {
+  return (fraction * 360) - 180;
+}
+
+/**
+ * The sun's angle across the sky bowl, in radians: 0 on the right-hand horizon as it rises, π/2 at the bottom of
+ * the bowl at noon, and π on the left-hand horizon as it sets.
+ * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
+ * @returns {number}
+ */
+export function sunSkyAngle(fraction) {
+  return wrap((fraction - 0.25) * TAU, TAU);
+}
+
+/**
+ * Which part of the day an hour falls in. Dawn is the hour before sunrise up to sunrise, dusk is sunset to the hour
+ * after it.
+ * @param {number} hour            Decimal hours since midnight.
+ * @param {number} [sunrise=6]     Sunrise, in hours.
+ * @param {number} [sunset=18]     Sunset, in hours.
+ * @returns {"dawn"|"day"|"dusk"|"night"}
+ */
+export function dayPhase(hour, sunrise = 6, sunset = 18) {
+  if ( (hour >= sunrise - 1) && (hour <= sunrise) ) return "dawn";
+  if ( (hour > sunrise) && (hour < sunset) ) return "day";
+  if ( (hour >= sunset) && (hour <= sunset + 1) ) return "dusk";
+  return "night";
+}
+
+/* -------------------------------------------- */
+/*  Seasons                                     */
+/* -------------------------------------------- */
+
+/**
+ * The days of the year each season covers, as a start day and an end day (both counted from 0, the end exclusive).
+ * A season that runs over the new year, such as winter, has an end before its start. Seasons are matched on days or
+ * on months as Foundry's own calendar does; a season with neither is left out.
+ * @param {object} calendar
+ * @returns {{index: number, name: string, start: number, end: number}[]}
+ */
+export function seasonRanges(calendar) {
+  const months = calendar.months?.values ?? [];
+  const monthStarts = [];
+  let total = 0;
+  for ( const month of months ) {
+    monthStarts.push(total);
+    total += month.days;
+  }
+  const year = calendar.days.daysPerYear;
+  const startOfMonth = ordinal => {
+    const index = months.findIndex(m => m.ordinal === ordinal);
+    return index < 0 ? null : monthStarts[index];
+  };
+
+  const ranges = [];
+  for ( const [index, season] of (calendar.seasons?.values ?? []).entries() ) {
+    const { dayStart, dayEnd, monthStart, monthEnd } = season;
+    let start;
+    let end;
+    if ( Number.isFinite(dayStart) && Number.isFinite(dayEnd) ) {
+      start = dayStart - 1;
+      end = dayEnd;
+    } else if ( Number.isFinite(monthStart) && Number.isFinite(monthEnd) ) {
+      start = startOfMonth(monthStart);
+      const last = months.findIndex(m => m.ordinal === monthEnd);
+      end = last < 0 ? null : monthStarts[last] + months[last].days;
+    }
+    if ( !Number.isFinite(start) || !Number.isFinite(end) ) continue;
+    ranges.push({ index, name: season.name, start: wrap(start, year), end: wrap(end, year) || year });
+  }
+  return ranges;
+}
+
+/** Colours for the season bar, chosen by the season's name. */
+export const SEASON_COLORS = {
+  spring: "#86c96e",
+  summer: "#f3c04f",
+  fall: "#e2793b",
+  winter: "#8ec8ea"
+};
+
+/** Colours for seasons whose names don't say which they are, in turn. */
+const FALLBACK_COLORS = ["#86c96e", "#f3c04f", "#e2793b", "#8ec8ea", "#c58ee0", "#e88fae"];
+
+/**
+ * The kind of season a name describes, read from words such as "Spring" or "Autumn" in it. Localization keys are
+ * read too: "DND5E.CALENDAR.Harptos.Season.Fall" is a fall.
+ * @param {string} name
+ * @returns {"spring"|"summer"|"fall"|"winter"|null}
+ */
+export function seasonKind(name = "") {
+  const n = String(name).toLowerCase();
+  if ( /spring|seeding|planting/.test(n) ) return "spring";
+  if ( /summer|blooming|steading/.test(n) ) return "summer";
+  if ( /fall|autumn|harvest|gleaning|withering/.test(n) ) return "fall";
+  if ( /winter|stilling/.test(n) ) return "winter";
+  return null;
+}
+
+/**
+ * The colour a season is drawn in on the bar.
+ * @param {string} name
+ * @param {number} index
+ * @returns {string}
+ */
+export function seasonColor(name, index) {
+  return SEASON_COLORS[seasonKind(name)] ?? FALLBACK_COLORS[index % FALLBACK_COLORS.length];
+}
+
+/**
+ * The season bar's background: one year, left to right, with each season's colour at its middle, blending into the
+ * next. It is drawn to repeat, so stops before 0% and after 100% carry the blend over the new year.
+ * @param {object} calendar
+ * @returns {string}  A CSS linear-gradient.
+ */
+export function seasonGradient(calendar) {
+  const year = calendar.days.daysPerYear;
+  const ranges = seasonRanges(calendar);
+  if ( !ranges.length ) return "linear-gradient(90deg, #8ea7c8, #c8b78e, #8ea7c8)";
+  const stops = ranges.map(({ index, name, start, end }) => {
+    const length = end > start ? end - start : (end + year) - start;
+    return { at: wrap(start + (length / 2), year) / year, color: seasonColor(name, index) };
+  }).sort((a, b) => a.at - b.at);
+  const all = [
+    { ...stops.at(-1), at: stops.at(-1).at - 1 },
+    ...stops,
+    { ...stops[0], at: stops[0].at + 1 }
+  ];
+  return `linear-gradient(90deg, ${all.map(s => `${s.color} ${round(s.at * 100)}%`).join(", ")})`;
+}
+
+/**
+ * How far through its year a moment is, from 0 at the first moment of the year towards 1.
+ * @param {object} calendar
+ * @param {{day: number, leapYear?: boolean}} components  The moment's time components.
+ * @param {number} fraction                              Fraction of the day, from {@link dayFraction}.
+ * @returns {number}
+ */
+export function yearFraction(calendar, components, fraction) {
+  const { daysPerYear, daysPerLeapYear } = calendar.days;
+  const days = components.leapYear ? (daysPerLeapYear ?? daysPerYear) : daysPerYear;
+  return (components.day + fraction) / days;
+}
+
+/* -------------------------------------------- */
+/*  Moons                                       */
+/* -------------------------------------------- */
+
+/**
+ * @typedef MoonConfig
+ * @property {string} id            A unique key for the moon.
+ * @property {string} name          Its name, or a localization key for it.
+ * @property {number} period        Days from one new moon to the next.
+ * @property {string} color         The colour of its lit face.
+ * @property {{year: number, day?: number, hour?: number}} epoch  A moment the phase is known at: a year as the
+ *                                  calendar shows it, a day of that year counted from 0, and an hour of that day
+ *                                  (which may be negative, or more than a day's hours, to land between days).
+ * @property {number} [epochPhase=0]  The phase at the epoch: 0 new, 0.5 full.
+ */
+
+/** The eight phases, in order from new, each centred on its own eighth of the cycle. */
+export const PHASES = [
+  "New", "WaxingCrescent", "FirstQuarter", "WaxingGibbous", "Full", "WaningGibbous", "LastQuarter", "WaningCrescent"
+];
+
+/**
+ * The world time of a moon's epoch.
+ * @param {object} calendar
+ * @param {MoonConfig} moon
+ * @returns {number}
+ */
+export function epochTime(calendar, moon) {
+  const { year, day = 0, hour = 0 } = moon.epoch;
+  const midnight = calendar.componentsToTime({ year: year - (calendar.years?.yearZero ?? 0), day });
+  return midnight + (hour * calendar.days.minutesPerHour * calendar.days.secondsPerMinute);
+}
+
+/**
+ * A moon's phase: how far through its cycle it is, from 0 at new moon, through 0.5 at full, towards 1.
+ * @param {object} calendar
+ * @param {MoonConfig} moon
+ * @param {number} time      World time in seconds.
+ * @param {number} [epoch]   The moon's epoch as a world time, if already worked out.
+ * @returns {number}
+ */
+export function moonPhase(calendar, moon, time, epoch = epochTime(calendar, moon)) {
+  const days = (time - epoch) / secondsPerDay(calendar);
+  return wrap((moon.epochPhase ?? 0) + (days / moon.period), 1);
+}
+
+/**
+ * The name of a phase, from {@link PHASES}.
+ * @param {number} phase
+ * @returns {string}
+ */
+export function phaseName(phase) {
+  return PHASES[Math.round(wrap(phase, 1) * 8) % 8];
+}
+
+/**
+ * How much of a moon's face is lit, from 0 at new to 1 at full.
+ * @param {number} phase
+ * @returns {number}
+ */
+export function illumination(phase) {
+  return (1 - Math.cos(phase * TAU)) / 2;
+}
+
+/**
+ * A moon's angle across the sky bowl, measured as {@link sunSkyAngle}. A moon trails the sun by its phase: new moons
+ * keep company with the sun, and full moons ride highest at midnight.
+ * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
+ * @param {number} phase     The moon's phase, from {@link moonPhase}.
+ * @returns {number}
+ */
+export function moonSkyAngle(fraction, phase) {
+  return wrap(sunSkyAngle(fraction) - (phase * TAU), TAU);
+}
+
+/**
+ * Whether a body at this sky angle is above the horizon, and so drawn in the bowl.
+ * @param {number} angle
+ * @returns {boolean}
+ */
+export function aboveHorizon(angle) {
+  return (angle > 0) && (angle < Math.PI);
+}
+
+/**
+ * The point at a sky angle on a circle about the bowl's centre.
+ * @param {number} angle
+ * @param {{x: number, y: number, r: number}} orbit
+ * @returns {{x: number, y: number}}
+ */
+export function orbitPoint(angle, { x, y, r }) {
+  return { x: round(x + (r * Math.cos(angle))), y: round(y + (r * Math.sin(angle))) };
+}
+
+/**
+ * The SVG path of a moon's lit face, for a moon of radius `r` centred at (r, r). A waxing moon is lit from the
+ * right, a waning moon from the left; the terminator between light and dark is half an ellipse.
+ * @param {number} phase
+ * @param {number} r
+ * @returns {string}  An empty string at new moon.
+ */
+export function moonPath(phase, r) {
+  const p = wrap(phase, 1);
+  const k = Math.cos(p * TAU); // 1 at new moon, -1 at full.
+  if ( k > 0.999 ) return "";
+  const rx = round(Math.abs(k) * r);
+  const top = `${r} 0`;
+  const bottom = `${r} ${2 * r}`;
+  const waxing = p < 0.5;
+  // The lit limb runs down the right-hand side when waxing, the left-hand side when waning. The terminator comes back
+  // up, bulging towards the lit limb while less than half is lit (a crescent) and away from it once more is (gibbous).
+  const limbSweep = waxing ? 1 : 0;
+  const crescent = k > 0;
+  const terminatorSweep = waxing === crescent ? 0 : 1;
+  return `M${top} A${r} ${r} 0 0 ${limbSweep} ${bottom} A${rx} ${r} 0 0 ${terminatorSweep} ${top}Z`;
+}
+
+/**
+ * Round to two decimal places, so the numbers written into the page stay short.
+ * @param {number} n
+ * @returns {number}
+ */
+function round(n) {
+  return Math.round(n * 100) / 100;
+}

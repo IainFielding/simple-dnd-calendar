@@ -1,0 +1,103 @@
+name: Bug report
+description: The calendar shows the wrong thing, or doesn't work as expected.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        Before you file: please try reproducing the problem with **only** this module
+        and the D&D 5e system enabled. Most odd behaviour turns out to be a conflict
+        with another module, and knowing that up front saves a lot of back-and-forth.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the problem, and what you expected to happen instead.
+      placeholder: |
+        I advanced the time by a day, but the player's calendar still showed the old date.
+        I expected it to update for everyone.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The exact clicks needed to see the problem, and the date and time it happened at.
+      placeholder: |
+        1. Set the date to 30 Hammer 1492 DR, 23:00
+        2. Hover the advance button and click +1D
+        3. The player's calendar doesn't change
+    validations:
+      required: true
+
+  - type: dropdown
+    id: calendar
+    attributes:
+      label: Which calendar does the world use?
+      description: Shown in Game Settings → Configure Calendar.
+      options:
+        - Calendar of Harptos
+        - Calendar of Greyhawk
+        - Calendar of Khorvaire
+        - Gregorian
+        - A calendar from another module
+    validations:
+      required: true
+
+  - type: input
+    id: foundry-version
+    attributes:
+      label: Foundry VTT version
+      description: Found in the bottom-left of the Foundry setup screen, e.g. 14.369.
+      placeholder: "14.369"
+    validations:
+      required: true
+
+  - type: input
+    id: system-version
+    attributes:
+      label: D&D 5e system version
+      description: Shown in Game Settings → Support & Issues, e.g. 6.0.6.
+      placeholder: "6.0.6"
+    validations:
+      required: true
+
+  - type: input
+    id: module-version
+    attributes:
+      label: Simple D&D Calendar version
+      description: Shown in the Manage Modules list next to the module name.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors
+      description: >-
+        Press F12 to open the developer tools, switch to the Console tab, reproduce the
+        problem, then paste any red error text here. This is automatically formatted as
+        code, so no backticks needed.
+      render: text
+
+  - type: textarea
+    id: other-modules
+    attributes:
+      label: Other interface or calendar modules in use
+      description: Which other modules change Foundry's interface or the calendar?
+      placeholder: "Carolingian UI, Simple Weather"
+
+  - type: checkboxes
+    id: isolated
+    attributes:
+      label: Confirmations
+      options:
+        - label: I reproduced this with only this module and the D&D 5e system enabled (plus any module needed to see it).
+        - label: I searched the existing issues and this hasn't been reported yet.
+          required: true

@@ -1,0 +1,57 @@
+name: Feature request
+description: Suggest a new feature or improvement for Simple D&D Calendar.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas are welcome. The guiding principle for this module is that the calendar should
+        be **readable at a glance, quick for the GM to drive, and never in the way**.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's the problem?
+      description: What are you trying to do that the module makes hard or impossible today?
+      placeholder: >-
+        Our campaign uses a homebrew calendar with two moons, and I'd like the calendar to show them.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to happen?
+      description: Describe the feature or change.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the calendar?
+      options:
+        - The bar and its buttons
+        - The season band and date
+        - The day wheel and sky
+        - Moons
+        - Settings
+        - Compatibility with another module
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: Any workarounds you're using now, or other ways this could be solved.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmations
+      options:
+        - label: I searched the existing issues and this hasn't already been suggested.
+          required: true

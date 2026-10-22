@@ -1,0 +1,19 @@
+# Dev tooling — not part of the shipped module archive.
+node_modules/
+
+# Test / tooling output
+coverage/
+.vitest/
+
+# Editor / OS cruft
+.DS_Store
+Thumbs.db
+
+# Design notes and working docs. Kept local so our thinking is not published with the public
+# repository. Public documentation lives in docs/.
+governance/
+
+# End-to-end harness: machine-specific paths and run output.
+test-e2e/config.mjs
+test-e2e/*.log
+test-e2e/*.png

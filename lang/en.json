@@ -1,0 +1,59 @@
+{
+  "SDC": {
+    "Action": {
+      "Expand": "Show the Sky",
+      "Collapse": "Hide the Sky"
+    },
+    "Phase": {
+      "Dawn": "Dawn",
+      "Day": "Day",
+      "Dusk": "Dusk",
+      "Night": "Night"
+    },
+    "MoonPhase": {
+      "New": "New Moon",
+      "WaxingCrescent": "Waxing Crescent",
+      "FirstQuarter": "First Quarter",
+      "WaxingGibbous": "Waxing Gibbous",
+      "Full": "Full Moon",
+      "WaningGibbous": "Waning Gibbous",
+      "LastQuarter": "Last Quarter",
+      "WaningCrescent": "Waning Crescent"
+    },
+    "Moon": {
+      "Moon": "The Moon",
+      "Selune": "Selûne",
+      "Luna": "Luna",
+      "Celene": "Celene",
+      "Zarantyr": "Zarantyr",
+      "Olarune": "Olarune",
+      "Therendor": "Therendor",
+      "Eyre": "Eyre",
+      "Dravago": "Dravago",
+      "Nymm": "Nymm",
+      "Lharvion": "Lharvion",
+      "Barrakas": "Barrakas",
+      "Rhaan": "Rhaan",
+      "Sypheros": "Sypheros",
+      "Aryth": "Aryth",
+      "Vult": "Vult"
+    },
+    "Settings": {
+      "Animate": {
+        "Name": "Animate Time Changes",
+        "Hint": "Run the clock, turn the wheel and move the moons through a change of time, rather than jumping straight to the new time."
+      },
+      "ShowLocation": {
+        "Name": "Show Scene Name",
+        "Hint": "Write the name of the scene you are viewing across the top of the day wheel."
+      }
+    },
+    "Enable": {
+      "Title": "Turn On the Calendar?",
+      "Content": "Simple D&D Calendar shows D&D 5e's calendar, which is turned off in this world. Turn it on now? You can change this later under Game Settings → Configure Calendar.",
+      "Recovery": "With the calendar on, D&D 5e recovers daily, dawn and dusk item uses as time passes rather than on a long rest, unless its Daily Recovery Mode says otherwise.",
+      "Yes": "Turn It On",
+      "No": "Not Now"
+    }
+  }
+}
