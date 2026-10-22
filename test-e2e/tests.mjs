@@ -178,6 +178,40 @@ test("Selûne rides the bowl when she is up, with her phase", async ctx => {
   assertEqual(calendar.moons, [], "moons at noon");
 });
 
+test("summer days are long and winter days short, once the GM turns it on", async ctx => {
+  const { gm, player } = ctx;
+  const read = session => session.eval(() => {
+    const calendar = game.time.calendar;
+    const root = document.getElementById("sdc-calendar");
+    return {
+      sunrise: calendar.sunrise(game.time.components),
+      phase: root.querySelector(".sdc-phase").dataset.phase,
+      face: root.querySelector(".sdc-wheel-day").getAttribute("d")
+    };
+  });
+
+  // Kythorn 20, the summer solstice, at five in the morning.
+  await setTime(ctx, { year: 1525, day: 170, hour: 5 });
+  const even = await read(player);
+  assertEqual([even.sunrise, even.phase], [6, "dawn"], "sunrise and phase before it is turned on");
+
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", true), MODULE_ID);
+  for ( const session of [gm, player] ) {
+    await waitFor(session, () => document.querySelector("#sdc-calendar .sdc-phase").dataset.phase === "day", null,
+      "five in the morning to be daytime at midsummer");
+  }
+  const summer = await read(player);
+  assert(Math.abs(summer.sunrise - 4) < 0.05, `midsummer sunrise: ${summer.sunrise}`);
+  assert(summer.face !== even.face, "the day face did not grow");
+  assert(summer.face.includes(" 1 1 "), `the day face is not more than half the wheel: ${summer.face}`);
+
+  // At midwinter, seven in the morning is still before dawn.
+  await setTime(ctx, { year: 1525, day: 350, hour: 7, minute: 30 });
+  const winter = await read(player);
+  assert(Math.abs(winter.sunrise - 8) < 0.05, `midwinter sunrise: ${winter.sunrise}`);
+  assertEqual(winter.phase, "dawn", "half past seven at midwinter");
+});
+
 test("the active scene darkens at night, once the GM turns it on", async ctx => {
   const { gm } = ctx;
   const darkness = () => gm.eval(() => game.scenes.active.environment.darknessLevel);

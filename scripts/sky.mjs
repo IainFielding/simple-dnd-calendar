@@ -193,6 +193,79 @@ export function seasonGradient(calendar) {
   return `linear-gradient(90deg, ${all.map(s => `${s.color} ${round(s.at * 100)}%`).join(", ")})`;
 }
 
+/* -------------------------------------------- */
+/*  Daylight                                    */
+/* -------------------------------------------- */
+
+/**
+ * How far the length of the day swings either side of half a day through the year, as a fraction of a whole day:
+ * sixteen hours of daylight at midsummer and eight at midwinter, in a 24-hour day.
+ */
+export const DAYLIGHT_SWING = 1 / 6;
+
+/**
+ * The day of the year with the most daylight, counted from 0: halfway from the start of spring to the start of
+ * autumn, so the solstice when the seasons start at the equinoxes. Failing that, the start of summer, or half a
+ * year from the start of winter.
+ * @param {object} calendar
+ * @returns {number|null}  Null when the calendar's seasons don't say.
+ */
+export function midsummer(calendar) {
+  const year = calendar.days.daysPerYear;
+  const ranges = seasonRanges(calendar);
+  const start = kind => ranges.find(r => seasonKind(r.name) === kind)?.start ?? null;
+  const spring = start("spring");
+  const fall = start("fall");
+  if ( (spring !== null) && (fall !== null) ) return wrap(spring + (wrap(fall - spring, year) / 2), year);
+  const summer = start("summer");
+  if ( summer !== null ) return summer;
+  const winter = start("winter");
+  return winter === null ? null : wrap(winter + (year / 2), year);
+}
+
+/**
+ * Sunrise and sunset on a day, with long days in summer and short ones in winter, either side of noon. A calendar
+ * whose seasons don't say when summer is has sunrise and sunset a quarter of the day either side of noon all year.
+ * @param {object} calendar
+ * @param {{day: number, leapYear?: boolean}} components  The day's time components.
+ * @param {number} [midsummerDay]  The day of the year with the most daylight, if already worked out.
+ * @returns {{sunrise: number, sunset: number}}  In hours.
+ */
+export function daylight(calendar, components, midsummerDay = midsummer(calendar)) {
+  const { hoursPerDay, daysPerYear, daysPerLeapYear } = calendar.days;
+  const noon = hoursPerDay / 2;
+  let length = noon;
+  if ( midsummerDay !== null ) {
+    const days = components.leapYear ? (daysPerLeapYear ?? daysPerYear) : daysPerYear;
+    length += DAYLIGHT_SWING * hoursPerDay * Math.cos(TAU * (components.day - midsummerDay) / days);
+  }
+  return { sunrise: round(noon - (length / 2)), sunset: round(noon + (length / 2)) };
+}
+
+/**
+ * The SVG paths for the day wheel's day face and its edges, for a wheel of radius `r` drawn about (0, 0) with noon
+ * at the bottom. The wheel turns a whole turn a day, so daylight takes up its share of the turn, from where the
+ * wheel's lowest point will be at sunrise round to where it will be at sunset.
+ * @param {number} sunrise   In hours.
+ * @param {number} sunset    In hours.
+ * @param {number} hoursPerDay
+ * @param {number} r
+ * @returns {{face: string, edges: string}}
+ */
+export function dayFacePaths(sunrise, sunset, hoursPerDay, r) {
+  const at = hour => {
+    const a = (270 - (hour / hoursPerDay * 360)) * Math.PI / 180;
+    return `${round(r * Math.cos(a))},${round(r * Math.sin(a))}`;
+  };
+  const span = wrap(sunset - sunrise, hoursPerDay) / hoursPerDay * 360;
+  const from = at(sunset);
+  const to = at(sunrise);
+  return {
+    face: `M0,0 L${from} A${r} ${r} 0 ${span > 180 ? 1 : 0} 1 ${to} Z`,
+    edges: `M${from} L0,0 L${to}`
+  };
+}
+
 /**
  * How far through its year a moment is, from 0 at the first moment of the year towards 1.
  * @param {object} calendar

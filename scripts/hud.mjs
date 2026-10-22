@@ -214,6 +214,7 @@ export function createCalendarHUD(CalendarHUD) {
         bowlPath: `M${(cx - halfChord).toFixed(1)},0 A${bowl} ${bowl} 0 0 0 ${(cx + halfChord).toFixed(1)},0 Z`,
         rimPath: `M${(cx - halfChord).toFixed(1)},0 A${bowl} ${bowl} 0 0 0 ${(cx + halfChord).toFixed(1)},0`,
         stars, ticks, rays, nightStars,
+        dayFace: sky.dayFacePaths(6, 18, 24, wheel),
         seasonGradient: sky.seasonGradient(game.time.calendar),
         seasonWidth: SEASON_BAR_WIDTH * 3
       };
@@ -240,6 +241,9 @@ export function createCalendarHUD(CalendarHUD) {
         date: find(".sdc-date"),
         season: find(".sdc-season"),
         wheel: find(".sdc-wheel"),
+        wheelDay: find(".sdc-wheel-day"),
+        wheelDayClip: find(".sdc-wheel-day-clip"),
+        wheelAxis: find(".sdc-wheel-axis"),
         phase: find(".sdc-phase"),
         barTrim: find(".sdc-trim-bar"),
         bowlTrim: find(".sdc-trim-bowl"),
@@ -386,10 +390,21 @@ export function createCalendarHUD(CalendarHUD) {
       const year = sky.yearFraction(calendar, components, fraction);
       el.season.style.backgroundPositionX = `${Math.round((SEASON_BAR_WIDTH / 2) - (year * SEASON_BAR_WIDTH * 3))}px`;
 
-      // The wheel, and the part of the day.
+      // The wheel, its day face as long as the day, and the part of the day.
       el.wheel.setAttribute("transform", `rotate(${sky.wheelRotation(fraction).toFixed(2)})`);
-      const hour = fraction * calendar.days.hoursPerDay;
-      const phase = sky.dayPhase(hour, calendar.sunrise?.(components) ?? 6, calendar.sunset?.(components) ?? 18);
+      const hoursPerDay = calendar.days.hoursPerDay;
+      const hour = fraction * hoursPerDay;
+      const sunrise = calendar.sunrise?.(components) ?? (hoursPerDay * 0.25);
+      const sunset = calendar.sunset?.(components) ?? (hoursPerDay * 0.75);
+      const daylight = `${sunrise.toFixed(2)}-${sunset.toFixed(2)}`;
+      if ( this.#text.daylight !== daylight ) {
+        this.#text.daylight = daylight;
+        const { face, edges } = sky.dayFacePaths(sunrise, sunset, hoursPerDay, SKY.wheel);
+        el.wheelDay.setAttribute("d", face);
+        el.wheelDayClip.setAttribute("d", face);
+        el.wheelAxis.setAttribute("d", edges);
+      }
+      const phase = sky.dayPhase(hour, sunrise, sunset);
       if ( this.#text.phase !== phase ) {
         this.#text.phase = phase;
         el.phase.className = `sdc-phase ${PHASE_ICONS[phase]}`;

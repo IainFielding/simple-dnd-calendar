@@ -286,7 +286,7 @@
 #sdc-calendar .sdc-night-star { fill: rgb(255 255 255 / 85%); }
 #sdc-calendar .sdc-wheel-rim { fill: none; stroke: var(--sdc-gold); stroke-width: 3; }
 #sdc-calendar .sdc-tick { fill: var(--sdc-gold-light); }
-#sdc-calendar .sdc-wheel-axis { stroke: var(--sdc-gold); stroke-width: 3; stroke-linecap: round; }
+#sdc-calendar .sdc-wheel-axis { fill: none; stroke: var(--sdc-gold); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 #sdc-calendar .sdc-rim { fill: none; stroke: var(--sdc-gold); stroke-width: 2.5; }
 
 /* Moons ride the bowl between the wheel and its rim. */

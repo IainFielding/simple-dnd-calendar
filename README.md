@@ -81,6 +81,13 @@ work as the system's own calendar does. Its settings are under **Game Settings â
 
 Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButtons` hook, appear in the bar too.
 
+### Long Summer Days
+
+Turn on **Long Summer Days** and sunrise and sunset move with the seasons: sixteen hours of daylight at midsummer
+and eight at midwinter. The longest day falls halfway between the start of spring and the start of autumn, which
+is the summer solstice on the Calendar of Harptos. The day half of the wheel grows and shrinks to match, and as the
+module changes the calendar's own sunrise and sunset, D&D 5e's dawn and dusk recovery follows too.
+
 ### Darkness
 
 Turn on **Darken Scenes at Night** and the active scene's darkness follows the sun: dark at night, light by day,
@@ -93,6 +100,7 @@ changed, and a scene with its darkness locked in its lighting settings is left a
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
 | Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
+| Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
 | Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun. The GM picks. |
 
 ## For Developers

@@ -50,6 +50,10 @@
       "SceneDarkness": {
         "Name": "Darken Scenes at Night",
         "Hint": "Keep the active scene's darkness in step with the sun: dark at night, light by day, darkening through the hour after sunset and lightening through the hour before sunrise. Scenes with their darkness locked are left alone."
+      },
+      "SeasonalDaylight": {
+        "Name": "Long Summer Days",
+        "Hint": "Move sunrise and sunset with the seasons: sixteen hours of daylight at midsummer and eight at midwinter. D&D 5e's dawn and dusk recovery, the day wheel and the scene's darkness all follow."
       }
     },
     "Enable": {

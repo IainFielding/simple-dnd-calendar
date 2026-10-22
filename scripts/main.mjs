@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.mjs";
 import { registerDarknessHooks, syncDarkness } from "./darkness.mjs";
+import { patchDaylight } from "./daylight.mjs";
 import { createCalendarHUD } from "./hud.mjs";
 import { MOONS } from "./moons.mjs";
 import * as sky from "./sky.mjs";
@@ -38,6 +39,19 @@ Hooks.once("init", () => {
     onChange: () => syncDarkness()
   });
 
+  game.settings.register(MODULE_ID, "seasonalDaylight", {
+    name: "SDC.Settings.SeasonalDaylight.Name",
+    hint: "SDC.Settings.SeasonalDaylight.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: () => {
+      dnd5e.ui.calendar?.refresh?.();
+      syncDarkness();
+    }
+  });
+
   game.settings.register(MODULE_ID, "expanded", {
     scope: "client",
     config: false,
@@ -52,6 +66,7 @@ Hooks.once("init", () => {
     default: false
   });
 
+  patchDaylight(CONFIG.time.worldCalendarClass);
   registerDarknessHooks();
 
   const CalendarHUD = dnd5e.applications?.calendar?.CalendarHUD;

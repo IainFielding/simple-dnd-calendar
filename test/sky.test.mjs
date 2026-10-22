@@ -79,6 +79,43 @@ describe("the day wheel", () => {
   });
 });
 
+describe("the length of the day", () => {
+  it("has its longest day halfway from the start of spring to the start of autumn", () => {
+    expect(sky.midsummer(calendar)).toBe(170.5);
+  });
+
+  it("has sixteen hours of daylight at midsummer and eight at midwinter", () => {
+    expect(sky.daylight(calendar, { day: 170.5 })).toEqual({ sunrise: 4, sunset: 20 });
+    expect(sky.daylight(calendar, { day: 350.5 })).toEqual({ sunrise: 8, sunset: 16 });
+  });
+
+  it("has even days and nights at the equinoxes", () => {
+    const { sunrise, sunset } = sky.daylight(calendar, { day: 80.5 });
+    expect(sunrise).toBeCloseTo(6, 1);
+    expect(sunset).toBeCloseTo(18, 1);
+  });
+
+  it("keeps a quarter of the day either side of noon for a calendar without seasons", () => {
+    const plain = makeCalendar({ months: [{ ordinal: 1, days: 300 }] });
+    expect(sky.midsummer(plain)).toBe(null);
+    expect(sky.daylight(plain, { day: 100 })).toEqual({ sunrise: 6, sunset: 18 });
+  });
+
+  it("finds midsummer from summer, or from winter, when the other seasons are missing", () => {
+    const months = [{ ordinal: 1, days: 360 }];
+    const summer = makeCalendar({ months, seasons: [{ name: "Summer", dayStart: 151, dayEnd: 240 }] });
+    expect(sky.midsummer(summer)).toBe(150);
+    const winter = makeCalendar({ months, seasons: [{ name: "Winter", dayStart: 331, dayEnd: 60 }] });
+    expect(sky.midsummer(winter)).toBe(150);
+  });
+
+  it("draws the day face on the bottom of the wheel, as wide as the day is long", () => {
+    expect(sky.dayFacePaths(6, 18, 24, 100)).toEqual({ face: "M0,0 L100,0 A100 100 0 0 1 -100,0 Z", edges: "M100,0 L0,0 L-100,0" });
+    expect(sky.dayFacePaths(4, 20, 24, 100).face).toBe("M0,0 L86.6,-50 A100 100 0 1 1 -86.6,-50 Z");
+    expect(sky.dayFacePaths(8, 16, 24, 100).face).toBe("M0,0 L86.6,50 A100 100 0 0 1 -86.6,50 Z");
+  });
+});
+
 describe("the season band", () => {
   it("reads the seasons' days, counted from 0 with the end exclusive", () => {
     expect(sky.seasonRanges(calendar).map(({ start, end }) => [start, end])).toEqual([
