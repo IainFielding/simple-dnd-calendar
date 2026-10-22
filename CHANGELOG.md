@@ -23,6 +23,10 @@ All notable changes to Simple D&D Calendar.
 - **Calendar styles.** Each player can pick **Gilded Night** (the default), **Parchment** or **Underdark** under
   **Calendar Style**.
 
+### Changed
+
+- The Gilded Night bar is solid, rather than letting the scene show through.
+
 ## 1.0.0 — 2026-10-22
 
 ### New
