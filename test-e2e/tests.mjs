@@ -258,14 +258,6 @@ test("a change of time plays out on the calendar", async ctx => {
   await waitForShown(ctx.player, start + 86400);
 });
 
-test("the scene being viewed is named on the wheel, unless turned off", async ({ player }) => {
-  let calendar = await readCalendar(player);
-  assertEqual(calendar.location, "The Yawning Portal", "location");
-  await setClientSettings(player, { showLocation: false });
-  calendar = await readCalendar(player);
-  assertEqual(calendar.location, "", "location when turned off");
-});
-
 test("the calendar follows the user's choice to hide it", async ({ player }) => {
   await player.eval(() => game.settings.set("dnd5e", "calendarPreferences", {
     visible: false, formatters: { date: "monthDay", time: "hoursMinutes" }

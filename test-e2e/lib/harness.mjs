@@ -172,7 +172,6 @@ export function readCalendar(session) {
       visualHeight: root.querySelector(".sdc-visual").getBoundingClientRect().height,
       time: text(".sdc-time"),
       date: text(".sdc-date"),
-      location: text(".sdc-location"),
       wheel: root.querySelector(".sdc-wheel")?.getAttribute("transform"),
       phase: root.querySelector(".sdc-phase")?.dataset.phase,
       season: root.querySelector(".sdc-season-icon")?.dataset.tooltip ?? null,

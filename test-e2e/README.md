@@ -36,7 +36,7 @@ the world's actors and scenes, then creates:
 - **The Yawning Portal**, the active scene.
 
 The world's calendar is set to the Calendar of Harptos in D&D 5e's settings and turned on, and each test starts
-with it open, not animating, and showing the scene's name. Tests of other calendars pick them the same way, reload,
+with it open and not animating. Tests of other calendars pick them the same way, reload,
 and put Harptos back.
 
 The browsers run without the canvas, as nothing tested draws on it. `SDC_CANVAS=1` turns it on; the screenshot
@@ -55,5 +55,5 @@ end of both consoles.
 - Selûne's place and phase, and Greyhawk's two moons and festival.
 - Who gets which buttons; rewind and advance and their drop-downs; Set Date; buttons other modules add.
 - Hiding and showing the sky, remembered across a reload.
-- A change of time playing out, and the scene name.
+- A change of time playing out.
 - Hiding the calendar with D&D 5e's preference.

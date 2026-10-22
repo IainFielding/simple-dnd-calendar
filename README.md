@@ -8,6 +8,9 @@ with the moons waxing and waning as they cross it.
 
 ![The calendar at midnight, with Selûne full overhead](docs/screenshots/night.png)
 
+<sub>Battlemap: [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands) by
+Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
+
 ## What It Shows
 
 - **The bar.** The day of the week and the time, in the time format you picked in D&D 5e's calendar preferences.
@@ -19,7 +22,6 @@ with the moons waxing and waning as they cross it.
 - **The moons.** Each moon of the world's calendar rides the bowl while it's up, showing its phase. A full moon rides
   highest at midnight; a new moon keeps company with the sun. Hover one for its name and phase.
 - **The season and festivals** sit to either side of the bowl, such as Midwinter or Needfest.
-- **The scene** you're viewing is named across the wheel.
 
 ![Noon in spring](docs/screenshots/day.png)
 
@@ -69,7 +71,6 @@ Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButto
 | Setting | Default | |
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. |
-| Show Scene Name | On | Name the scene you're viewing across the day wheel. |
 
 ## For Developers
 
@@ -91,6 +92,12 @@ The calendar itself is `dnd5e.ui.calendar`, a subclass of D&D 5e's `CalendarHUD`
 ## Compatibility
 
 Foundry VTT 14 and D&D 5e 6.x.
+
+## Credits
+
+Battlemaps by Czepeku — [www.czepeku.com](https://www.czepeku.com). The battlemap behind the calendar in the
+screenshots is [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands), used with
+thanks; it isn't part of the module, and isn't covered by its licence.
 
 ## Licence
 

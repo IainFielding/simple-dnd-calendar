@@ -194,8 +194,10 @@
   flex-direction: column;
   align-items: center;
   height: 0;
-  margin-top: -3px;
+  /* Tucked under the bar by its border's width, so the bar's gold edge runs unbroken over the season band's top. */
+  margin-top: -2px;
   overflow: hidden;
+  z-index: 0;
   transition: height 0.25s ease-in-out;
 }
 
@@ -303,22 +305,6 @@
 #sdc-calendar .sdc-moon .dark { fill: #1c1b33; }
 #sdc-calendar .sdc-moon .lit { fill: var(--moon-color); }
 #sdc-calendar .sdc-moon .edge { fill: none; stroke: rgb(255 255 255 / 35%); stroke-width: 1; }
-
-/* The scene being viewed, written across the top of the wheel. */
-#sdc-calendar .sdc-location {
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  max-width: 230px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  translate: -50% 0;
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: #fbf6e6;
-  text-shadow: 0 0 3px #000, 0 0 6px #000;
-}
 
 /* The part of the day, set on the wheel's rim. */
 #sdc-calendar .sdc-phase {

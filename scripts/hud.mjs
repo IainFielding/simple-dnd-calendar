@@ -248,7 +248,6 @@ export function createCalendarHUD(CalendarHUD) {
         season: find(".sdc-season"),
         wheel: find(".sdc-wheel"),
         phase: find(".sdc-phase"),
-        location: find(".sdc-location"),
         seasonIcon: find(".sdc-season-icon"),
         festivalIcon: find(".sdc-festival-icon"),
         moons: find(".sdc-moons")
@@ -268,7 +267,6 @@ export function createCalendarHUD(CalendarHUD) {
         return { config, epoch: sky.epochTime(calendar, config), element, path: element.querySelector(".lit"),
           phase: null, label: null };
       });
-      this.refreshLocation();
     }
 
     /* -------------------------------------------- */
@@ -434,17 +432,6 @@ export function createCalendarHUD(CalendarHUD) {
 
     /* -------------------------------------------- */
 
-    /**
-     * Show the name of the scene being viewed across the wheel: or, for a user with the canvas turned off, who views
-     * no scene, the active one.
-     */
-    refreshLocation() {
-      if ( !this.#el.location ) return;
-      const scene = game.scenes?.viewed ?? game.scenes?.active;
-      this.#el.location.innerText = game.settings.get(MODULE_ID, "showLocation") ? (scene?.navName || scene?.name || "") : "";
-    }
-
-    /* -------------------------------------------- */
     /*  Event Listeners and Handlers                */
     /* -------------------------------------------- */
 

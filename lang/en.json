@@ -42,10 +42,6 @@
       "Animate": {
         "Name": "Animate Time Changes",
         "Hint": "Run the clock, turn the wheel and move the moons through a change of time, rather than jumping straight to the new time."
-      },
-      "ShowLocation": {
-        "Name": "Show Scene Name",
-        "Hint": "Write the name of the scene you are viewing across the top of the day wheel."
       }
     },
     "Enable": {

@@ -17,16 +17,6 @@ Hooks.once("init", () => {
     default: true
   });
 
-  game.settings.register(MODULE_ID, "showLocation", {
-    name: "SDC.Settings.ShowLocation.Name",
-    hint: "SDC.Settings.ShowLocation.Hint",
-    scope: "client",
-    config: true,
-    type: Boolean,
-    default: true,
-    onChange: () => dnd5e.ui.calendar?.refreshLocation?.()
-  });
-
   game.settings.register(MODULE_ID, "expanded", {
     scope: "client",
     config: false,
@@ -70,12 +60,6 @@ Hooks.once("setup", () => {
 
 Hooks.once("ready", () => {
   offerToEnable();
-});
-
-// The scene named on the wheel is the one being viewed, or the active one without a canvas.
-Hooks.on("canvasReady", () => dnd5e.ui.calendar?.refreshLocation?.());
-Hooks.on("updateScene", (scene, changes) => {
-  if ( ["name", "navName", "active"].some(k => k in changes) ) dnd5e.ui.calendar?.refreshLocation?.();
 });
 
 /* -------------------------------------------- */

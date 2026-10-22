@@ -72,20 +72,27 @@ export async function useCalendar(gm, calendar) {
 /**
  * Clear out the last run and create what every test starts from: a Player user with a character, Aria, and a
  * scene, "The Yawning Portal", that both users are viewing. The calendar is turned on and shown to both users.
+ *
+ * Only documents the harness made, which carry its flag, are deleted: anything added to the world by hand, such as
+ * the backdrop scene for the screenshots, is left alone.
  * @param {import("./session.mjs").Session} gm
  * @returns {Promise<{ player: string, aria: string }>}  The player's user ID and the character's UUID.
  */
 export async function resetFixtures(gm) {
   return gm.eval(async ({ moduleId, playerName }) => {
-    await Actor.deleteDocuments(game.actors.map(a => a.id));
+    const flags = { [moduleId]: { fixture: true } };
+    // Runs before the flag was added left their fixtures unflagged, so those are known by name.
+    const names = new Set(["Aria", "The Yawning Portal"]);
+    const ours = collection => collection.filter(d => d.getFlag(moduleId, "fixture") || names.has(d.name)).map(d => d.id);
+    await Actor.deleteDocuments(ours(game.actors));
     const player = game.users.getName(playerName)
       ?? await User.create({ name: playerName, role: CONST.USER_ROLES.PLAYER });
     const owned = { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE, [player.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER };
-    const aria = await Actor.create({ name: "Aria", type: "character", ownership: owned });
+    const aria = await Actor.create({ name: "Aria", type: "character", ownership: owned, flags });
     await player.update({ character: aria.id });
 
-    await Scene.deleteDocuments(game.scenes.map(s => s.id));
-    await Scene.create({ name: "The Yawning Portal", active: true, width: 1000, height: 1000 });
+    await Scene.deleteDocuments(ours(game.scenes));
+    await Scene.create({ name: "The Yawning Portal", active: true, width: 1000, height: 1000, flags });
 
     await game.settings.set(moduleId, "offeredToEnable", true);
     const config = game.settings.get("dnd5e", "calendarConfig");
@@ -97,7 +104,7 @@ export async function resetFixtures(gm) {
 /* -------------------------------------------- */
 
 /**
- * Put each user's calendar back as the tests expect it: shown, open, not animating, and naming the scene; and close
+ * Put each user's calendar back as the tests expect it: shown, open and not animating; and close
  * any windows a test left open.
  * @param {import("./session.mjs").Session} gm
  * @param {import("./session.mjs").Session} player
@@ -105,7 +112,7 @@ export async function resetFixtures(gm) {
 export async function resetWorld(gm, player) {
   for ( const session of [gm, player] ) {
     await session.eval(async moduleId => {
-      const want = { animate: false, showLocation: true, expanded: true };
+      const want = { animate: false, expanded: true };
       for ( const [key, value] of Object.entries(want) ) {
         if ( game.settings.get(moduleId, key) !== value ) await game.settings.set(moduleId, key, value);
       }
