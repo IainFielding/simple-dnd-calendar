@@ -23,8 +23,7 @@
     "MoonForecast": {
       "FullToday": "full today",
       "FullTomorrow": "full tomorrow, {date}",
-      "FullIn": "full in {days} days, {date}",
-      "Title": "The Moons"
+      "FullIn": "full in {days} days, {date}"
     },
     "MoonEvent": {
       "Full": "{moon} is full",

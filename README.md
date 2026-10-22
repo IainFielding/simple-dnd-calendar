@@ -48,7 +48,7 @@ The GM has the time controls at either end of the bar, as D&D 5e's own calendar 
 
 - **Rewind** and **Advance** step back or forward an hour. Hover either for a drop-down of steps from a minute to a
   week.
-- **Set Date** opens D&D 5e's dialog to jump to a date, which shows the moons' phases on the date you pick.
+- **Set Date** opens D&D 5e's dialog to jump to a date.
 - A change of time **plays out**: the clock runs, the wheel turns and the moons move, taking longer for longer jumps.
   Turn this off under **Animate Time Changes** if you'd rather it jumped.
 

@@ -5,7 +5,6 @@ import { darknessNow, registerDarknessHooks, syncDarkness } from "./darkness.mjs
 import { patchDaylight } from "./daylight.mjs";
 import { createCalendarHUD } from "./hud.mjs";
 import { MOONS } from "./moons.mjs";
-import { registerSetDateHooks } from "./set-date.mjs";
 import * as sky from "./sky.mjs";
 
 /* -------------------------------------------- */
@@ -100,7 +99,6 @@ Hooks.once("init", () => {
   registerDarknessHooks();
   registerChatCommands();
   registerAnnouncements();
-  registerSetDateHooks();
 
   const CalendarHUD = dnd5e.applications?.calendar?.CalendarHUD;
   if ( !CalendarHUD ) {

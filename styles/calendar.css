@@ -540,32 +540,12 @@
 }
 
 /* ---------------------------------------------------------------------------------------------- */
-/*  Tooltips and the Set Date Dialog                                                              */
+/*  Tooltips                                                                                      */
 /* ---------------------------------------------------------------------------------------------- */
 
 .sdc-forecast {
   font-size: var(--font-size-12, 12px);
   white-space: nowrap;
-}
-
-.sdc-set-date-moons {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 6px 0 0;
-  padding: 6px 0 0;
-  border-top: 1px solid var(--color-border-light-2, rgb(128 128 128 / 40%));
-  font-size: var(--font-size-13, 13px);
-}
-
-.sdc-set-date-moons i {
-  width: 16px;
-  text-align: center;
-  opacity: 0.7;
-}
-
-.sdc-set-date-moons .sdc-event {
-  font-style: italic;
 }
 
 @keyframes sdc-twinkle {
