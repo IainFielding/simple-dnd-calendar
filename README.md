@@ -26,6 +26,8 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 - **The moons.** Each moon of the world's calendar rides the bowl while it's up, showing its phase. A full moon rides
   highest at midnight; a new moon keeps company with the sun. Hover one for its name and phase.
 - **Festivals** are marked beside the bowl, such as Midwinter or Needfest.
+- **Full and new moons** are marked beside the bowl on the day they fall, and so are moons full together, such as
+  Luna and Celene on Needfest. Hover the moon for which. `/date` and the dawn in the chat say so too.
 
 ![Noon in spring](docs/screenshots/day.png)
 

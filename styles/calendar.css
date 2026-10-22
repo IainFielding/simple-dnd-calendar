@@ -351,6 +351,7 @@
 
 #sdc-calendar .sdc-corner i[hidden] { display: none; }
 #sdc-calendar .sdc-festival-icon { color: var(--sdc-gold-light); }
+#sdc-calendar .sdc-moon-event-icon { color: #dfe3ff; }
 
 /* ---------------------------------------------------------------------------------------------- */
 /*  Season Trim                                                                                   */

@@ -223,6 +223,33 @@ describe("the moons", () => {
     expect(sky.orbitPoint(0, { x: 160, y: -40, r: 128 })).toEqual({ x: 288, y: -40 });
   });
 
+  it("knows the days a moon is full or new", () => {
+    // New at the start of year 1, so full fifteen days later.
+    const moon = { id: "m", name: "M", period: 30, color: "#ffffff", epoch: { year: 1 } };
+    const start = calendar.componentsToTime({ year: 1 });
+    const on = day => sky.moonEvents(calendar, [moon], start + (day * DAY));
+    expect(on(0)).toEqual({ full: [], new: [moon] });
+    expect(on(14)).toEqual({ full: [], new: [] });
+    expect(on(15)).toEqual({ full: [moon], new: [] });
+    expect(on(16)).toEqual({ full: [], new: [] });
+    expect(on(30)).toEqual({ full: [], new: [moon] });
+  });
+
+  it("finds a full moon that falls part way through the day", () => {
+    const moon = { id: "m", name: "M", period: 30, color: "#ffffff", epoch: { year: 1, hour: 12 } };
+    const start = calendar.componentsToTime({ year: 1 });
+    expect(sky.moonEvents(calendar, [moon], start + (15 * DAY)).full).toEqual([moon]);
+    expect(sky.moonEvents(calendar, [moon], start + (14 * DAY)).full).toEqual([]);
+  });
+
+  it("finds moons full together", () => {
+    const a = { id: "a", name: "A", period: 28, color: "#ffffff", epoch: { year: 1 }, epochPhase: 0.5 };
+    const b = { id: "b", name: "B", period: 91, color: "#ffffff", epoch: { year: 1 }, epochPhase: 0.5 };
+    const start = calendar.componentsToTime({ year: 1 });
+    expect(sky.moonEvents(calendar, [a, b], start).full).toEqual([a, b]);
+    expect(sky.moonEvents(calendar, [a, b], start + (28 * DAY)).full).toEqual([a]);
+  });
+
   describe("its lit face", () => {
     const sweeps = path => [...path.matchAll(/A[\d.]+ [\d.]+ 0 0 (\d)/g)].map(m => Number(m[1]));
     const terminatorWidth = path => Number(path.match(/A([\d.]+) [\d.]+ 0 0 \d [\d.]+ 0Z$/)[1]);

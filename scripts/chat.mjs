@@ -1,4 +1,4 @@
-import { festivalName, formatComponents, moonPhases, nextHour } from "./calendar.mjs";
+import { festivalName, formatComponents, moonEventLabels, moonPhases, nextHour } from "./calendar.mjs";
 import * as sky from "./sky.mjs";
 
 /**
@@ -99,6 +99,7 @@ export function postDate() {
     `<p class="sdc-chat-when">${escape(when.filter(Boolean).join(" – "))}</p>`,
     season ? `<p><i class="fa-solid fa-leaf"></i> ${escape(_loc(season.name))}</p>` : "",
     festival ? `<p><i class="fa-solid fa-star-christmas"></i> ${escape(festival)}</p>` : "",
+    ...moonEventLabels().map(label => `<p><i class="fa-solid fa-circle"></i> ${escape(label)}</p>`),
     ...moonPhases().map(({ name, phaseName }) => `<p><i class="fa-solid fa-moon"></i> ${escape(name)}: ${escape(phaseName)}</p>`)
   ];
   const content = `<div class="sdc-chat"><h3>${escape(formatComponents(calendar, components, "date", "monthDayYear"))}</h3>`

@@ -179,6 +179,8 @@ export function readCalendar(session) {
       festival: root.querySelector(".sdc-festival-icon")?.hidden ? null
         : root.querySelector(".sdc-festival-icon")?.dataset.tooltip,
       moons: visibleMoons.map(m => m.dataset.tooltip),
+      moonEvents: root.querySelector(".sdc-moon-event-icon")?.hidden ? null
+        : root.querySelector(".sdc-moon-event-icon")?.dataset.tooltip,
       controls: [...root.querySelectorAll(".sdc-controls > .calendar-button > button")].map(b => b.dataset.action)
     };
   });

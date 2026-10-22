@@ -176,6 +176,14 @@ test("Selûne rides the bowl when she is up, with her phase", async ctx => {
   await setTime(ctx, { year: 1501, day: 30, hour: 12 });
   calendar = await readCalendar(ctx.player);
   assertEqual(calendar.moons, [], "moons at noon");
+
+  // The day she is full on, the 30th of Hammer (day 29, counted from 0), is marked beside the bowl.
+  await setTime(ctx, { year: 1501, day: 29, hour: 12 });
+  assertEqual((await readCalendar(ctx.player)).moonEvents, "Selûne is full", "the moon's event on the 30th of Hammer");
+  await setTime(ctx, { year: 1501, day: 30, hour: 12 });
+  assertEqual((await readCalendar(ctx.player)).moonEvents, null, "the moon's event the day after");
+  await setTime(ctx, { year: 1501, day: 37, hour: 12 });
+  assertEqual((await readCalendar(ctx.player)).moonEvents, null, "the moon's event a week later");
 });
 
 test("summer days are long and winter days short, once the GM turns it on", async ctx => {
@@ -350,11 +358,13 @@ test("/date whispers the date and the sky, and /advance and /rewind move the tim
 
   // Selûne is full on the 30th of Hammer 1501 DR.
   const start = await setTime(ctx, { year: 1501, day: 30, hour: 0 });
+  const messages = await player.eval(() => game.messages.size);
   await say(player, "/date");
-  const card = await waitFor(player, () => {
+  const card = await waitFor(player, n => {
     const message = game.messages.contents.at(-1);
-    return message?.content.includes("sdc-chat") ? { content: message.content, whisper: message.whisper } : null;
-  }, null, "the date to be whispered");
+    return (game.messages.size > n) && message.content.includes("sdc-chat")
+      ? { content: message.content, whisper: message.whisper } : null;
+  }, messages, "the date to be whispered");
   const playerId = await player.eval(() => game.user.id);
   assertEqual(card.whisper, [playerId], "who /date is whispered to");
   for ( const text of ["1501", "Winter", "Selûne: Full Moon"] ) {
@@ -438,6 +448,7 @@ test("the Calendar of Greyhawk has Luna and Celene", async ctx => {
     await setTime(ctx, { year: 576, day: 3, hour: 0 });
     const calendar = await readCalendar(player);
     assertEqual([...calendar.moons].sort(), ["Celene: Full Moon", "Luna: Full Moon"], "moons");
+    assertEqual(calendar.moonEvents, "Luna and Celene are full together", "the moons' event");
     assertEqual(calendar.festival, "Needfest", "festival");
   } finally {
     if ( await useCalendar(gm, "harptos") ) await player.reload();

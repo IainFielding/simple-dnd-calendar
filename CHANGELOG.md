@@ -16,6 +16,8 @@ All notable changes to Simple D&D Calendar.
   dawn, noon, dusk or midnight (`/advance dawn`).
 - **Each dawn in the chat.** Turn on **Announce Each Dawn** and each new day is posted as the sun rises, with its
   date, the start of a season and any festival.
+- **Full and new moons are marked** beside the bowl on the day they fall, and so are moons full together, such as
+  Luna and Celene on Needfest. `/date` and the dawn in the chat say so too.
 
 ## 1.0.0 — 2026-10-22
 

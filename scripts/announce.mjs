@@ -1,4 +1,4 @@
-import { festivalName, formatComponents, nextHour } from "./calendar.mjs";
+import { festivalName, formatComponents, moonEventLabels, nextHour } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 
@@ -70,7 +70,8 @@ export function daybreakCard(dawn) {
     weekday ? `<p class="sdc-chat-when">${escape(_loc("SDC.Announce.Weekday", { day: _loc(weekday.name).capitalize() }))}</p>` : "",
     season && (components.season !== yesterday.season)
       ? `<p><i class="fa-solid fa-leaf"></i> ${escape(_loc("SDC.Announce.Season", { season: _loc(season.name) }))}</p>` : "",
-    festival ? `<p><i class="fa-solid fa-star-christmas"></i> ${escape(festival)}</p>` : ""
+    festival ? `<p><i class="fa-solid fa-star-christmas"></i> ${escape(festival)}</p>` : "",
+    ...moonEventLabels(dawn).map(label => `<p><i class="fa-solid fa-moon"></i> ${escape(label)}</p>`)
   ];
   return `<div class="sdc-chat sdc-daybreak"><h3><i class="fa-solid fa-sunrise"></i> `
     + `${escape(_loc("SDC.Announce.Title", { date }))}</h3>${rows.join("")}</div>`;

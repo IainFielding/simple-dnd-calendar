@@ -1,4 +1,4 @@
-import { festivalName, formatComponents, worldMoons } from "./calendar.mjs";
+import { festivalName, formatComponents, moonEventLabels, worldMoons } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 import { seasonTrim, seededRandom } from "./trim.mjs";
@@ -249,6 +249,7 @@ export function createCalendarHUD(CalendarHUD) {
         barTrim: find(".sdc-trim-bar"),
         bowlTrim: find(".sdc-trim-bowl"),
         festivalIcon: find(".sdc-festival-icon"),
+        moonEventIcon: find(".sdc-moon-event-icon"),
         moons: find(".sdc-moons")
       };
       this.#text = {};
@@ -419,6 +420,15 @@ export function createCalendarHUD(CalendarHUD) {
         this.#text.festival = festival;
         el.festivalIcon.hidden = !festival;
         el.festivalIcon.dataset.tooltip = festival;
+      }
+
+      // Any full or new moons today, beside the festival.
+      const today = Math.floor(time / sky.secondsPerDay(calendar));
+      if ( this.#text.moonDay !== today ) {
+        this.#text.moonDay = today;
+        const events = moonEventLabels(time);
+        el.moonEventIcon.hidden = !events.length;
+        el.moonEventIcon.dataset.tooltip = events.map(foundry.utils.escapeHTML).join("<br>");
       }
 
       // The moons, riding the bowl while they are above the horizon.

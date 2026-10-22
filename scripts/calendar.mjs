@@ -59,6 +59,25 @@ export function moonPhases(time = game.time.worldTime) {
 }
 
 /**
+ * What the moons do on the day a world time falls in, written out: which are full or new, and which are full
+ * together.
+ * @param {number} [time]  World time in seconds, by default now.
+ * @returns {string[]}
+ */
+export function moonEventLabels(time = game.time.worldTime) {
+  const calendar = game.time.calendar;
+  const midnight = time - sky.wrap(time, sky.secondsPerDay(calendar));
+  const events = sky.moonEvents(calendar, worldMoons(), midnight);
+  const names = moons => moons.map(m => _loc(m.name));
+  const list = moons => game.i18n.getListFormatter().format(names(moons));
+  const labels = [];
+  if ( events.full.length > 1 ) labels.push(_loc("SDC.MoonEvent.FullTogether", { moons: list(events.full) }));
+  else if ( events.full.length ) labels.push(_loc("SDC.MoonEvent.Full", { moon: list(events.full) }));
+  for ( const name of names(events.new) ) labels.push(_loc("SDC.MoonEvent.New", { moon: name }));
+  return labels;
+}
+
+/**
  * The world time a moment of the day falls at: the next one after a world time, or the last one before it.
  * @param {number} time      World time in seconds.
  * @param {number} hour      Decimal hours since midnight.

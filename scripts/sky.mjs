@@ -335,6 +335,27 @@ export function phaseName(phase) {
 }
 
 /**
+ * The moons that are full or new on a day: those whose phase passes full (0.5) or new (0) between the day's
+ * midnight and the next.
+ * @param {object} calendar
+ * @param {MoonConfig[]} moons
+ * @param {number} midnight  World time of the day's start.
+ * @returns {{full: MoonConfig[], new: MoonConfig[]}}
+ */
+export function moonEvents(calendar, moons, midnight) {
+  const events = { full: [], new: [] };
+  for ( const moon of moons ) {
+    const phase = moonPhase(calendar, moon, midnight);
+    // A day runs from its midnight up to, but not including, the next; the margin keeps a phase that falls on the
+    // stroke of midnight on the day it starts.
+    const step = (1 / moon.period) - 1e-9;
+    if ( wrap(0.5 - phase, 1) < step ) events.full.push(moon);
+    if ( wrap(-phase, 1) < step ) events.new.push(moon);
+  }
+  return events;
+}
+
+/**
  * How much of a moon's face is lit, from 0 at new to 1 at full.
  * @param {number} phase
  * @returns {number}

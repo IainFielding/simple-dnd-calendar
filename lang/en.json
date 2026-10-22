@@ -20,6 +20,11 @@
       "LastQuarter": "Last Quarter",
       "WaningCrescent": "Waning Crescent"
     },
+    "MoonEvent": {
+      "Full": "{moon} is full",
+      "FullTogether": "{moons} are full together",
+      "New": "{moon} is new"
+    },
     "Moon": {
       "Moon": "The Moon",
       "Selune": "Selûne",
