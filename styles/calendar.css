@@ -15,6 +15,7 @@
   --sdc-width: 600px;
   --sdc-bar-height: 40px;
   --sdc-visual-height: 162px;
+  --sdc-glow: transparent;
 
   position: relative;
   display: grid;
@@ -44,9 +45,11 @@
   border: 2px solid var(--sdc-gold);
   border-top: none;
   border-radius: 0 0 42px 42px;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 60%), inset 0 -1px 0 rgb(255 255 255 / 6%);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 60%), 0 3px 14px var(--sdc-glow), inset 0 -1px 0 rgb(255 255 255 / 6%),
+    inset 0 -6px 12px -6px var(--sdc-glow);
   pointer-events: all;
   z-index: 1;
+  transition: box-shadow 1s;
 }
 
 /* A finer second line inside the first, as on an engraved plate. */
@@ -217,6 +220,7 @@
   background-repeat: repeat-x;
   background-position: 0 0;
   clip-path: polygon(0 0, 100% 0, calc(100% - 29px) 100%, 29px 100%);
+  pointer-events: all;
   z-index: 1;
 }
 
@@ -322,7 +326,7 @@
 #sdc-calendar .sdc-phase[data-phase="dusk"] { color: #ff7b62; }
 #sdc-calendar .sdc-phase[data-phase="night"] { color: #d2cbff; }
 
-/* The season and any festival, out to either side of the bowl. */
+/* Any festival, out to the right of the bowl. */
 #sdc-calendar .sdc-corner {
   position: absolute;
   top: 34px;
@@ -331,12 +335,6 @@
   gap: 8px;
   width: 140px;
   height: 24px;
-}
-
-#sdc-calendar .sdc-left {
-  left: 0;
-  justify-content: flex-end;
-  padding-right: 14px;
 }
 
 #sdc-calendar .sdc-right {
@@ -352,15 +350,101 @@
 }
 
 #sdc-calendar .sdc-corner i[hidden] { display: none; }
-#sdc-calendar .sdc-season-icon[data-season="spring"] { color: #95d77c; }
-#sdc-calendar .sdc-season-icon[data-season="summer"] { color: #ffd257; }
-#sdc-calendar .sdc-season-icon[data-season="fall"] { color: #f08a45; }
-#sdc-calendar .sdc-season-icon[data-season="winter"] { color: #a9dcff; }
 #sdc-calendar .sdc-festival-icon { color: var(--sdc-gold-light); }
+
+/* ---------------------------------------------------------------------------------------------- */
+/*  Season Trim                                                                                   */
+/*                                                                                                */
+/*  The frame dressed for the season along the bar's lower edge and the bowl's rim: frost and     */
+/*  icicles, a flowering vine, sunflowers, or fallen leaves.                                      */
+/* ---------------------------------------------------------------------------------------------- */
+
+#sdc-calendar[data-season="winter"] { --sdc-glow: rgb(170 220 255 / 38%); }
+#sdc-calendar[data-season="spring"] { --sdc-glow: rgb(160 225 140 / 26%); }
+#sdc-calendar[data-season="summer"] { --sdc-glow: rgb(255 205 90 / 34%); }
+#sdc-calendar[data-season="fall"] { --sdc-glow: rgb(235 125 55 / 32%); }
+
+#sdc-calendar .sdc-trim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#sdc-calendar .sdc-trim-bar,
+#sdc-calendar .sdc-trim-bowl {
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 55%));
+}
+
+/* The stretch of the bar over the date is left bare while the sky shows. */
+#sdc-calendar .sdc-trim .middle { transition: opacity 0.25s; }
+#sdc-calendar.expanded .sdc-trim .middle { opacity: 0; }
+
+/* Winter */
+#sdc-calendar .sdc-frost {
+  fill: none;
+  stroke: #e6f6ff;
+  stroke-width: 1.6;
+  stroke-dasharray: 7 2 3 1.5 11 2;
+  opacity: 0.75;
+}
+
+#sdc-calendar .sdc-rime { fill: #f4fbff; opacity: 0.85; }
+#sdc-calendar .sdc-icicle { fill: rgb(205 235 255 / 85%); stroke: #f4fbff; stroke-width: 0.5; }
+
+#sdc-calendar .sdc-glint {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  animation: sdc-twinkle 4s ease-in-out infinite;
+}
+
+/* Spring and summer */
+#sdc-calendar .sdc-vine { fill: none; stroke: #5e9a46; stroke-width: 1.1; }
+#sdc-calendar .sdc-vine.summer { stroke: #3f7a2c; stroke-width: 1.5; }
+#sdc-calendar .sdc-leaf { fill: #6fb64f; }
+#sdc-calendar .sdc-leaf.light { fill: #a5d97c; }
+#sdc-calendar .sdc-leaf.summer { fill: #3e8a2f; }
+#sdc-calendar .sdc-blossom.pink { fill: #f6a8c6; }
+#sdc-calendar .sdc-blossom.white { fill: #fbf6ee; }
+#sdc-calendar .sdc-blossom.lilac { fill: #c9b1f0; }
+#sdc-calendar .sdc-blossom .heart { fill: #f6d55a; }
+#sdc-calendar .sdc-sunflower { fill: #ffcb2f; }
+#sdc-calendar .sdc-sunflower .heart { fill: #6b3f1d; }
+
+#sdc-calendar .sdc-mote {
+  fill: #fff0a8;
+  animation: sdc-twinkle 4s ease-in-out infinite;
+}
+
+/* Autumn */
+#sdc-calendar .sdc-twig { fill: none; stroke: #6b4325; stroke-width: 1.2; }
+#sdc-calendar .sdc-fallen.red { fill: #c0392b; }
+#sdc-calendar .sdc-fallen.orange { fill: #e3702d; }
+#sdc-calendar .sdc-fallen.amber { fill: #eaa83a; }
+#sdc-calendar .sdc-fallen.brown { fill: #8a5228; }
+#sdc-calendar .sdc-fallen.rust { fill: #b4562a; }
+#sdc-calendar .sdc-fallen.loose { opacity: 0.85; }
+
+@keyframes sdc-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   #sdc-calendar .sdc-visual,
+  #sdc-calendar .sdc-bar,
+  #sdc-calendar .sdc-trim .middle,
   #sdc-calendar [data-action="toggleCalendar"] i {
     transition: none;
+  }
+
+  #sdc-calendar .sdc-glint,
+  #sdc-calendar .sdc-mote {
+    animation: none;
+    opacity: 0.8;
   }
 }

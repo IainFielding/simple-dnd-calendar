@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
+import { seasonTrim, seededRandom } from "./trim.mjs";
 
 /**
  * The shape of the sky picture under the control bar, in CSS pixels. The bowl and the day wheel share a centre above
@@ -26,14 +27,6 @@ const PHASE_ICONS = {
   day: "fa-solid fa-sun",
   dusk: "fa-solid fa-sunset",
   night: "fa-solid fa-moon-stars"
-};
-
-/** The Font Awesome icon for each kind of season. */
-const SEASON_ICONS = {
-  spring: "fa-solid fa-seedling",
-  summer: "fa-solid fa-sun-bright",
-  fall: "fa-solid fa-leaf",
-  winter: "fa-solid fa-snowflake"
 };
 
 /**
@@ -248,11 +241,13 @@ export function createCalendarHUD(CalendarHUD) {
         season: find(".sdc-season"),
         wheel: find(".sdc-wheel"),
         phase: find(".sdc-phase"),
-        seasonIcon: find(".sdc-season-icon"),
+        barTrim: find(".sdc-trim-bar"),
+        bowlTrim: find(".sdc-trim-bowl"),
         festivalIcon: find(".sdc-festival-icon"),
         moons: find(".sdc-moons")
       };
       this.#text = {};
+      delete this.element.dataset.season;
       const calendar = game.time.calendar;
       this.#moons = worldMoons().map(config => {
         const size = MOON_RADIUS * 2;
@@ -359,6 +354,21 @@ export function createCalendarHUD(CalendarHUD) {
       const day = weekday ? _loc(weekday.name).capitalize() : "";
       const clock = formatComponents(calendar, components, "time");
       this.#write("time", el.time, [day, clock].filter(Boolean).join(" – "));
+
+      // The season's trim round the frame, and its name on the season band.
+      const season = calendar.seasons.values[components.season];
+      const seasonKey = season ? season.name : "";
+      if ( this.#text.season !== seasonKey ) {
+        this.#text.season = seasonKey;
+        const kind = sky.seasonKind(seasonKey) ?? "";
+        el.season.dataset.tooltip = season ? _loc(season.name) : "";
+        if ( this.element.dataset.season !== kind ) {
+          this.element.dataset.season = kind;
+          const trim = seasonTrim(kind);
+          el.barTrim.innerHTML = trim.bar;
+          el.bowlTrim.innerHTML = trim.bowl;
+        }
+      }
       if ( !this.expanded ) return;
 
       // Season bar: the date, over a year of seasons that slides by as it passes.
@@ -377,17 +387,7 @@ export function createCalendarHUD(CalendarHUD) {
         el.phase.dataset.tooltip = _loc(`SDC.Phase.${phase.capitalize()}`);
       }
 
-      // The season and any festival, in the corners.
-      const season = calendar.seasons.values[components.season];
-      const seasonKey = season ? season.name : "";
-      if ( this.#text.season !== seasonKey ) {
-        this.#text.season = seasonKey;
-        const kind = sky.seasonKind(seasonKey);
-        el.seasonIcon.className = `sdc-season-icon ${SEASON_ICONS[kind] ?? "fa-solid fa-circle-half-stroke"}`;
-        el.seasonIcon.dataset.season = kind ?? "";
-        el.seasonIcon.hidden = !season;
-        el.seasonIcon.dataset.tooltip = season ? _loc(season.name) : "";
-      }
+      // Any festival, beside the bowl.
       const festival = festivalName(calendar, components);
       if ( this.#text.festival !== festival ) {
         this.#text.festival = festival;
@@ -498,15 +498,3 @@ function worldMoons() {
   return game.modules.get(MODULE_ID).api.moons[key] ?? [];
 }
 
-/**
- * A small seeded random number generator, so the stars stay where they are from one render to the next.
- * @param {number} seed
- * @returns {() => number}
- */
-function seededRandom(seed) {
-  let s = seed;
-  return () => {
-    s = (s * 16807) % 2147483647;
-    return (s - 1) / 2147483646;
-  };
-}

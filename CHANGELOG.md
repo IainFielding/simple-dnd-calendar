@@ -10,7 +10,9 @@ All notable changes to Simple D&D Calendar.
   of the year's seasons beneath it showing the date, and a bowl of sky with a day wheel that turns through the day.
 - **Moons** for each of D&D 5e's calendars, showing their phases as they cross the sky: Selûne; Luna and Celene; the
   twelve moons of Eberron; and Earth's Moon.
-- **The season and festival days** beside the bowl.
+- **The frame dressed for the season**: frost and icicles in winter, a flowering vine in spring, sunflowers in
+  summer, and fallen leaves in autumn.
+- **Festival days** marked beside the bowl.
 - **Changes of time play out**, with the clock running and the wheel and moons moving, unless **Animate Time
   Changes** is turned off.
 - **The sky can be hidden**, leaving just the bar, and each player's choice is remembered.

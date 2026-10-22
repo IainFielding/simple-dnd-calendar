@@ -117,13 +117,14 @@ test("the icon on the wheel shows the part of the day", async ctx => {
   assertEqual(phases, { "2:0": "night", "5:30": "dawn", "12:0": "day", "18:30": "dusk" }, "phases");
 });
 
-test("the season and festivals show beside the bowl", async ctx => {
+test("the season dresses the frame and festivals show beside the bowl", async ctx => {
   await setTime(ctx, { year: 1525, day: 100, hour: 12 });
   let calendar = await readCalendar(ctx.gm);
-  assertEqual([calendar.season, calendar.festival], ["Spring", null], "in Tarsakh");
+  assertEqual([calendar.season, calendar.seasonKind, calendar.festival], ["Spring", "spring", null], "in Tarsakh");
   await setTime(ctx, { year: 1525, day: 30, hour: 12 });
   calendar = await readCalendar(ctx.gm);
-  assertEqual([calendar.season, calendar.festival], ["Winter", "Midwinter"], "on Midwinter");
+  assertEqual([calendar.season, calendar.seasonKind, calendar.festival], ["Winter", "winter", "Midwinter"],
+    "on Midwinter");
 });
 
 test("the season band slides through the year", async ctx => {

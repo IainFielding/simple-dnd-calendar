@@ -1,5 +1,6 @@
 <div>
     <div class="sdc-bar" aria-hidden="true"></div>
+    <svg class="sdc-trim" viewBox="0 0 600 64" width="600" height="64" aria-hidden="true"><g class="sdc-trim-bar"></g></svg>
     <time class="sdc-time"></time>
     <div class="sdc-visual">
         <div class="sdc-season" style="background-image: {{ seasonGradient }}; background-size: {{ seasonWidth }}px 100%">
@@ -8,9 +9,6 @@
                 <polyline class="inner" points="7,0 32,21.5 428,21.5 453,0"/>
             </svg>
             <span class="sdc-date"></span>
-        </div>
-        <div class="sdc-corner sdc-left">
-            <i class="sdc-season-icon" hidden></i>
         </div>
         <div class="sdc-corner sdc-right">
             <i class="sdc-festival-icon fa-solid fa-star-christmas" hidden></i>
@@ -59,6 +57,7 @@
                 </g>
 
                 <path class="sdc-rim" d="{{ rimPath }}"/>
+                <g class="sdc-trim-bowl"></g>
             </svg>
             <div class="sdc-moons"></div>
             <i class="sdc-phase"></i>

@@ -15,17 +15,20 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 
 - **The bar.** The day of the week and the time, in the time format you picked in D&D 5e's calendar preferences.
 - **The season band.** The date, written across a band of the year's colours (green spring, gold summer, orange
-  autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are.
+  autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
+  it for the season's name.
+- **The season's trim.** The frame is dressed for the season along the bar's edge and the bowl's rim: frost and
+  icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn.
 - **The day wheel.** Half day, half night. It turns through the day: the day half comes round from the right in
   the morning, sits at the bottom at noon, and leaves to the left in the evening. The icon on its rim shows dawn,
   day, dusk or night.
 - **The moons.** Each moon of the world's calendar rides the bowl while it's up, showing its phase. A full moon rides
   highest at midnight; a new moon keeps company with the sun. Hover one for its name and phase.
-- **The season and festivals** sit to either side of the bowl, such as Midwinter or Needfest.
+- **Festivals** are marked beside the bowl, such as Midwinter or Needfest.
 
 ![Noon in spring](docs/screenshots/day.png)
 
-![Dusk in autumn](docs/screenshots/dusk.png)
+![Dusk at the end of summer](docs/screenshots/dusk.png)
 
 ### Moons
 
