@@ -386,7 +386,7 @@
   --sdc-gold: #8a5a2b;
   --sdc-gold-light: #6b3f17;
   --sdc-gold-dark: #b98a55;
-  --sdc-panel: rgb(234 220 188 / 95%);
+  --sdc-panel: rgb(234 220 188);
   --sdc-text: #3b2a1a;
   --sdc-text-shadow: rgb(255 248 230 / 70%);
   --sdc-dropdown: rgb(240 228 200 / 97%);
@@ -413,7 +413,7 @@
   --sdc-gold: #8e9ba3;
   --sdc-gold-light: #d3e1e8;
   --sdc-gold-dark: #4c565c;
-  --sdc-panel: rgb(34 36 40 / 92%);
+  --sdc-panel: rgb(34 36 40);
   --sdc-text: #d7e0e4;
   --sdc-dropdown: rgb(30 32 36 / 95%);
   --sdc-dropdown-border: #59646b;

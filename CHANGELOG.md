@@ -25,7 +25,7 @@ All notable changes to Simple D&D Calendar.
 
 ### Changed
 
-- The Gilded Night bar is solid, rather than letting the scene show through.
+- The bar is solid in every style, rather than letting the scene show through.
 
 ## 1.0.0 — 2026-10-22
 
