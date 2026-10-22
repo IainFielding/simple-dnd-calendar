@@ -67,7 +67,7 @@
       },
       "SceneDarkness": {
         "Name": "Darken Scenes at Night",
-        "Hint": "Keep the active scene's darkness in step with the sun: dark at night, light by day, darkening through the hour after sunset and lightening through the hour before sunrise. Scenes with their darkness locked are left alone."
+        "Hint": "Keep the active scene's darkness in step with the sky: light by day, fading through the late afternoon and twilight as the sun sinks, dark at night, and a little lighter under a bright moon. Scenes with their darkness locked are left alone."
       },
       "SeasonalDaylight": {
         "Name": "Long Summer Days",

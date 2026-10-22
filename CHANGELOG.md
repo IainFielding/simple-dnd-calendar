@@ -6,8 +6,9 @@ All notable changes to Simple D&D Calendar.
 
 ### New
 
-- **Scenes darken at night.** Turn on **Darken Scenes at Night** and the active scene's darkness follows the sun,
-  darkening through dusk and lightening through dawn. Scenes with their darkness locked are left alone.
+- **Scenes darken at night.** Turn on **Darken Scenes at Night** and the active scene's darkness follows the sky:
+  the light fades through the late afternoon and twilight by the height of the sun, and a bright moon lifts the dark
+  of night a little. Scenes with their darkness locked are left alone.
 - **Long summer days.** Turn on **Long Summer Days** and sunrise and sunset move with the seasons, from sixteen hours
   of daylight at midsummer to eight at midwinter. The day wheel, the scene's darkness, and D&D 5e's dawn and dusk
   recovery all follow.

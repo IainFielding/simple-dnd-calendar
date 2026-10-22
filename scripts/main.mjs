@@ -1,7 +1,7 @@
 import { registerAnnouncements } from "./announce.mjs";
 import { registerChatCommands } from "./chat.mjs";
 import { MODULE_ID } from "./constants.mjs";
-import { registerDarknessHooks, syncDarkness } from "./darkness.mjs";
+import { darknessNow, registerDarknessHooks, syncDarkness } from "./darkness.mjs";
 import { patchDaylight } from "./daylight.mjs";
 import { createCalendarHUD } from "./hud.mjs";
 import { MOONS } from "./moons.mjs";
@@ -109,7 +109,7 @@ Hooks.once("init", () => {
   }
   CONFIG.DND5E.calendar.application = createCalendarHUD(CalendarHUD);
 
-  game.modules.get(MODULE_ID).api = { moons: foundry.utils.deepClone(MOONS), sky };
+  game.modules.get(MODULE_ID).api = { moons: foundry.utils.deepClone(MOONS), sky, darknessNow };
 });
 
 /* -------------------------------------------- */

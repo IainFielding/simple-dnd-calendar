@@ -76,19 +76,86 @@ export function dayPhase(hour, sunrise = 6, sunset = 18) {
 }
 
 /**
- * How dark a scene is at an hour, from 0 in daylight to 1 at night. It darkens through dusk, the hour after sunset,
- * and lightens through dawn, the hour before sunrise, easing in and out of each.
- * @param {number} hour            Decimal hours since midnight.
- * @param {number} [sunrise=6]     Sunrise, in hours.
- * @param {number} [sunset=18]     Sunset, in hours.
+ * How high the sun climbs, and how far it sinks, in degrees. It rises and sinks at the same rate whatever the season,
+ * along a quarter sine over a quarter of the day either side of the horizon, so the light fades as long every
+ * evening: in a 24-hour day, civil twilight ends some twenty-five minutes after sunset, and night falls in earnest
+ * after seventy.
+ */
+export const SUN_HEIGHT = 60;
+
+/**
+ * How dark it is with the sun at each height, in degrees: falling a little through the late afternoon, about a third
+ * dark at sunset, and deepening through civil, nautical and astronomical twilight to full night.
+ * @type {[number, number][]}
+ */
+export const DARKNESS_BY_SUN_HEIGHT = [[20, 0], [8, 0.1], [0, 0.3], [-6, 0.6], [-12, 0.85], [-18, 1]];
+
+/**
+ * How much the brightest moon lifts the dark of night: a full moon high overhead makes the night this much lighter.
+ */
+export const MOONLIGHT = 0.2;
+
+/**
+ * The sun's height above the horizon at an hour, in degrees: 0 at sunrise and sunset, rising and sinking at the same
+ * rate every day towards {@link SUN_HEIGHT} above or below, and no further than halfway through a short day or night.
+ * @param {number} hour             Decimal hours since midnight.
+ * @param {number} [sunrise=6]      Sunrise, in hours.
+ * @param {number} [sunset=18]      Sunset, in hours.
+ * @param {number} [hoursPerDay=24]
  * @returns {number}
  */
-export function darkness(hour, sunrise = 6, sunset = 18) {
-  const ease = t => (1 - Math.cos(Math.PI * Math.min(Math.max(t, 0), 1))) / 2;
-  if ( (hour >= sunrise - 1) && (hour <= sunrise) ) return round(1 - ease(hour - (sunrise - 1)));
-  if ( (hour > sunrise) && (hour < sunset) ) return 0;
-  if ( (hour >= sunset) && (hour <= sunset + 1) ) return round(ease(hour - sunset));
-  return 1;
+export function sunHeight(hour, sunrise = 6, sunset = 18, hoursPerDay = 24) {
+  const day = wrap(sunset - sunrise, hoursPerDay);
+  const sinceSunrise = wrap(hour - sunrise, hoursPerDay);
+  const up = sinceSunrise <= day;
+  // Hours from the nearer of sunrise and sunset.
+  const fromHorizon = up ? Math.min(sinceSunrise, day - sinceSunrise)
+    : Math.min(sinceSunrise - day, hoursPerDay - sinceSunrise);
+  const height = SUN_HEIGHT * Math.sin(Math.PI * Math.min(fromHorizon / (hoursPerDay / 2), 0.5));
+  return up ? height : -height;
+}
+
+/**
+ * How dark a scene is at an hour, from 0 in daylight towards 1 on a moonless night. The light fades through the late
+ * afternoon and twilight by the height of the sun, and comes back the same way before sunrise.
+ * @param {number} hour             Decimal hours since midnight.
+ * @param {number} [sunrise=6]      Sunrise, in hours.
+ * @param {number} [sunset=18]      Sunset, in hours.
+ * @param {number} [hoursPerDay=24]
+ * @param {number} [moonlight=0]    How much moonlight there is, from {@link moonlight}.
+ * @returns {number}
+ */
+export function darkness(hour, sunrise = 6, sunset = 18, hoursPerDay = 24, moonlight = 0) {
+  const height = sunHeight(hour, sunrise, sunset, hoursPerDay);
+  const points = DARKNESS_BY_SUN_HEIGHT;
+  let dark = 1;
+  if ( height >= points[0][0] ) dark = 0;
+  else {
+    for ( let i = 1; i < points.length; i++ ) {
+      const [high, from] = points[i - 1];
+      const [low, to] = points[i];
+      if ( height < low ) continue;
+      dark = from + ((to - from) * (high - height) / (high - low));
+      break;
+    }
+  }
+  return round(dark * (1 - (MOONLIGHT * moonlight)));
+}
+
+/**
+ * How much moonlight there is, from 0 with no moon up to 1 with a full moon at the top of the sky: the brightest moon's
+ * lit face, by how high it rides.
+ * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
+ * @param {number[]} phases  The phase of each moon, from {@link moonPhase}.
+ * @returns {number}
+ */
+export function moonlight(fraction, phases) {
+  let light = 0;
+  for ( const phase of phases ) {
+    const angle = moonSkyAngle(fraction, phase);
+    if ( aboveHorizon(angle) ) light = Math.max(light, illumination(phase) * Math.sin(angle));
+  }
+  return light;
 }
 
 /* -------------------------------------------- */

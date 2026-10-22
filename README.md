@@ -121,9 +121,21 @@ nothing.
 
 ### Darkness
 
-Turn on **Darken Scenes at Night** and the active scene's darkness follows the sun: dark at night, light by day,
-darkening through the hour after sunset and lightening through the hour before sunrise. Only the active scene is
-changed, and a scene with its darkness locked in its lighting settings is left alone.
+Turn on **Darken Scenes at Night** and the active scene's darkness follows the sky. The light fades by the height
+of the sun, as it does outdoors, and comes back the same way before sunrise:
+
+| | Darkness |
+| --- | --- |
+| Until about an hour and a quarter before sunset | Full daylight |
+| The late afternoon | A first dimming, to a tenth by half an hour before sunset |
+| Sunset | About a third dark |
+| Half an hour after sunset, as civil twilight ends | Two-thirds dark |
+| About an hour and a quarter after sunset | Night |
+
+The fade takes as long every evening, whatever the season. At night, a bright moon high in the sky lifts the dark
+a little: a full moon overhead leaves the scene four-fifths dark rather than black. Only the active scene is
+changed, and a scene with its darkness locked in its lighting settings is left alone. Macros can read the darkness
+for the current time with `game.modules.get("sogrom-simple-dnd-calendar").api.darknessNow()`.
 
 ### Settings
 
@@ -134,7 +146,7 @@ changed, and a scene with its darkness locked in its lighting settings is left a
 | Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
 | Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
 | Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |
-| Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun. The GM picks. |
+| Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun and the moons. The GM picks. |
 
 ## For Developers
 

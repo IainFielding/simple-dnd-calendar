@@ -1,9 +1,11 @@
+import { worldMoons } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 
 /**
- * The active scene's darkness, kept in step with the sun: dark at night, light by day, and darkening and lightening
- * through dusk and dawn. Only the active GM writes it, and only while the GM has it turned on.
+ * The active scene's darkness, kept in step with the sky: light by day, fading through the late afternoon and
+ * twilight by the height of the sun, dark at night, and a little less dark under a bright moon. Only the active GM
+ * writes it, and only while the GM has it turned on.
  */
 
 /** How long a change of darkness takes to play out on the canvas. */
@@ -44,15 +46,17 @@ export async function syncDarkness({ animate = true } = {}) {
 /* -------------------------------------------- */
 
 /**
- * How dark it is at the world time, from the world calendar's own sunrise and sunset.
+ * How dark it is at the world time, from the world calendar's own sunrise and sunset, and its moons.
  * @returns {number}
  */
 export function darknessNow() {
   const calendar = game.time.calendar;
   const components = game.time.components;
+  const time = game.time.worldTime;
   const hoursPerDay = calendar.days.hoursPerDay;
-  const hour = sky.dayFraction(calendar, game.time.worldTime) * hoursPerDay;
+  const fraction = sky.dayFraction(calendar, time);
   const sunrise = calendar.sunrise?.(components) ?? (hoursPerDay * 0.25);
   const sunset = calendar.sunset?.(components) ?? (hoursPerDay * 0.75);
-  return sky.darkness(hour, sunrise, sunset);
+  const moonlight = sky.moonlight(fraction, worldMoons().map(moon => sky.moonPhase(calendar, moon, time)));
+  return sky.darkness(fraction * hoursPerDay, sunrise, sunset, hoursPerDay, moonlight);
 }

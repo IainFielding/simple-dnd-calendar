@@ -223,22 +223,45 @@ test("summer days are long and winter days short, once the GM turns it on", asyn
 test("the active scene darkens at night, once the GM turns it on", async ctx => {
   const { gm } = ctx;
   const darkness = () => gm.eval(() => game.scenes.active.environment.darknessLevel);
+  const settle = async what => {
+    await gm.page.waitForTimeout(300);
+    return waitFor(gm, moduleId => {
+      const level = game.scenes.active.environment.darknessLevel;
+      return Math.abs(level - game.modules.get(moduleId).api.darknessNow()) < 0.01 ? String(level) : null;
+    }, MODULE_ID, what).then(Number);
+  };
   await gm.eval(() => game.scenes.active.update({ "environment.darknessLevel": 0, "environment.darknessLock": false }));
-  await setTime(ctx, { year: 1525, day: 100, hour: 23 });
-  assertEqual(await darkness(), 0, "darkness before it is turned on");
 
+  // A moonless midnight: Selûne is new on the 15th of Hammer 1501 DR.
+  await setTime(ctx, { year: 1501, day: 14, hour: 0 });
+  assertEqual(await darkness(), 0, "darkness before it is turned on");
   await gm.eval(moduleId => game.settings.set(moduleId, "sceneDarkness", true), MODULE_ID);
-  await waitFor(gm, () => game.scenes.active.environment.darknessLevel === 1, null, "the scene to darken at night");
-  await setTime(ctx, { year: 1525, day: 101, hour: 12 });
-  await waitFor(gm, () => game.scenes.active.environment.darknessLevel === 0, null, "the scene to lighten at noon");
-  await setTime(ctx, { year: 1525, day: 101, hour: 18, minute: 30 });
-  await waitFor(gm, () => game.scenes.active.environment.darknessLevel === 0.5, null, "half dark half way through dusk");
+  assertEqual(await settle("a moonless midnight"), 1, "a moonless midnight");
+
+  await setTime(ctx, { year: 1501, day: 14, hour: 12 });
+  assertEqual(await settle("noon"), 0, "noon");
+
+  // Through dusk the light fades by degrees.
+  const dusk = [];
+  for ( const [hour, minute] of [[17, 0], [18, 0], [18, 30], [19, 30]] ) {
+    await setTime(ctx, { year: 1501, day: 14, hour, minute });
+    dusk.push(await settle(`${hour}:${minute}`));
+  }
+  assert((dusk[0] > 0) && (dusk[0] < 0.1), `late afternoon: ${dusk}`);
+  assertEqual(dusk[1], 0.3, "sunset");
+  assert((dusk[2] > 0.5) && (dusk[2] < 0.85), `half an hour after sunset: ${dusk}`);
+  assertEqual(dusk[3], 1, "an hour and a half after sunset");
+
+  // Under a full moon the night is a little lighter: Selûne is full on the 30th of Hammer.
+  await setTime(ctx, { year: 1501, day: 30, hour: 0 });
+  const full = await settle("a moonlit midnight");
+  assert((full > 0.75) && (full < 0.9), `a moonlit midnight: ${full}`);
 
   // A scene with its darkness locked is left as it is.
   await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": true }));
-  await setTime(ctx, { year: 1525, day: 101, hour: 23 });
+  await setTime(ctx, { year: 1501, day: 30, hour: 12 });
   await gm.page.waitForTimeout(300);
-  assertEqual(await darkness(), 0.5, "a locked scene's darkness");
+  assertEqual(await darkness(), full, "a locked scene's darkness");
   await gm.eval(() => game.scenes.active.update({ "environment.darknessLock": false }));
 });
 

@@ -50,26 +50,50 @@ describe("the day wheel", () => {
     expect(sky.dayPhase(16.5, 8, 16)).toBe("dusk");
   });
 
-  it("darkens the scene through dusk and lightens it through dawn", () => {
-    expect(sky.darkness(2)).toBe(1);
-    expect(sky.darkness(5)).toBe(1);
-    expect(sky.darkness(5.5)).toBe(0.5);
-    expect(sky.darkness(6)).toBe(0);
+  it("puts the sun on the horizon at sunrise and sunset, high by day and low by night", () => {
+    expect(sky.sunHeight(6)).toBeCloseTo(0);
+    expect(sky.sunHeight(18)).toBeCloseTo(0);
+    expect(sky.sunHeight(12)).toBeCloseTo(sky.SUN_HEIGHT);
+    expect(sky.sunHeight(0)).toBeCloseTo(-sky.SUN_HEIGHT);
+    expect(sky.sunHeight(9)).toBeGreaterThan(0);
+    expect(sky.sunHeight(21)).toBeLessThan(0);
+  });
+
+  it("is light by day and dark at night", () => {
     expect(sky.darkness(12)).toBe(0);
-    expect(sky.darkness(18)).toBe(0);
-    expect(sky.darkness(18.5)).toBe(0.5);
-    expect(sky.darkness(19)).toBe(1);
-    expect(sky.darkness(23)).toBe(1);
+    expect(sky.darkness(15)).toBe(0);
+    expect(sky.darkness(0)).toBe(1);
+    expect(sky.darkness(22)).toBe(1);
   });
 
-  it("eases into and out of the dark", () => {
-    expect(sky.darkness(18.25)).toBeLessThan(0.25);
-    expect(sky.darkness(18.75)).toBeGreaterThan(0.75);
+  it("fades through the late afternoon and twilight, a third dark at sunset", () => {
+    const dusk = [16.5, 17, 17.5, 18, 18.5, 19, 19.5].map(h => sky.darkness(h));
+    for ( let i = 1; i < dusk.length; i++ ) expect(dusk[i]).toBeGreaterThanOrEqual(dusk[i - 1]);
+    expect(sky.darkness(17)).toBeGreaterThan(0);
+    expect(sky.darkness(17)).toBeLessThan(0.1);
+    expect(sky.darkness(18)).toBe(0.3);
+    expect(sky.darkness(18.5)).toBeGreaterThan(0.5);
+    expect(sky.darkness(18.5)).toBeLessThan(0.85);
+    expect(sky.darkness(19.5)).toBe(1);
   });
 
-  it("darkens by the calendar's own sunrise and sunset", () => {
-    expect(sky.darkness(7, 8, 16)).toBe(1);
-    expect(sky.darkness(16.5, 8, 16)).toBe(0.5);
+  it("lightens through dawn as it darkened through dusk", () => {
+    for ( const h of [0.5, 1, 1.5] ) expect(sky.darkness(6 - h)).toBeCloseTo(sky.darkness(18 + h));
+  });
+
+  it("fades as long every evening, whatever the length of the day", () => {
+    for ( const h of [-1, -0.5, 0, 0.5, 1] ) {
+      expect(sky.darkness(16 + h, 8, 16)).toBeCloseTo(sky.darkness(18 + h));
+      expect(sky.darkness(20 + h, 4, 20)).toBeCloseTo(sky.darkness(18 + h));
+    }
+  });
+
+  it("is lighter under a full moon high in the sky, and not under a moon that has set", () => {
+    expect(sky.moonlight(0, [0.5])).toBeCloseTo(1);
+    expect(sky.moonlight(0, [0])).toBe(0);
+    expect(sky.moonlight(0, [0.25])).toBeCloseTo(0);
+    expect(sky.darkness(0, 6, 18, 24, sky.moonlight(0, [0.5]))).toBe(1 - sky.MOONLIGHT);
+    expect(sky.darkness(0, 6, 18, 24, sky.moonlight(0, [0.5, 0]))).toBe(1 - sky.MOONLIGHT);
   });
 
   it("puts the sun on the right-hand horizon at sunrise, overhead at noon and on the left at sunset", () => {
