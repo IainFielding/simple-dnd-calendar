@@ -18,6 +18,8 @@ All notable changes to Simple D&D Calendar.
   date, the start of a season and any festival.
 - **Full and new moons are marked** beside the bowl on the day they fall, and so are moons full together, such as
   Luna and Celene on Needfest. `/date` and the dawn in the chat say so too.
+- **When's the next full moon?** Hover the season band for each moon's phase and the date it is next full, and the
+  Set Date dialog shows the moons' phases on the date you pick.
 
 ## 1.0.0 — 2026-10-22
 

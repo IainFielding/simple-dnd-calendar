@@ -296,6 +296,36 @@ test("the Set Date button opens D&D 5e's Set Date dialog", async ({ gm }) => {
     .some(a => a.rendered && (a.constructor.name === "SetDateDialog")), null, "the Set Date dialog");
 });
 
+test("the Set Date dialog shows the moons on the date being picked", async ctx => {
+  const { gm } = ctx;
+  await setTime(ctx, { year: 1501, day: 15, hour: 12 });
+  await gm.page.locator("#sdc-calendar button[data-action=setDate]").click();
+  const moons = gm.page.locator(".sdc-set-date-moons");
+  await moons.waitFor({ timeout: 5000 });
+  assert(!(await moons.innerText()).includes("Full Moon"), `a full moon on the 16th of Hammer: ${await moons.innerText()}`);
+
+  // The 30th of Hammer, when Selûne is full.
+  await gm.page.locator("form input[name=day]").fill("30");
+  await gm.page.locator("form input[name=day]").dispatchEvent("change");
+  await waitFor(gm, () => document.querySelector(".sdc-set-date-moons")?.innerText.includes("Selûne: Full Moon"),
+    null, "the dialog to show Selûne full on the 30th");
+  assert((await moons.innerText()).includes("Selûne is full"), `no full moon event: ${await moons.innerText()}`);
+});
+
+test("the season band's tooltip gives the season and when each moon is next full", async ctx => {
+  // Selûne is full on the 30th of Hammer 1501 DR, day 29 counted from 0.
+  await setTime(ctx, { year: 1501, day: 24, hour: 12 });
+  let tooltip = (await readCalendar(ctx.player)).seasonTooltip;
+  assert(tooltip.startsWith("<strong>Winter</strong>"), `the tooltip does not start with the season: ${tooltip}`);
+  assert(tooltip.includes("Selûne: Waxing Gibbous, full in 5 days"), `the tooltip's forecast: ${tooltip}`);
+  await setTime(ctx, { year: 1501, day: 28, hour: 12 });
+  tooltip = (await readCalendar(ctx.player)).seasonTooltip;
+  assert(tooltip.includes("full tomorrow"), `the tooltip the day before: ${tooltip}`);
+  await setTime(ctx, { year: 1501, day: 29, hour: 6 });
+  tooltip = (await readCalendar(ctx.player)).seasonTooltip;
+  assert(tooltip.includes("Full Moon, full today"), `the tooltip on the day: ${tooltip}`);
+});
+
 test("buttons other modules add with D&D 5e's hook appear and work", async ({ gm }) => {
   try {
     await gm.eval(async () => {

@@ -1,10 +1,10 @@
-import { festivalName, formatComponents, moonEventLabels, moonPhases, nextHour } from "./calendar.mjs";
+import { festivalName, formatComponents, moonEventLabels, moonForecast, nextHour } from "./calendar.mjs";
 import * as sky from "./sky.mjs";
 
 /**
  * Chat commands for the calendar:
  *
- * - `/date` tells you the date, the time, the season, any festival, and the moons' phases.
+ * - `/date` tells you the date, the time, the season, any festival, and the moons' phases and next full moons.
  * - `/advance` and `/rewind` move the time on or back, for the GM: by an amount, such as `/advance 8 hours` or
  *   `/rewind 1 day 6 hours`, or to the next or last part of the day, such as `/advance dawn`. On their own they move
  *   an hour, as the bar's buttons do.
@@ -100,7 +100,7 @@ export function postDate() {
     season ? `<p><i class="fa-solid fa-leaf"></i> ${escape(_loc(season.name))}</p>` : "",
     festival ? `<p><i class="fa-solid fa-star-christmas"></i> ${escape(festival)}</p>` : "",
     ...moonEventLabels().map(label => `<p><i class="fa-solid fa-circle"></i> ${escape(label)}</p>`),
-    ...moonPhases().map(({ name, phaseName }) => `<p><i class="fa-solid fa-moon"></i> ${escape(name)}: ${escape(phaseName)}</p>`)
+    ...moonForecast().map(line => `<p><i class="fa-solid fa-moon"></i> ${escape(line)}</p>`)
   ];
   const content = `<div class="sdc-chat"><h3>${escape(formatComponents(calendar, components, "date", "monthDayYear"))}</h3>`
     + `${rows.join("")}</div>`;

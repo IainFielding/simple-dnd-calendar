@@ -1,4 +1,4 @@
-import { festivalName, formatComponents, moonEventLabels, worldMoons } from "./calendar.mjs";
+import { festivalName, formatComponents, moonEventLabels, moonForecast, worldMoons } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 import { seasonTrim, seededRandom } from "./trim.mjs";
@@ -377,7 +377,7 @@ export function createCalendarHUD(CalendarHUD) {
       if ( this.#text.season !== seasonKey ) {
         this.#text.season = seasonKey;
         const kind = game.settings.get(MODULE_ID, "seasonTrim") ? (sky.seasonKind(seasonKey) ?? "") : "";
-        el.season.dataset.tooltip = season ? _loc(season.name) : "";
+        el.season.dataset.seasonName = season ? _loc(season.name) : "";
         if ( this.element.dataset.season !== kind ) {
           this.element.dataset.season = kind;
           const trim = seasonTrim(kind);
@@ -422,13 +422,18 @@ export function createCalendarHUD(CalendarHUD) {
         el.festivalIcon.dataset.tooltip = festival;
       }
 
-      // Any full or new moons today, beside the festival.
+      // Any full or new moons today, beside the festival; and on the band, the season and each moon's phase and
+      // when it is next full.
       const today = Math.floor(time / sky.secondsPerDay(calendar));
       if ( this.#text.moonDay !== today ) {
         this.#text.moonDay = today;
+        const escape = foundry.utils.escapeHTML;
         const events = moonEventLabels(time);
         el.moonEventIcon.hidden = !events.length;
-        el.moonEventIcon.dataset.tooltip = events.map(foundry.utils.escapeHTML).join("<br>");
+        el.moonEventIcon.dataset.tooltip = events.map(escape).join("<br>");
+        const forecast = moonForecast(time).map(line => `<span class="sdc-forecast">${escape(line)}</span>`);
+        el.season.dataset.tooltip = [`<strong>${escape(el.season.dataset.seasonName)}</strong>`, ...forecast]
+          .join("<br>");
       }
 
       // The moons, riding the bowl while they are above the horizon.

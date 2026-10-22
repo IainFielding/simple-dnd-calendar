@@ -78,6 +78,45 @@ export function moonEventLabels(time = game.time.worldTime) {
 }
 
 /**
+ * Each of the world's moons at a world time, written out: its phase, and when it is next full.
+ * @param {number} [time]  World time in seconds, by default now.
+ * @returns {string[]}
+ */
+export function moonForecast(time = game.time.worldTime) {
+  const calendar = game.time.calendar;
+  const day = sky.secondsPerDay(calendar);
+  return moonPhases(time).map(({ moon, name, phaseName }) => {
+    const full = sky.nextFullMoon(calendar, moon, time);
+    const days = Math.floor(full / day) - Math.floor(time / day);
+    const date = formatComponents(calendar, calendar.timeToComponents(full), "date");
+    let when;
+    if ( days === 0 ) when = _loc("SDC.MoonForecast.FullToday");
+    else if ( days === 1 ) when = _loc("SDC.MoonForecast.FullTomorrow", { date });
+    else when = _loc("SDC.MoonForecast.FullIn", { days, date });
+    return `${name}: ${phaseName}, ${when}`;
+  });
+}
+
+/**
+ * The world time at the start of a date as D&D 5e's Set Date dialog takes it, keeping the time of day.
+ * @param {{year: number, month: number, day: number}} date  The year as the calendar shows it, the month's index,
+ *                                                             and the day of the month counted from 1.
+ * @returns {number|null}  Null if the date is incomplete.
+ */
+export function dateToTime({ year, month, day }) {
+  if ( ![year, month, day].every(Number.isFinite) ) return null;
+  const calendar = game.time.calendar;
+  const components = { ...game.time.components, year: year - calendar.years.yearZero };
+  const { leapYear } = calendar._decomposeTimeYears?.(calendar.componentsToTime(components)) ?? {};
+  let dayOfYear = day - 1;
+  for ( let i = 0; i < month; i++ ) {
+    const m = calendar.months.values[i];
+    dayOfYear += leapYear ? (m.leapDays ?? m.days) : m.days;
+  }
+  return calendar.componentsToTime({ ...components, day: dayOfYear, month });
+}
+
+/**
  * The world time a moment of the day falls at: the next one after a world time, or the last one before it.
  * @param {number} time      World time in seconds.
  * @param {number} hour      Decimal hours since midnight.

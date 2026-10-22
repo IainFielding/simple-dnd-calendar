@@ -356,6 +356,19 @@ export function moonEvents(calendar, moons, midnight) {
 }
 
 /**
+ * The world time of a moon's next full moon after a world time.
+ * @param {object} calendar
+ * @param {MoonConfig} moon
+ * @param {number} time      World time in seconds.
+ * @param {number} [epoch]   The moon's epoch as a world time, if already worked out.
+ * @returns {number}
+ */
+export function nextFullMoon(calendar, moon, time, epoch = epochTime(calendar, moon)) {
+  const days = wrap(0.5 - moonPhase(calendar, moon, time, epoch), 1) * moon.period;
+  return time + Math.round(days * secondsPerDay(calendar));
+}
+
+/**
  * How much of a moon's face is lit, from 0 at new to 1 at full.
  * @param {number} phase
  * @returns {number}

@@ -16,7 +16,7 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 - **The bar.** The day of the week and the time, in the time format you picked in D&D 5e's calendar preferences.
 - **The season band.** The date, written across a band of the year's colours (green spring, gold summer, orange
   autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
-  it for the season's name.
+  it for the season's name and each moon's phase, with when it is next full.
 - **The season's trim.** The frame is dressed for the season along the bar's edge and the bowl's rim: frost and
   icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. Off by default;
   the GM can turn it on for everyone under **Dress the Frame for the Season**.
@@ -48,7 +48,7 @@ The GM has the time controls at either end of the bar, as D&D 5e's own calendar 
 
 - **Rewind** and **Advance** step back or forward an hour. Hover either for a drop-down of steps from a minute to a
   week.
-- **Set Date** opens D&D 5e's dialog to jump to a date.
+- **Set Date** opens D&D 5e's dialog to jump to a date, which shows the moons' phases on the date you pick.
 - A change of time **plays out**: the clock runs, the wheel turns and the moons move, taking longer for longer jumps.
   Turn this off under **Animate Time Changes** if you'd rather it jumped.
 
@@ -58,7 +58,7 @@ The GM has the time controls at either end of the bar, as D&D 5e's own calendar 
 
 | Command | Who | |
 | --- | --- | --- |
-| `/date` | Everyone | Whispers you the date, the time, the season, any festival, and the moons' phases. |
+| `/date` | Everyone | Whispers you the date, the time, the season, any festival, and the moons' phases and when each is next full. |
 | `/advance 8 hours` | GM | Moves the time on. Amounts can be combined and shortened: `/advance 1 day 6 hours`, `/advance 1d 6h`. A number on its own is hours, and `/advance` on its own is an hour. |
 | `/advance dawn` | GM | Moves on to the next dawn, noon, dusk or midnight. |
 | `/rewind 90 minutes` | GM | Moves the time back, by an amount or to the last dawn, noon, dusk or midnight. |

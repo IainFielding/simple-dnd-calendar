@@ -20,6 +20,12 @@
       "LastQuarter": "Last Quarter",
       "WaningCrescent": "Waning Crescent"
     },
+    "MoonForecast": {
+      "FullToday": "full today",
+      "FullTomorrow": "full tomorrow, {date}",
+      "FullIn": "full in {days} days, {date}",
+      "Title": "The Moons"
+    },
     "MoonEvent": {
       "Full": "{moon} is full",
       "FullTogether": "{moons} are full together",
