@@ -54,12 +54,21 @@
       "SeasonalDaylight": {
         "Name": "Long Summer Days",
         "Hint": "Move sunrise and sunset with the seasons: sixteen hours of daylight at midsummer and eight at midwinter. D&D 5e's dawn and dusk recovery, the day wheel and the scene's darkness all follow."
+      },
+      "AnnounceDays": {
+        "Name": "Announce Each Dawn",
+        "Hint": "Post each new day to the chat as the sun rises on it, with the date, the start of a season, and any festival. A jump over several days posts only the last."
       }
     },
     "Chat": {
       "Speaker": "The Calendar",
       "GMOnly": "Only the GM can move the time.",
       "Usage": "Try {command} 8 hours, {command} 1 day 6 hours, or {command} dawn, noon, dusk or midnight."
+    },
+    "Announce": {
+      "Title": "Dawn on {date}",
+      "Weekday": "It is {day}.",
+      "Season": "The first day of {season}."
     },
     "Enable": {
       "Title": "Turn On the Calendar?",

@@ -451,6 +451,12 @@
   opacity: 0.75;
 }
 
+.chat-message .sdc-chat h3 i {
+  width: auto;
+  color: #e9813f;
+  opacity: 1;
+}
+
 .chat-message .sdc-chat .sdc-chat-when {
   font-style: italic;
 }

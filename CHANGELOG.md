@@ -14,6 +14,8 @@ All notable changes to Simple D&D Calendar.
 - **Chat commands.** `/date` whispers you the date, the season, any festival and the moons' phases. The GM can move
   the time with `/advance` and `/rewind`, by an amount (`/advance 8 hours`, `/rewind 1d 6h`) or to the next or last
   dawn, noon, dusk or midnight (`/advance dawn`).
+- **Each dawn in the chat.** Turn on **Announce Each Dawn** and each new day is posted as the sun rises, with its
+  date, the start of a season and any festival.
 
 ## 1.0.0 — 2026-10-22
 

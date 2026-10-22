@@ -1,3 +1,4 @@
+import { registerAnnouncements } from "./announce.mjs";
 import { registerChatCommands } from "./chat.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import { registerDarknessHooks, syncDarkness } from "./darkness.mjs";
@@ -53,6 +54,15 @@ Hooks.once("init", () => {
     }
   });
 
+  game.settings.register(MODULE_ID, "announceDays", {
+    name: "SDC.Settings.AnnounceDays.Name",
+    hint: "SDC.Settings.AnnounceDays.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
+
   game.settings.register(MODULE_ID, "expanded", {
     scope: "client",
     config: false,
@@ -70,6 +80,7 @@ Hooks.once("init", () => {
   patchDaylight(CONFIG.time.worldCalendarClass);
   registerDarknessHooks();
   registerChatCommands();
+  registerAnnouncements();
 
   const CalendarHUD = dnd5e.applications?.calendar?.CalendarHUD;
   if ( !CalendarHUD ) {

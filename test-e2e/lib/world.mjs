@@ -111,7 +111,7 @@ export async function resetFixtures(gm) {
  */
 export async function resetWorld(gm, player) {
   await gm.eval(async moduleId => {
-    for ( const key of ["seasonTrim", "sceneDarkness", "seasonalDaylight"] ) {
+    for ( const key of ["seasonTrim", "sceneDarkness", "seasonalDaylight", "announceDays"] ) {
       if ( game.settings.get(moduleId, key) ) await game.settings.set(moduleId, key, false);
     }
   }, MODULE_ID);

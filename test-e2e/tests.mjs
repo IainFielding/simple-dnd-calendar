@@ -376,6 +376,55 @@ test("/date whispers the date and the sky, and /advance and /rewind move the tim
   assertEqual(await gm.eval(() => game.time.worldTime), start + (31 * 3600), "the time after a player's /advance");
 });
 
+test("each dawn is announced in the chat, once the GM turns it on", async ctx => {
+  const { gm, player } = ctx;
+  const cards = () => player.eval(() => game.messages.contents.filter(m => m.content.includes("sdc-daybreak"))
+    .map(m => m.content));
+  const before = (await cards()).length;
+
+  // Nothing is posted over a dawn while it is turned off.
+  await setTime(ctx, { year: 1525, day: 120, hour: 22 });
+  await gm.eval(() => game.time.advance(10 * 3600));
+  await gm.page.waitForTimeout(500);
+  assertEqual((await cards()).length, before, "cards before it is turned on");
+
+  await gm.eval(moduleId => game.settings.set(moduleId, "announceDays", true), MODULE_ID);
+  await gm.eval(() => game.time.advance(2 * 3600));
+  await gm.page.waitForTimeout(500);
+  assertEqual((await cards()).length, before, "cards after time passes without a sunrise");
+
+  // A jump over three dawns posts only the last.
+  await gm.eval(() => game.time.advance(3 * 86400));
+  await waitFor(player, n => game.messages.contents.filter(m => m.content.includes("sdc-daybreak")).length === n,
+    before + 1, "the dawn to be announced");
+  const card = (await cards()).at(-1);
+  const expected = await gm.eval(() => game.time.calendar.format(game.time.components, "formatMonthDayYear"));
+  assert(card.includes(expected), `the card does not say ${expected}: ${card}`);
+
+  // Rewinding over a dawn doesn't announce it.
+  await gm.eval(() => game.time.advance(-86400));
+  await gm.page.waitForTimeout(500);
+  assertEqual((await cards()).length, before + 1, "cards after rewinding");
+});
+
+test("the dawn that starts a season or a festival says so", async ctx => {
+  const { gm, player } = ctx;
+  await gm.eval(moduleId => game.settings.set(moduleId, "announceDays", true), MODULE_ID);
+  const count = () => player.eval(() => game.messages.contents.filter(m => m.content.includes("sdc-daybreak")).length);
+  const announce = async day => {
+    await setTime(ctx, { year: 1525, day: day - 1, hour: 12 });
+    const before = await count();
+    await gm.eval(() => game.time.advance(86400));
+    return waitFor(player, n => {
+      const cards = game.messages.contents.filter(m => m.content.includes("sdc-daybreak"));
+      return (cards.length > n) ? cards.at(-1).content : null;
+    }, before, "the dawn to be announced");
+  };
+  // Midwinter, the day after the 30th of Hammer, and the 19th of Ches, the first day of spring.
+  assert((await announce(30)).includes("Midwinter"), "Midwinter is not announced");
+  assert((await announce(78)).includes("The first day of Spring"), "the first day of spring is not announced");
+});
+
 /* -------------------------------------------- */
 /*  Other Calendars                             */
 /* -------------------------------------------- */

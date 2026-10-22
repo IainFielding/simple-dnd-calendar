@@ -99,6 +99,12 @@ and eight at midwinter. The longest day falls halfway between the start of sprin
 is the summer solstice on the Calendar of Harptos. The day half of the wheel grows and shrinks to match, and as the
 module changes the calendar's own sunrise and sunset, D&D 5e's dawn and dusk recovery follows too.
 
+### Each Dawn in the Chat
+
+Turn on **Announce Each Dawn** and each new day is posted to the chat as the sun rises on it, with its date, the
+start of a season and any festival. Moving the time over several days posts only the last, and rewinding posts
+nothing.
+
 ### Darkness
 
 Turn on **Darken Scenes at Night** and the active scene's darkness follows the sun: dark at night, light by day,
@@ -112,6 +118,7 @@ changed, and a scene with its darkness locked in its lighting settings is left a
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
 | Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
 | Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
+| Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |
 | Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun. The GM picks. |
 
 ## For Developers
