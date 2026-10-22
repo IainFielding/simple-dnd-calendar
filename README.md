@@ -106,9 +106,7 @@ Foundry VTT 14 and D&D 5e 6.x.
 
 ## Credits
 
-Battlemaps by Czepeku — [www.czepeku.com](https://www.czepeku.com). The battlemap behind the calendar in the
-screenshots is [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands), used with
-thanks; it isn't part of the module, and isn't covered by its licence.
+Battlemaps by Czepeku — [www.czepeku.com](https://www.czepeku.com). The battlemap behind the calendar in the screenshots is [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands) and is not distributed in this the module.
 
 ## Licence
 
