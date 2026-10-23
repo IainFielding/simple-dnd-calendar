@@ -1,79 +1,81 @@
 # Simple D&D Calendar
 
-A new look for D&D 5e's calendar on Foundry VTT.
+Simple D&D Calendar turns the standard D&D 5e calendar into a living part of your game world. A decorative calendar bar sits across the top of the screen, showing the current day and time while an animated sky tracks the passage of the day, the changing seasons, festivals, and moon phases.
 
-A framed bar hangs from the top of the screen with the day and the time between the buttons. Beneath it, a band of
-the year's seasons slides by under the date, and a bowl of night sky holds a day wheel that turns through the day,
-with the moons waxing and waning as they cross it.
+Watch the sun rise and set, see moons wax and wane, and follow the progress of the year at a glance without opening a separate calendar window.
 
 ![The calendar at midnight, with Selûne full overhead](docs/screenshots/night.png)
 
-<sub>Battlemap: [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands) by
-Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
+## Features
 
-## What It Shows
+### Calendar Bar
 
-- **The bar.** The day of the week and the time, in the time format you picked in D&D 5e's calendar preferences.
-- **The season band.** The date, written across a band of the year's colours (green spring, gold summer, orange
-  autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
-  it for the season's name and each moon's phase, with when it is next full.
-- **The sky's trim.** The bowl's rim, about the day wheel, is dressed for the season: frost and
-  icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. On a festival it
-  is dressed for the day: holly and bells for Midwinter or Needfest, grass and daisies for Greengrass or Growfest,
-  lanterns for Midsummer or Richfest, bunting and shields for Shieldmeet, wheat and apples for Highharvestide or
-  Brewfest, and moonflowers and silver crescents for the Feast of the Moon. Off by default; under **Dress the Sky for
-  the Season** the GM can have it follow the seasons or keep to just one all year, for everyone.
-- **The adventure's trim.** The bar can be dressed for the adventure you're running, under **Dress the Bar for Your
-  Adventure**, alongside the sky's trim or on its own. See [Adventure Trims](#adventure-trims).
-- **The day wheel.** Half day, half night. It turns through the day: the day half comes round from the right in
-  the morning, sits at the bottom at noon, and leaves to the left in the evening. The icon on its rim shows dawn,
-  day, dusk or night.
-- **The moons.** Each moon of the world's calendar rides the bowl while it's up, showing its phase. A full moon rides
-  highest at midnight; a new moon keeps company with the sun. Hover one for its name and phase.
-- **Festivals** are marked beside the bowl, such as Midwinter or Needfest.
-- **Full and new moons** are marked beside the bowl on the day they fall, and so are moons full together, such as
-  Luna and Celene on Needfest. Hover the moon for which. `/date` and the dawn in the chat say so too.
-
-![Noon in spring](docs/screenshots/day.png)
-
-![Dusk at the end of summer](docs/screenshots/dusk.png)
-
-### Moons
-
-| Calendar | Moons |
-| --- | --- |
-| Calendar of Harptos (Forgotten Realms) | Selûne, every 30 days and 10½ hours |
-| Calendar of Greyhawk | Luna (28 days) and Celene (91 days), both full on Needfest 4 |
-| Calendar of Khorvaire (Eberron) | All twelve moons, from Zarantyr (28 days) to Vult (105 days) |
-| Gregorian | The Moon |
-
-## Driving Time
-
-The GM has the time controls at either end of the bar, as D&D 5e's own calendar does:
-
-- **Rewind** and **Advance** step back or forward an hour. Hover either for a drop-down of steps from a minute to a
-  week.
-- **Set Date** opens D&D 5e's dialog to jump to a date.
-- A change of time **plays out**: the clock runs, the wheel turns and the moons move, taking longer for longer jumps.
-  Turn this off under **Animate Time Changes** if you'd rather it jumped.
+A framed calendar bar hangs from the top of the screen, displaying the current day and time while keeping the calendar close at hand. GMs can control the flow of time directly from the bar, and buttons added by other modules appear alongside the built-in controls.
 
 ![The GM's advance drop-down](docs/screenshots/advance.png)
 
-### From the Chat
+### Seasonal Timeline
 
-| Command | Who | |
+Beneath the date, a band of seasonal colours slides gently through the year, showing progress from spring to summer, autumn, and winter. Hovering over the timeline reveals the current season, the phases of the world's moons, and when each moon will next be full.
+
+### Animated Day Wheel
+
+At the heart of the display is an animated day wheel that turns with the passing hours. Dawn rises from the east, daylight reaches its height at noon, and evening gives way to night as the wheel completes its journey. Visual markers clearly show dawn, day, dusk, and night.
+
+| Noon in spring | Dusk at the end of summer |
+| --- | --- |
+| ![Noon in spring](docs/screenshots/day.png) | ![Dusk at the end of summer](docs/screenshots/dusk.png) |
+
+### Moon Tracking
+
+The moons of the active calendar travel across the sky as time passes, each displaying its current phase. Full moons climb high overhead at midnight, new moons remain close to the sun, and every phase in between is represented. Hover over a moon to learn its name and current phase.
+
+| Selûne full over the Forgotten Realms | Luna and Celene full together on Oerth in GreyHawk | Eberron's twelve moons |
 | --- | --- | --- |
-| `/date` | Everyone | Whispers you the date, the time, the season, any festival, and the moons' phases and when each is next full. |
-| `/advance 8 hours` | GM | Moves the time on. Amounts can be combined and shortened: `/advance 1 day 6 hours`, `/advance 1d 6h`. A number on its own is hours, and `/advance` on its own is an hour. |
-| `/advance dawn` | GM | Moves on to the next dawn, noon, dusk or midnight. |
-| `/rewind 90 minutes` | GM | Moves the time back, by an amount or to the last dawn, noon, dusk or midnight. |
+| ![A full moon marked on the calendar, with its tooltip](docs/screenshots/lunar-full.png) | ![Greyhawk's two moons full together](docs/screenshots/lunar-greyhawk.png) | ![Eberron's twelve moons in the night sky](docs/screenshots/lunar-khorvaire.png) |
 
-Units are seconds, minutes, hours, days and weeks, where a week is the calendar's own week.
+### Festivals and Lunar Events
 
-Players get buttons for their character sheet and the party sheet. The **caret** beside them hides the sky, leaving
-just the bar, and the calendar remembers this for each player.
+The calendar marks the great festivals of the year alongside celestial events such as full moons, new moons, and notable lunar alignments. Whether the party is gathering for Greengrass, celebrating Midsummer, giving thanks at Highharvestide, enduring the depths of Midwinter, honouring the Feast of the Moon, or welcoming the rare Shieldmeet, the calendar keeps the changing seasons and skies close at hand.
 
-![Collapsed to the bar](docs/screenshots/collapsed.png)
+| Greengrass | Midsummer | Highharvestide |
+| --- | --- | --- |
+| ![Greengrass, with fresh grass and daisies](docs/screenshots/trims/festival-greengrass.png) | ![Midsummer, with lanterns](docs/screenshots/trims/festival-midsummer.png) | ![Highharvestide, with wheat and apples](docs/screenshots/trims/festival-harvest.png) |
+| **Midwinter** | **Feast of the Moon** | **Shieldmeet** |
+| ![Midwinter, with holly and bells](docs/screenshots/trims/festival-midwinter.png) | ![The Feast of the Moon, with moonflowers and silver crescents](docs/screenshots/trims/festival-moonfeast.png) | ![Shieldmeet, with banners and shields](docs/screenshots/trims/festival-shieldmeet.png) |
+
+### Seasonal Decorations
+
+The sky surrounding the day wheel can be dressed to reflect the changing seasons. Winter brings frost and icicles, spring is adorned with flowering vines, summer blooms with bright sunflowers, and autumn scatters fallen leaves across the frame.
+
+| Winter | Spring |
+| --- | --- |
+| ![Frost and icicles for winter](docs/screenshots/trims/sky-winter.png) | ![Flowering vines for spring](docs/screenshots/trims/sky-spring.png) |
+| **Summer** | **Autumn** |
+| ![Sunflowers for summer](docs/screenshots/trims/sky-summer.png) | ![Fallen leaves for autumn](docs/screenshots/trims/sky-fall.png) |
+
+When following the seasons, the sky can also celebrate the world's festivals.
+
+Midwinter and Needfest are marked with holly and bells, Greengrass and Growfest with fresh grass and daisies, Midsummer and Richfest with lanterns, Shieldmeet with banners and shields, Highharvestide and Brewfest with wheat and apples, and the Feast of the Moon with moonflowers and silver crescents.
+
+### Adventure Themes
+
+The calendar bar can be tailored to match the tone of your campaign. Whether your party is wandering the mists of *Curse of Strahd*, surviving the frozen wastes of *Rime of the Frostmaiden*, descending into *Avernus*, or confronting *Vecna*, themed trims help the calendar feel at home in the world around it.
+
+Included themes span a variety of adventures and settings, including Curse of Strahd, The Wild Beyond the Witchlight, Rime of the Frostmaiden, Descent into Avernus, Vecna: Eve of Ruin, Tomb of Annihilation, and World of Warcraft.
+
+| Curse of Strahd | Rime of the Frostmaiden | Descent into Avernus |
+| --- | --- | --- |
+| ![Curse of Strahd trim](docs/screenshots/trims/bar-ravenloft.png) | ![Rime of the Frostmaiden trim](docs/screenshots/trims/bar-icewind.png) | ![Descent into Avernus trim](docs/screenshots/trims/bar-avernus.png) |
+
+### Darkness
+
+The world grows darker as the sun sinks below the horizon. The active scene follows the cycle of day and night, fading gradually through sunset and twilight before reaching full darkness after nightfall.
+
+The transition mirrors the movement of the sun rather than changing abruptly. Bright daylight gives way to the softer light of late afternoon, then to dusk, twilight, and finally night. As dawn approaches, the process reverses and daylight slowly returns.
+
+Moonlight can soften the darkness after sunset. A bright full moon riding high in the sky leaves the scene noticeably brighter than a moonless night, helping the world feel connected to the celestial events displayed by the calendar.
+
 
 ## Installing
 
@@ -86,115 +88,15 @@ https://github.com/IainFielding/simple-dnd-calendar/releases/latest/download/mod
 
 Then turn on **Simple D&D Calendar** under **Manage Modules** in a D&D 5e world.
 
-## Setting Up
-
-The module uses D&D 5e's calendar, so the calendar, the date and time formats, and daily recovery as time passes all
-work as the system's own calendar does. Its settings are under **Game Settings → Configure Calendar**.
-
-- **Turning it on.** D&D 5e's calendar starts turned off. The first time a GM loads the world with this module, it
-  offers to turn it on.
-- **Which calendar.** Whichever the GM picks in D&D 5e's calendar settings: Harptos, Greyhawk, Khorvaire or
-  Gregorian. The module never changes it.
-- **Hiding it.** Each player can hide the calendar with D&D 5e's **Display Calendar HUD** preference.
-
-Other modules' calendar buttons, added with D&D 5e's `dnd5e.prepareCalendarButtons` hook, appear in the bar too.
-
-### Styles
-
-Each player picks how the calendar looks under **Calendar Style**: **Gilded Night**, gold on a night sky (the
-default); **Parchment**, bronze and ink on paper under a painted sky; or **Underdark**, steel on dark stone under a
-cavern's glow.
-
-| Gilded Night | Parchment | Underdark |
-| --- | --- | --- |
-| ![Gilded Night](docs/screenshots/style-gilded.png) | ![Parchment](docs/screenshots/style-parchment.png) | ![Underdark](docs/screenshots/style-stone.png) |
-
-### Long Summer Days
-
-Turn on **Long Summer Days** and sunrise and sunset move with the seasons: sixteen hours of daylight at midsummer
-and eight at midwinter. The longest day falls halfway between the start of spring and the start of autumn, which
-is the summer solstice on the Calendar of Harptos. The day half of the wheel grows and shrinks to match, and as the
-module changes the calendar's own sunrise and sunset, D&D 5e's dawn and dusk recovery follows too.
-
-![Noon a few days after midwinter: the day half of the wheel is narrower, with night showing either side of it](docs/screenshots/winter-day.png)
-
-### Each Dawn in the Chat
-
-Turn on **Announce Each Dawn** and each new day is posted to the chat as the sun rises on it, with its date, the
-start of a season and any festival. Moving the time over several days posts only the last, and rewinding posts
-nothing.
-
-### Darkness
-
-Turn on **Darken Scenes at Night** and the active scene's darkness follows the sky. The light fades by the height
-of the sun, as it does outdoors, and comes back the same way before sunrise:
-
-| | Darkness |
-| --- | --- |
-| Until about an hour and a quarter before sunset | Full daylight |
-| The late afternoon | A first dimming, to a tenth by half an hour before sunset |
-| Sunset | About a third dark |
-| Half an hour after sunset, as civil twilight ends | Two-thirds dark |
-| About an hour and a quarter after sunset | Night |
-
-The fade takes as long every evening, whatever the season. At night, a bright moon high in the sky lifts the dark
-a little: a full moon overhead leaves the scene four-fifths dark rather than black. Only the active scene is
-changed, and a scene with its darkness locked in its lighting settings is left alone. Macros can read the darkness
-for the current time with `game.modules.get("sogrom-simple-dnd-calendar").api.darknessNow()`.
-
-### Settings
-
-| Setting | Default | |
-| --- | --- | --- |
-| Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
-| Calendar Style | Gilded Night | Gilded Night, Parchment or Underdark. Each player picks for themselves. |
-| Dress the Sky for the Season | None | Follow the Seasons (with festivals), or Just Winter, Spring, Summer or Autumn all year. The GM picks, for everyone. |
-| Dress the Bar for Your Adventure | None | One of the adventures below. The GM picks, for everyone. |
-| Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
-| Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |
-| Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun and the moons. The GM picks. |
-
-#### Adventure Trims
-
-Under **Dress the Bar for Your Adventure**, the bar is dressed for one of these:
-
-| Adventure | Trim |
-| --- | --- |
-| Curse of Strahd | A dead, thorny vine, cobwebs in the corners, a spider, bats, and drifting mist |
-| The Wild Beyond the Witchlight | Curling ribbons, toadstools, sparkles, and fireflies |
-| Descent into Avernus | A hellish glow, iron spikes, hanging chains, and rising embers |
-| Rime of the Frostmaiden | A thick crust of snow, long icicles, and falling snow |
-| Arcana Unleashed | A ley line, glowing runes, turning arcane circles, and sparkles |
-| Arcana Unleashed: Deadfall | Thay's crimson silk, hung with gold tassels, daggers, and red sigils |
-| World of Warcraft | Riveted bronze plates set with gems, with claws between them |
-| Vecna: Eve of Ruin | A gloom, necrotic tendrils, and the Eye, watching |
-| Tomb of Annihilation | Jungle leaves and lianas, bright flowers, and skulls |
-| Phandelver and Below: The Shattered Obelisk | Dark shards of the obelisk, aberrant tentacles, and a sickly glow |
-
-## For Developers
-
-Moons are kept by calendar, keyed as in `CONFIG.DND5E.calendar.calendars`. Change them, or add moons for your own
-calendar, in the `sogrom-simple-dnd-calendar.moons` hook, which runs once before the calendar first draws:
-
-```js
-Hooks.on("sogrom-simple-dnd-calendar.moons", (moons, calendar) => {
-  moons.myCalendar = [{
-    id: "pale", name: "The Pale Lady", period: 32, color: "#e8f0ff",
-    epoch: { year: 1000, day: 0 }, // A moment its phase is known: a year as the calendar shows it, a day of that year from 0
-    epochPhase: 0.5                 // ...and its phase then: 0 new, 0.5 full
-  }];
-});
-```
-
-The calendar itself is `dnd5e.ui.calendar`, a subclass of D&D 5e's `CalendarHUD`.
-
 ## Compatibility
 
 Foundry VTT 14 and D&D 5e 6.x.
 
 ## Credits
 
-Battlemaps by Czepeku — [www.czepeku.com](https://www.czepeku.com). The battlemap behind the calendar in the screenshots is [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands) and is not distributed in this the module.
+The battlemap behind the calendar in the screenshots is [Caravan Camp (Grasslands)](https://www.czepeku.com/fantasy/maps/caravan-camp/grasslands) and is not distributed with the module.
+
+For more of Czepeku's work, visit https://www.czepeku.com. 
 
 ## Licence
 

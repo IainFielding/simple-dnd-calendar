@@ -10,6 +10,10 @@
  * Each sky and bar trim is shot too, into docs/screenshots/trims. To take only those:
  *
  *   npm run docs:screenshots -- --trims
+ *
+ * And the moons' events and forecasts, into docs/screenshots/lunar-*.png. To take only those:
+ *
+ *   npm run docs:screenshots -- --lunar
  */
 
 import fs from "node:fs";
@@ -27,6 +31,9 @@ fs.mkdirSync(OUT, { recursive: true });
 
 /** Take only the trims' shots. */
 const TRIMS_ONLY = process.argv.includes("--trims");
+
+/** Take only the moons' shots. */
+const LUNAR_ONLY = process.argv.includes("--lunar");
 
 /** The calendar and a margin around it, for a cropped shot. */
 const CLIP = { x: 480, y: 0, width: 640, height: 230 };
@@ -65,11 +72,12 @@ try {
     console.log(`  ${OUT}/${name}.png`);
   };
 
-  if ( !TRIMS_ONLY ) await docShots(ctx, shoot);
-  await trimShots(ctx, shoot);
+  if ( !TRIMS_ONLY && !LUNAR_ONLY ) await docShots(ctx, shoot);
+  if ( !TRIMS_ONLY ) await lunarShots(ctx, backdrop);
+  if ( !LUNAR_ONLY ) await trimShots(ctx, shoot);
 
   // The whole screen, for context.
-  if ( !TRIMS_ONLY ) {
+  if ( !TRIMS_ONLY && !LUNAR_ONLY ) {
     await gm.page.mouse.move(5, 900);
     await gm.page.screenshot({ path: `${OUT}/screen.png` });
     console.log(`  ${OUT}/screen.png`);
@@ -140,6 +148,115 @@ async function docShots(ctx, shoot) {
   await setTime(ctx, { year: 1525, day: 358, hour: 12, minute: 0 });
   await shoot(gm, "winter-day");
   await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", false), MODULE_ID);
+}
+
+/* -------------------------------------------- */
+
+/**
+ * The moons' shots: the marker for a full moon and its tooltip, the band's forecast of each moon's phase and next
+ * full moon, Greyhawk's two moons full together, and Eberron's twelve moons. All but Eberron's are taken hovering over
+ * what shows the tooltip, with the shot widened to take the tooltip in.
+ * @param {{gm: Session, player: Session}} ctx
+ * @param {string|null} backdrop
+ */
+async function lunarShots(ctx, backdrop) {
+  const { gm, player } = ctx;
+
+  const shootTooltip = async (name, selector) => {
+    await waitForCanvas(gm, backdrop);
+    const target = gm.page.locator(`#sdc-calendar ${selector}`);
+    await target.waitFor({ state: "visible", timeout: 10_000 });
+    // A reload brings back Foundry's warning about hardware acceleration, which would sit over the shot.
+    await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+    await gm.page.mouse.move(5, 900);
+    await target.hover();
+    await gm.page.waitForFunction(() => document.getElementById("tooltip")?.classList.contains("active"));
+    await gm.page.waitForTimeout(400);
+    const tip = await gm.page.locator("#tooltip").boundingBox();
+    const left = Math.min(CLIP.x, Math.floor(tip.x) - 16);
+    const right = Math.max(CLIP.x + CLIP.width, Math.ceil(tip.x + tip.width) + 16);
+    const bottom = Math.max(CLIP.y + CLIP.height, Math.ceil(tip.y + tip.height) + 16);
+    await gm.page.screenshot({ path: `${OUT}/${name}.png`, clip: { x: left, y: CLIP.y, width: right - left, height: bottom } });
+    console.log(`  ${OUT}/${name}.png`);
+    await gm.page.mouse.move(5, 900);
+  };
+
+  const switchCalendar = async calendar => {
+    if ( !await useCalendar(gm, calendar) ) return;
+    await player.reload();
+    for ( const session of [gm, player] ) {
+      await waitForCanvas(session, backdrop);
+      await session.eval(() => ui.sidebar.collapse?.());
+    }
+  };
+
+  // The first night from a date whose moons' events match a pattern, found with the module's own reckoning.
+  const eventNight = async ({ year, day, hour }, pattern) => {
+    const found = await gm.eval(async ({ moduleId, year, day, hour, pattern }) => {
+      const { moonEventLabels } = await import(`/modules/${moduleId}/scripts/calendar.mjs`);
+      const calendar = game.time.calendar;
+      const y = year - calendar.years.yearZero;
+      for ( let d = day; d < day + 800; d++ ) {
+        const time = calendar.componentsToTime({ year: y, day: d, hour, minute: 0 });
+        if ( new RegExp(pattern).test(moonEventLabels(time).join(" ")) ) {
+          const c = calendar.timeToComponents(time);
+          return { year: c.year + calendar.years.yearZero, day: c.day };
+        }
+      }
+      return null;
+    }, { moduleId: MODULE_ID, year, day, hour, pattern: pattern.source });
+    if ( !found ) throw new Error(`No night matching ${pattern} within two years of day ${day} of ${year}.`);
+    await setTime(ctx, { ...found, hour, minute: 0 });
+  };
+
+  // Selûne full, and the band's forecast the same night.
+  await switchCalendar("harptos");
+  await eventNight({ year: 1501, day: 25, hour: 23 }, /is full/);
+  await shootTooltip("lunar-full", ".sdc-moon-event-icon");
+  await shootTooltip("lunar-forecast", ".sdc-season");
+
+  // Luna and Celene full together on the fourth day of Needfest, late at night.
+  await switchCalendar("greyhawk");
+  await eventNight({ year: 591, day: 0, hour: 23 }, /full together/);
+  await shootTooltip("lunar-greyhawk", ".sdc-moon-event-icon");
+
+  // Eberron's twelve moons in the night sky, with nothing hovered: the hour, within two years, that has the most of
+  // them in the bowl, and of those the one with the moons spread furthest apart.
+  await switchCalendar("khorvaire");
+  const crowded = await gm.eval(async moduleId => {
+    const sky = await import(`/modules/${moduleId}/scripts/sky.mjs`);
+    const { worldMoons } = await import(`/modules/${moduleId}/scripts/calendar.mjs`);
+    const { SKY } = await import(`/modules/${moduleId}/scripts/hud.mjs`);
+    const calendar = game.time.calendar;
+    const moons = worldMoons().map(config => ({ config, epoch: sky.epochTime(calendar, config) }));
+    const start = calendar.componentsToTime({ year: 998 - calendar.years.yearZero, day: 0, hour: 0, minute: 0 });
+    const hour = calendar.days.secondsPerMinute * calendar.days.minutesPerHour;
+    let best = null;
+    for ( let i = 0; i < 2 * calendar.days.daysPerYear * calendar.days.hoursPerDay; i++ ) {
+      const time = start + (i * hour);
+      const fraction = sky.dayFraction(calendar, time);
+      if ( (fraction > 0.1) && (fraction < 0.9) ) continue; // Only the hours either side of midnight.
+      const angles = moons.map(({ config, epoch }) => sky.moonSkyAngle(fraction, sky.moonPhase(calendar, config, time, epoch)))
+        .filter(angle => sky.aboveHorizon(angle) && (sky.orbitPoint(angle, { x: SKY.cx, y: SKY.cy, r: SKY.orbit }).y > -13))
+        .sort((a, b) => a - b);
+      const gap = Math.min(Infinity, ...angles.slice(1).map((angle, j) => angle - angles[j]));
+      if ( !best || (angles.length > best.count) || ((angles.length === best.count) && (gap > best.gap)) ) {
+        best = { time, count: angles.length, gap };
+      }
+    }
+    const c = calendar.timeToComponents(best.time);
+    return { year: c.year + calendar.years.yearZero, day: c.day, hour: c.hour, count: best.count };
+  }, MODULE_ID);
+  console.log(`  ${crowded.count} of Eberron's moons in the sky on day ${crowded.day} of ${crowded.year} at ${crowded.hour}:00.`);
+  await setTime(ctx, { year: crowded.year, day: crowded.day, hour: crowded.hour, minute: 0 });
+  await waitForCanvas(gm, backdrop);
+  await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+  await gm.page.mouse.move(5, 900);
+  await gm.page.waitForTimeout(400);
+  await gm.page.screenshot({ path: `${OUT}/lunar-khorvaire.png`, clip: CLIP });
+  console.log(`  ${OUT}/lunar-khorvaire.png`);
+
+  await switchCalendar("harptos");
 }
 
 /* -------------------------------------------- */
