@@ -1,7 +1,9 @@
 import { ADVENTURES } from "./trim-adventures.mjs";
+import { CAMPAIGNS } from "./trim-campaigns.mjs";
 import { FESTIVALS } from "./trim-festivals.mjs";
 import { BAR_MIDDLE, BAR_OUTLINE, BOWL_OUTLINE, seededRandom } from "./trim-path.mjs";
 import { SEASONS } from "./trim-seasons.mjs";
+import { WORLDS } from "./trim-worlds.mjs";
 
 /**
  * The calendar's trim: the sky's, round the bowl about the day wheel, for the season or a festival; and the bar's,
@@ -17,11 +19,27 @@ export { festivalTrimKind } from "./trim-festivals.mjs";
  */
 export const SKY_TRIM_CHOICES = ["none", "follow", ...Object.keys(SEASONS)];
 
+/** How the bar is dressed for each adventure or setting. */
+const BAR_TRIMS = { ...ADVENTURES, ...CAMPAIGNS, ...WORLDS };
+
 /**
- * The GM's choices for the bar's trim: none, or an adventure's.
+ * The GM's choices for the bar's trim: none, then each adventure or setting in the order of its English name, leaving
+ * out a leading "The".
  * @type {string[]}
  */
-export const BAR_TRIM_CHOICES = ["none", ...Object.keys(ADVENTURES)];
+export const BAR_TRIM_CHOICES = ["none",
+  "acqinc", "arcana", "thay", "astarion", "glory", "manythings", "candlekeep", "ravenloft", "avernus", "delves",
+  "icespire", "dragonlance", "stormwreck", "madmage", "eberron", "exandria", "realms", "saltmarsh", "greyhawk",
+  "borderlands", "dragonqueen", "holdbackdead", "radiantcitadel", "goldenvault", "locathah", "lorwyn", "kwalish",
+  "phandelver", "netheril", "underdark", "obelisk", "planescape", "elemental", "staircase", "ravnica", "icewind",
+  "tiamat", "scions", "spelljammer", "giants", "strixhaven", "yawningportal", "theros", "chult", "unicorn", "vecna",
+  "dragonheist", "feywild", "warcraft"];
+
+/**
+ * Every bar trim's key, for checking the choices against.
+ * @type {string[]}
+ */
+export const BAR_TRIM_KINDS = Object.keys(BAR_TRIMS);
 
 /**
  * The sky's trim for a season or a festival, round the bowl's rim.
@@ -40,9 +58,9 @@ export function skyTrim(kind) {
  * @returns {string}  SVG markup, empty for no known kind.
  */
 export function barTrim(kind) {
-  if ( !Object.hasOwn(ADVENTURES, kind) ) return "";
+  if ( !Object.hasOwn(BAR_TRIMS, kind) ) return "";
   const middle = p => ((p.x > BAR_MIDDLE[0]) && (p.x < BAR_MIDDLE[1]) ? " middle" : "");
-  return ADVENTURES[kind](BAR_OUTLINE, seededRandom(11), middle);
+  return BAR_TRIMS[kind](BAR_OUTLINE, seededRandom(11), middle);
 }
 
 /**

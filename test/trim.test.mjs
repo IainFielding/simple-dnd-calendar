@@ -1,6 +1,10 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { BAR_OUTLINE, BAR_TRIM_CHOICES, barTrim, BOWL_OUTLINE, festivalTrimKind, SKY_TRIM_CHOICES, skyTrim, skyTrimKind }
-  from "../scripts/trim.mjs";
+import { BAR_OUTLINE, BAR_TRIM_CHOICES, BAR_TRIM_KINDS, barTrim, BOWL_OUTLINE, festivalTrimKind, SKY_TRIM_CHOICES, skyTrim,
+  skyTrimKind } from "../scripts/trim.mjs";
+
+const strings = JSON.parse(readFileSync(new URL("../lang/en.json", import.meta.url), "utf8"));
+const barTrimName = kind => strings.SDC.Settings.BarTrim[kind.charAt(0).toUpperCase() + kind.slice(1)];
 
 describe("the season trim", () => {
   it("walks the bar's lower edge from corner to corner", () => {
@@ -90,6 +94,14 @@ describe("the GM's choice of trim", () => {
       expect(choices[0]).toBe("none");
     }
     expect(SKY_TRIM_CHOICES).toEqual(["none", "follow", "winter", "spring", "summer", "fall"]);
+  });
+
+  it("offers every adventure and setting, named and in order of name", () => {
+    expect([...BAR_TRIM_CHOICES.slice(1)].sort()).toEqual([...BAR_TRIM_KINDS].sort());
+    const names = BAR_TRIM_CHOICES.map(barTrimName);
+    for ( const [i, name] of names.entries() ) expect(typeof name, BAR_TRIM_CHOICES[i]).toBe("string");
+    const sortable = names.slice(1).map(n => n.replace(/^The /, "").toLowerCase());
+    expect(sortable).toEqual([...sortable].sort());
   });
 
   it("puts up a festival's trim for the day while following the seasons", () => {
