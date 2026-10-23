@@ -2,7 +2,7 @@
 
 All notable changes to Simple D&D Calendar.
 
-## 1.5.0 — Unreleased
+## 1.5.0 — 2026-10-23
 
 ### New
 
