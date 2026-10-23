@@ -265,7 +265,7 @@ export const CAMPAIGNS = {
     const parts = [`<path class="sdc-gold-cord" d="${d}"/>`];
     lows.forEach((s, i) => {
       const p = point(path, s, sags(s) + 0.6);
-      parts.push(`<g class="sdc-piece${cls(p)}" ${place(p, 0, 1.8)}><path class="sdc-ray" d="M0,1L0,-1.4M-1.6,1.4L-2.8,.2`
+      parts.push(`<g class="sdc-piece${cls(p)}" ${place(p, 0, 1.8)}><path class="sdc-gem-ray" d="M0,1L0,-1.4M-1.6,1.4L-2.8,.2`
         + `M1.6,1.4L2.8,.2" transform="translate(0 2)"/>${gem(colours[i % colours.length])}</g>`);
     });
     for ( const s of pins.slice(1, -1) ) {

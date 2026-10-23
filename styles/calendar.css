@@ -930,7 +930,7 @@
 
 /* Journeys through the Radiant Citadel */
 #sdc-calendar[data-bar-trim="radiantcitadel"] { --sdc-glow: rgb(255 220 120 / 38%); }
-#sdc-calendar .sdc-ray { stroke: #ffe8a0; stroke-width: 0.35; stroke-linecap: round; opacity: 0.8; }
+#sdc-calendar .sdc-gem-ray { stroke: #ffe8a0; stroke-width: 0.35; stroke-linecap: round; opacity: 0.8; }
 #sdc-calendar .sdc-sparkle.radiant { fill: #fff2c0; }
 
 /* Dragons of Stormwreck Isle */
