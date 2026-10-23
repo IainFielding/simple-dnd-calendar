@@ -37,6 +37,8 @@ All notable changes to Simple D&D Calendar.
 - **Dress the Frame for the Season** is now **Dress the Sky for the Season**, and dresses only the sky's rim, about
   the day wheel. It is a choice: None, Follow the Seasons, or Just Winter, Spring, Summer or Autumn to keep one
   season's trim all year. Worlds that had it on now follow the seasons.
+- **Eberron's moons follow their months.** As *Rising from the Last War* names each month for the moon closest to
+  the world then, each of the twelve moons is full in the middle of its own month in 998 YK.
 
 ## 1.0.0 — 2026-10-22
 

@@ -70,24 +70,24 @@ Each moon on its own also falls 4 days later each year: Luna's full moons drift 
 
 ### Calendar of Khorvaire (Eberron)
 
-Eberron has twelve moons, one for each month of D&D 5e's Calendar of Khorvaire, which shares their names. Each is a week slower than the one before. The setting's books give the moons' names and colours, but no periods or phases that agree across sources, so the module uses this scheme. It starts their phases spread evenly round the cycle at the start of 998 YK, where D&D 5e's calendar begins.
+Eberron has twelve moons, one for each month of D&D 5e's Calendar of Khorvaire, which shares their names. *Eberron: Rising from the Last War* says each month is named for the moon whose orbit brings it closest to the world that month, so each moon is full in the middle of its own month in 998 YK, where D&D 5e's calendar begins. The book gives no periods, so the module makes each moon a week slower than the one before.
 
-| Moon | Colour | Period | Phase on 1 Zarantyr 998 YK |
+| Moon | Colour | Period | Full in 998 YK on |
 | --- | --- | --- | --- |
-| **Zarantyr** | Pearly white | 28 days | New Moon |
-| **Olarune** | Pale orange | 35 days | Waxing Crescent |
-| **Therendor** | Pale grey | 42 days | Waxing Crescent |
-| **Eyre** | Silvery grey | 49 days | First Quarter |
-| **Dravago** | Pale lavender | 56 days | Waxing Gibbous |
-| **Nymm** | Pale yellow | 63 days | Waxing Gibbous |
-| **Lharvion** | Dull white | 70 days | Full Moon |
-| **Barrakas** | Pale grey | 77 days | Waning Gibbous |
-| **Rhaan** | Pale blue | 84 days | Waning Gibbous |
-| **Sypheros** | Smoky grey | 91 days | Last Quarter |
-| **Aryth** | Orange-red | 98 days | Waning Crescent |
-| **Vult** | Grey | 105 days | Waning Crescent |
+| **Zarantyr** | Pearly white | 28 days | 15 Zarantyr |
+| **Olarune** | Pale orange | 35 days | 15 Olarune |
+| **Therendor** | Pale grey | 42 days | 15 Therendor |
+| **Eyre** | Silvery grey | 49 days | 15 Eyre |
+| **Dravago** | Pale lavender | 56 days | 15 Dravago |
+| **Nymm** | Pale yellow | 63 days | 15 Nymm |
+| **Lharvion** | Dull white | 70 days | 15 Lharvion |
+| **Barrakas** | Pale grey | 77 days | 15 Barrakas |
+| **Rhaan** | Pale blue | 84 days | 15 Rhaan |
+| **Sypheros** | Smoky grey, the Shadow Moon | 91 days | 15 Sypheros |
+| **Aryth** | Orange-red | 98 days | 15 Aryth |
+| **Vult** | Grey | 105 days | 15 Vult |
 
-Zarantyr's period is exactly a month, so it is full on the 15th of every month, every year. The other moons' periods don't fit the month or the 336-day year, so their full moons move through the calendar. Every one of the twelve is a whole number of weeks, so each moon's full moons all fall on the same day of the week. With twelve moons, few nights pass without at least one of them full or close to it.
+Zarantyr's period is exactly a month, so it is full on the 15th of every month, every year. The other moons' periods don't fit the month or the 336-day year, so after 998 YK their full moons drift away from their own months. Every one of the twelve is a whole number of weeks, so each moon's full moons all fall on the same day of the week. With twelve moons, few nights pass without at least one of them full or close to it.
 
 ### Gregorian
 

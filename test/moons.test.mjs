@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { MOONS } from "../scripts/moons.mjs";
 import * as sky from "../scripts/sky.mjs";
+import { makeCalendar } from "./helpers/foundry-shims.mjs";
 
 const strings = JSON.parse(readFileSync(new URL("../lang/en.json", import.meta.url), "utf8"));
 const lookup = key => key.split(".").reduce((o, k) => o?.[k], strings);
@@ -41,6 +42,17 @@ describe("the moon catalogue", () => {
     expect(sky.wrap(days, selune.period)).toBeCloseTo(0.75);
     expect(selune.epoch.hour).toBe(-0.75 * 24);
     expect(selune.epochPhase).toBe(0.5);
+  });
+
+  it("makes each of Eberron's moons full in the middle of its own month in 998 YK", () => {
+    const months = MOONS.khorvaire.map((_, i) => ({ ordinal: i + 1, days: 28 }));
+    const calendar = makeCalendar({ months, yearZero: 998 });
+    const day = 24 * 3600;
+    MOONS.khorvaire.forEach((moon, i) => {
+      const fifteenth = calendar.componentsToTime({ day: (28 * i) + 14 });
+      expect(sky.phaseName(sky.moonPhase(calendar, moon, fifteenth)), moon.id).toBe("Full");
+      expect(sky.moonPhase(calendar, moon, fifteenth - (7 * day)), moon.id).toBeLessThan(0.5);
+    });
   });
 
   it("gives Selûne, and only Selûne, the Tears' trail", () => {
