@@ -579,6 +579,60 @@
 #sdc-calendar .sdc-crescent { fill: #dfe6f2; stroke: #8b97ab; stroke-width: 0.3; }
 #sdc-calendar .sdc-crescent .sdc-ribbon { stroke: #b9c4d6; }
 
+/* The Exandrian calendar's holidays */
+#sdc-calendar[data-sky-trim="newdawn"] { --sdc-glow: rgb(255 200 90 / 40%); }
+#sdc-calendar[data-sky-trim="hillsgold"] { --sdc-glow: rgb(240 200 90 / 34%); }
+#sdc-calendar[data-sky-trim="challenging"] { --sdc-glow: rgb(140 190 255 / 36%); }
+#sdc-calendar[data-sky-trim="merryfrond"] { --sdc-glow: rgb(140 230 120 / 32%); }
+#sdc-calendar[data-sky-trim="deepsolace"] { --sdc-glow: rgb(255 170 60 / 32%); }
+#sdc-calendar[data-sky-trim="artisansfaire"] { --sdc-glow: rgb(255 160 200 / 30%); }
+#sdc-calendar[data-sky-trim="elvendawn"] { --sdc-glow: rgb(200 230 255 / 36%); }
+#sdc-calendar[data-sky-trim="largesse"] { --sdc-glow: rgb(240 200 80 / 34%); }
+#sdc-calendar[data-sky-trim="hazel"] { --sdc-glow: rgb(210 160 80 / 30%); }
+#sdc-calendar[data-sky-trim="civilization"] { --sdc-glow: rgb(230 210 140 / 32%); }
+#sdc-calendar[data-sky-trim="ascension"] { --sdc-glow: rgb(150 90 220 / 36%); }
+#sdc-calendar[data-sky-trim="zanscup"] { --sdc-glow: rgb(200 60 110 / 32%); }
+#sdc-calendar[data-sky-trim="barreneve"] { --sdc-glow: rgb(255 200 120 / 30%); }
+#sdc-calendar[data-sky-trim="embertide"] { --sdc-glow: rgb(255 110 40 / 42%); }
+
+#sdc-calendar .sdc-dawn-ray { fill: #ffd36a; opacity: 0.85; }
+#sdc-calendar .sdc-dawn-sun { fill: #ffe08a; filter: drop-shadow(0 0 1.5px #ffb030); }
+#sdc-calendar .sdc-gold-hills { fill: #c99a32; }
+#sdc-calendar .sdc-gold-hills-crest { fill: none; stroke: #f2d070; stroke-width: 0.6; }
+#sdc-calendar .sdc-sparkle.gold { fill: #ffe7a0; }
+#sdc-calendar .sdc-frond { fill: none; stroke: #4fa83f; stroke-width: 0.5; stroke-linecap: round; }
+#sdc-calendar .sdc-confetti { fill: var(--c); }
+#sdc-calendar .sdc-solace-stone { fill: #6a625a; stroke: #3a3530; stroke-width: 0.3; }
+#sdc-calendar .sdc-solace-joint { fill: none; stroke: #3a3530; stroke-width: 0.35; }
+#sdc-calendar .sdc-amber { fill: #ffae3a; stroke: #fff0c0; stroke-width: 0.2; filter: drop-shadow(0 0 1.2px #ff8a1a);
+  animation: sdc-glow 5s ease-in-out infinite; }
+#sdc-calendar .sdc-flag { fill: var(--c); }
+#sdc-calendar .sdc-jug { fill: var(--c); stroke: rgb(0 0 0 / 40%); stroke-width: 0.25; }
+#sdc-calendar .sdc-jug-band { stroke: #f6ecd0; stroke-width: 0.35; }
+#sdc-calendar .sdc-vine.elven { stroke: #b8c8d0; stroke-width: 0.9; }
+#sdc-calendar .sdc-leaf.elven { fill: #d8e4ec; }
+#sdc-calendar .sdc-blossom-white ellipse { fill: #ffffff; }
+#sdc-calendar .sdc-blossom-white .heart { fill: #f6e08a; }
+#sdc-calendar .sdc-sparkle.elven { fill: #e8f4ff; }
+#sdc-calendar .sdc-gift-ribbon { fill: none; stroke: #c02a4a; stroke-width: 0.8; }
+#sdc-calendar .sdc-purse { fill: #8a5a2a; stroke: #4a2e14; stroke-width: 0.3; }
+#sdc-calendar .sdc-purse-tie { stroke: #e8bd4a; stroke-width: 0.5; }
+#sdc-calendar .sdc-leaf.hazel { fill: #6a9a3a; }
+#sdc-calendar .sdc-catkin { fill: #d8c06a; }
+#sdc-calendar .sdc-hazelnut circle { fill: #9a6a32; stroke: #5a3a18; stroke-width: 0.25; }
+#sdc-calendar .sdc-hazelnut .husk { fill: #7aa84a; }
+#sdc-calendar .sdc-garland.laurel { stroke: #5a7a2a; stroke-width: 0.8; }
+#sdc-calendar .sdc-seal.gold { fill: #d9a93a; }
+#sdc-calendar .sdc-mist.raven { fill: rgb(130 90 190 / 28%); }
+#sdc-calendar .sdc-feather { fill: #2a2236; stroke: #a890d0; stroke-width: 0.3; }
+#sdc-calendar .sdc-goblet { fill: #c9a24a; stroke: #6a4a18; stroke-width: 0.25; }
+#sdc-calendar .sdc-wine { fill: #8a1438; }
+#sdc-calendar .sdc-grapes circle { fill: #6a2a7a; stroke: #3a1440; stroke-width: 0.2; }
+#sdc-calendar .sdc-mourning { fill: none; stroke: #3a3440; stroke-width: 1.2; }
+#sdc-calendar .sdc-votive .wax { fill: #f2ead6; }
+#sdc-calendar .sdc-votive { animation: sdc-flicker 5s ease-in-out infinite; }
+#sdc-calendar .sdc-ember-bed { fill: #8a2a10; filter: drop-shadow(0 0 1.5px #ff6a1a); }
+
 /* Adventures: Curse of Strahd */
 #sdc-calendar .sdc-mist { fill: rgb(215 220 230 / 22%); filter: blur(1.5px); animation: sdc-drift 12s ease-in-out infinite; }
 #sdc-calendar .sdc-deadvine { fill: none; stroke: #74655a; stroke-width: 1.4; }
@@ -687,30 +741,30 @@
 #sdc-calendar .sdc-mote.aberrant { fill: #8aff9a; }
 
 /* Shared pieces, coloured by a c-<name> class */
-#sdc-calendar .sdc-trim .c-white { --c: #f2efe6; }
-#sdc-calendar .sdc-trim .c-black { --c: #26222e; }
-#sdc-calendar .sdc-trim .c-red { --c: #d2342e; }
-#sdc-calendar .sdc-trim .c-orange { --c: #f08a2c; }
-#sdc-calendar .sdc-trim .c-gold { --c: #e8bd4a; }
-#sdc-calendar .sdc-trim .c-sun { --c: #ffd25a; }
-#sdc-calendar .sdc-trim .c-sand { --c: #d8b77a; }
-#sdc-calendar .sdc-trim .c-green { --c: #3fa04a; }
-#sdc-calendar .sdc-trim .c-teal { --c: #3cc3b4; }
-#sdc-calendar .sdc-trim .c-blue { --c: #3f7fe0; }
-#sdc-calendar .sdc-trim .c-violet { --c: #9a62e8; }
-#sdc-calendar .sdc-trim .c-pink { --c: #f08ac8; }
-#sdc-calendar .sdc-trim .c-silver { --c: #c9d0da; }
-#sdc-calendar .sdc-trim .c-bronze { --c: #c07a3a; }
-#sdc-calendar .sdc-trim .c-fire { --c: #ff9a2a; }
-#sdc-calendar .sdc-trim .c-catha { --c: #eef0f6; }
-#sdc-calendar .sdc-trim .c-ruidus { --c: #c4472c; }
-#sdc-calendar .sdc-trim .c-solinari { --c: #f4f6fb; }
-#sdc-calendar .sdc-trim .c-lunitari { --c: #d8433a; }
-#sdc-calendar .sdc-trim .c-nuitari { --c: #2e2840; }
-#sdc-calendar .sdc-trim .c-siberys { --c: #f2c94c; }
-#sdc-calendar .sdc-trim .c-eberron { --c: #d8402e; }
-#sdc-calendar .sdc-trim .c-khyber { --c: #3a4fa8; }
-#sdc-calendar .sdc-trim .c-dunamis { --c: #a88aff; }
+#sdc-calendar .c-white { --c: #f2efe6; }
+#sdc-calendar .c-black { --c: #26222e; }
+#sdc-calendar .c-red { --c: #d2342e; }
+#sdc-calendar .c-orange { --c: #f08a2c; }
+#sdc-calendar .c-gold { --c: #e8bd4a; }
+#sdc-calendar .c-sun { --c: #ffd25a; }
+#sdc-calendar .c-sand { --c: #d8b77a; }
+#sdc-calendar .c-green { --c: #3fa04a; }
+#sdc-calendar .c-teal { --c: #3cc3b4; }
+#sdc-calendar .c-blue { --c: #3f7fe0; }
+#sdc-calendar .c-violet { --c: #9a62e8; }
+#sdc-calendar .c-pink { --c: #f08ac8; }
+#sdc-calendar .c-silver { --c: #c9d0da; }
+#sdc-calendar .c-bronze { --c: #c07a3a; }
+#sdc-calendar .c-fire { --c: #ff9a2a; }
+#sdc-calendar .c-catha { --c: #eef0f6; }
+#sdc-calendar .c-ruidus { --c: #c4472c; }
+#sdc-calendar .c-solinari { --c: #f4f6fb; }
+#sdc-calendar .c-lunitari { --c: #d8433a; }
+#sdc-calendar .c-nuitari { --c: #2e2840; }
+#sdc-calendar .c-siberys { --c: #f2c94c; }
+#sdc-calendar .c-eberron { --c: #d8402e; }
+#sdc-calendar .c-khyber { --c: #3a4fa8; }
+#sdc-calendar .c-dunamis { --c: #a88aff; }
 
 #sdc-calendar .sdc-coin circle { fill: var(--c); stroke: #7a5a18; stroke-width: 0.35; }
 #sdc-calendar .sdc-coin .rim { fill: none; stroke: rgb(255 245 200 / 70%); }
@@ -830,15 +884,15 @@
 #sdc-calendar .sdc-mythallar.inner { stroke-dasharray: 1 1; }
 
 /* More adventures */
-#sdc-calendar .sdc-trim .c-wave { --c: #6aff9a; }
-#sdc-calendar .sdc-trim .c-faerzress { --c: #c08aff; }
-#sdc-calendar .sdc-trim .c-grave { --c: #a8e07a; }
-#sdc-calendar .sdc-trim .c-water { --c: #4aa8ff; }
-#sdc-calendar .sdc-trim .c-air { --c: #d8ecff; }
-#sdc-calendar .sdc-trim .c-earth { --c: #a8803a; }
-#sdc-calendar .sdc-trim .c-frost { --c: #8ad8ff; }
-#sdc-calendar .sdc-trim .c-blood { --c: #9a0f1a; }
-#sdc-calendar .sdc-trim .c-spark { --c: #8ae0ff; }
+#sdc-calendar .c-wave { --c: #6aff9a; }
+#sdc-calendar .c-faerzress { --c: #c08aff; }
+#sdc-calendar .c-grave { --c: #a8e07a; }
+#sdc-calendar .c-water { --c: #4aa8ff; }
+#sdc-calendar .c-air { --c: #d8ecff; }
+#sdc-calendar .c-earth { --c: #a8803a; }
+#sdc-calendar .c-frost { --c: #8ad8ff; }
+#sdc-calendar .c-blood { --c: #9a0f1a; }
+#sdc-calendar .c-spark { --c: #8ae0ff; }
 
 /* Lost Mine of Phandelver */
 #sdc-calendar[data-bar-trim="phandelver"] { --sdc-glow: rgb(100 230 140 / 30%); }
@@ -1132,7 +1186,9 @@
   #sdc-calendar .sdc-portal .arch,
   #sdc-calendar .sdc-bolt,
   #sdc-calendar .sdc-sign,
-  #sdc-calendar .sdc-sway {
+  #sdc-calendar .sdc-sway,
+  #sdc-calendar .sdc-amber,
+  #sdc-calendar .sdc-votive {
     animation: none;
   }
 

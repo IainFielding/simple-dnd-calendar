@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { CALENDAR_OF_EXANDRIA } from "../scripts/calendars.mjs";
 import { BAR_OUTLINE, BAR_TRIM_CHOICES, BAR_TRIM_KINDS, barTrim, BOWL_OUTLINE, festivalTrimKind, SKY_TRIM_CHOICES, skyTrim,
   skyTrimKind } from "../scripts/trim.mjs";
 
@@ -73,6 +74,15 @@ describe("the festivals' and adventures' trim", () => {
       expect(skyTrim(kind), kind).not.toMatch(/NaN|undefined/);
     }
     expect(festivalTrimKind("")).toBeNull();
+  });
+
+  it("dresses the sky for every holiday of the Exandrian calendar", () => {
+    for ( const { name } of CALENDAR_OF_EXANDRIA.festivals ) {
+      const kind = festivalTrimKind(name);
+      expect(kind, name).toBeTruthy();
+      expect(skyTrim(kind), name).toMatch(/^<.*>$/s);
+      expect(skyTrim(kind), name).not.toMatch(/NaN|undefined/);
+    }
   });
 
   it("dresses the bar for each adventure", () => {

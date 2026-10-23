@@ -1,6 +1,7 @@
 import { ADVENTURES } from "./trim-adventures.mjs";
 import { CAMPAIGNS } from "./trim-campaigns.mjs";
 import { FESTIVALS } from "./trim-festivals.mjs";
+import { HOLIDAYS } from "./trim-holidays.mjs";
 import { BAR_MIDDLE, BAR_OUTLINE, BOWL_OUTLINE, seededRandom } from "./trim-path.mjs";
 import { SEASONS } from "./trim-seasons.mjs";
 import { WORLDS } from "./trim-worlds.mjs";
@@ -12,6 +13,9 @@ import { WORLDS } from "./trim-worlds.mjs";
 
 export { BAR_OUTLINE, BOWL_OUTLINE, seededRandom };
 export { festivalTrimKind } from "./trim-festivals.mjs";
+
+/** How the sky is dressed for each festival or holiday. */
+const DAYS = { ...FESTIVALS, ...HOLIDAYS };
 
 /**
  * The GM's choices for the sky's trim: none, the season of the day, or one season all year round.
@@ -47,7 +51,7 @@ export const BAR_TRIM_KINDS = Object.keys(BAR_TRIMS);
  * @returns {string}  SVG markup, empty for no known kind.
  */
 export function skyTrim(kind) {
-  const draw = Object.hasOwn(SEASONS, kind) ? SEASONS[kind] : Object.hasOwn(FESTIVALS, kind) ? FESTIVALS[kind] : null;
+  const draw = Object.hasOwn(SEASONS, kind) ? SEASONS[kind] : Object.hasOwn(DAYS, kind) ? DAYS[kind] : null;
   return draw ? draw(BOWL_OUTLINE, seededRandom(23), () => "") : "";
 }
 
