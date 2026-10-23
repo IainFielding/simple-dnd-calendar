@@ -17,9 +17,14 @@ Czepeku, [www.czepeku.com](https://www.czepeku.com).</sub>
 - **The season band.** The date, written across a band of the year's colours (green spring, gold summer, orange
   autumn, icy winter) that slides along as the year goes by, so you can see how far into the season you are. Hover
   it for the season's name and each moon's phase, with when it is next full.
-- **The season's trim.** The frame is dressed for the season along the bar's edge and the bowl's rim: frost and
-  icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. Off by default;
-  the GM can turn it on for everyone under **Dress the Frame for the Season**.
+- **The sky's trim.** The bowl's rim, about the day wheel, is dressed for the season: frost and
+  icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn. On a festival it
+  is dressed for the day: holly and bells for Midwinter or Needfest, grass and daisies for Greengrass or Growfest,
+  lanterns for Midsummer or Richfest, bunting and shields for Shieldmeet, wheat and apples for Highharvestide or
+  Brewfest, and moonflowers and silver crescents for the Feast of the Moon. Off by default; under **Dress the Sky for
+  the Season** the GM can have it follow the seasons or keep to just one all year, for everyone.
+- **The adventure's trim.** The bar can be dressed for the adventure you're running, under **Dress the Bar for Your
+  Adventure**, alongside the sky's trim or on its own. See [Adventure Trims](#adventure-trims).
 - **The day wheel.** Half day, half night. It turns through the day: the day half comes round from the right in
   the morning, sits at the bottom at noon, and leaves to the left in the evening. The icon on its rim shows dawn,
   day, dusk or night.
@@ -143,10 +148,28 @@ for the current time with `game.modules.get("sogrom-simple-dnd-calendar").api.da
 | --- | --- | --- |
 | Animate Time Changes | On | Play a change of time out on the calendar, rather than jumping straight to it. Each player picks for themselves. |
 | Calendar Style | Gilded Night | Gilded Night, Parchment or Underdark. Each player picks for themselves. |
-| Dress the Frame for the Season | Off | Trim the frame for the season. The GM picks, for everyone. |
+| Dress the Sky for the Season | None | Follow the Seasons (with festivals), or Just Winter, Spring, Summer or Autumn all year. The GM picks, for everyone. |
+| Dress the Bar for Your Adventure | None | One of the adventures below. The GM picks, for everyone. |
 | Long Summer Days | Off | Move sunrise and sunset with the seasons. The GM picks. |
 | Announce Each Dawn | Off | Post each new day to the chat as the sun rises. The GM picks. |
 | Darken Scenes at Night | Off | Keep the active scene's darkness in step with the sun and the moons. The GM picks. |
+
+#### Adventure Trims
+
+Under **Dress the Bar for Your Adventure**, the bar is dressed for one of these:
+
+| Adventure | Trim |
+| --- | --- |
+| Curse of Strahd | A dead, thorny vine, cobwebs in the corners, a spider, bats, and drifting mist |
+| The Wild Beyond the Witchlight | Curling ribbons, toadstools, sparkles, and fireflies |
+| Descent into Avernus | A hellish glow, iron spikes, hanging chains, and rising embers |
+| Rime of the Frostmaiden | A thick crust of snow, long icicles, and falling snow |
+| Arcana Unleashed | A ley line, glowing runes, turning arcane circles, and sparkles |
+| Arcana Unleashed: Deadfall | Thay's crimson silk, hung with gold tassels, daggers, and red sigils |
+| World of Warcraft | Riveted bronze plates set with gems, with claws between them |
+| Vecna: Eve of Ruin | A gloom, necrotic tendrils, and the Eye, watching |
+| Tomb of Annihilation | Jungle leaves and lianas, bright flowers, and skulls |
+| Phandelver and Below: The Shattered Obelisk | Dark shards of the obelisk, aberrant tentacles, and a sickly glow |
 
 ## For Developers
 

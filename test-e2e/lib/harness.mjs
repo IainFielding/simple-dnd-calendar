@@ -176,7 +176,8 @@ export function readCalendar(session) {
       phase: root.querySelector(".sdc-phase")?.dataset.phase,
       season: root.querySelector(".sdc-season")?.dataset.seasonName || null,
       seasonTooltip: root.querySelector(".sdc-season")?.dataset.tooltip || null,
-      seasonKind: root.dataset.season || null,
+      skyTrim: root.dataset.skyTrim || null,
+      barTrim: root.dataset.barTrim || null,
       festival: root.querySelector(".sdc-festival-icon")?.hidden ? null
         : root.querySelector(".sdc-festival-icon")?.dataset.tooltip,
       moons: visibleMoons.map(m => m.dataset.tooltip),

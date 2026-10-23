@@ -1,7 +1,8 @@
-import { festivalName, formatComponents, moonEventLabels, moonForecast, worldMoons } from "./calendar.mjs";
+import { festivalKey as festivalKeyOf, festivalName, formatComponents, moonEventLabels, moonForecast, worldMoons }
+  from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
-import { seasonTrim, seededRandom } from "./trim.mjs";
+import { BAR_TRIM_CHOICES, barTrim, festivalTrimKind, seededRandom, skyTrim, skyTrimKind } from "./trim.mjs";
 
 /**
  * The shape of the sky picture under the control bar, in CSS pixels. The bowl and the day wheel share a centre above
@@ -254,7 +255,8 @@ export function createCalendarHUD(CalendarHUD) {
         moons: find(".sdc-moons")
       };
       this.#text = {};
-      delete this.element.dataset.season;
+      delete this.element.dataset.skyTrim;
+      delete this.element.dataset.barTrim;
       const calendar = game.time.calendar;
       this.#moons = worldMoons().map(config => {
         const size = MOON_RADIUS * 2;
@@ -372,18 +374,27 @@ export function createCalendarHUD(CalendarHUD) {
       const clock = formatComponents(calendar, components, "time");
       this.#write("time", el.time, [day, clock].filter(Boolean).join(" – "));
 
-      // The season's trim round the frame, and its name on the season band.
+      // The bar's trim, for an adventure.
+      const adventure = game.settings.get(MODULE_ID, "barTrim");
+      const barKind = BAR_TRIM_CHOICES.includes(adventure) && (adventure !== "none") ? adventure : "";
+      if ( this.element.dataset.barTrim !== barKind ) {
+        this.element.dataset.barTrim = barKind;
+        el.barTrim.innerHTML = barTrim(barKind);
+      }
+
+      // The sky's trim, for the season or a festival; and the season's name on the band.
       const season = calendar.seasons.values[components.season];
       const seasonKey = season ? season.name : "";
-      if ( this.#text.season !== seasonKey ) {
+      const festivalKey = festivalKeyOf(calendar, components);
+      if ( (this.#text.season !== seasonKey) || (this.#text.festivalKey !== festivalKey) ) {
         this.#text.season = seasonKey;
-        const kind = game.settings.get(MODULE_ID, "seasonTrim") ? (sky.seasonKind(seasonKey) ?? "") : "";
+        this.#text.festivalKey = festivalKey;
+        const kind = skyTrimKind(game.settings.get(MODULE_ID, "seasonTrim"), sky.seasonKind(seasonKey),
+          festivalTrimKind(festivalKey)) ?? "";
         el.season.dataset.seasonName = season ? _loc(season.name) : "";
-        if ( this.element.dataset.season !== kind ) {
-          this.element.dataset.season = kind;
-          const trim = seasonTrim(kind);
-          el.barTrim.innerHTML = trim.bar;
-          el.bowlTrim.innerHTML = trim.bowl;
+        if ( this.element.dataset.skyTrim !== kind ) {
+          this.element.dataset.skyTrim = kind;
+          el.bowlTrim.innerHTML = skyTrim(kind);
         }
       }
       if ( !this.expanded ) return;

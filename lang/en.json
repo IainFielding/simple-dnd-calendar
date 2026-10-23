@@ -61,8 +61,29 @@
         "Stone": "Underdark"
       },
       "SeasonTrim": {
-        "Name": "Dress the Frame for the Season",
-        "Hint": "Trim the calendar's frame for the season, for everyone: frost and icicles in winter, a flowering vine in spring, sunflowers in summer, and fallen leaves in autumn."
+        "Name": "Dress the Sky for the Season",
+        "Hint": "Trim the rim of the sky about the day wheel, for everyone: frost and icicles for winter, a flowering vine for spring, sunflowers for summer, and fallen leaves for autumn. Follow the seasons as the year turns, with festivals dressed for the day, or keep to one season all year.",
+        "None": "None",
+        "Follow": "Follow the Seasons",
+        "Winter": "Just Winter",
+        "Spring": "Just Spring",
+        "Summer": "Just Summer",
+        "Fall": "Just Autumn"
+      },
+      "BarTrim": {
+        "Name": "Dress the Bar for Your Adventure",
+        "Hint": "Trim the calendar's bar for the adventure you're running, for everyone.",
+        "None": "None",
+        "Ravenloft": "Curse of Strahd",
+        "Feywild": "The Wild Beyond the Witchlight",
+        "Avernus": "Descent into Avernus",
+        "Icewind": "Rime of the Frostmaiden",
+        "Arcana": "Arcana Unleashed",
+        "Thay": "Arcana Unleashed: Deadfall",
+        "Warcraft": "World of Warcraft",
+        "Vecna": "Vecna: Eve of Ruin",
+        "Chult": "Tomb of Annihilation",
+        "Obelisk": "Phandelver and Below: The Shattered Obelisk"
       },
       "SceneDarkness": {
         "Name": "Darken Scenes at Night",

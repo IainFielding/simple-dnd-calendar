@@ -20,12 +20,21 @@ All notable changes to Simple D&D Calendar.
 - **Full and new moons are marked** beside the bowl on the day they fall, and so are moons full together, such as
   Luna and Celene on Needfest. `/date` and the dawn in the chat say so too.
 - **When's the next full moon?** Hover the season band for each moon's phase and the date it is next full.
+- **Festivals dress the sky** for the day while it follows the seasons: holly and bells for Midwinter, grass and
+  daisies for Greengrass, lanterns for Midsummer, bunting and shields for Shieldmeet, wheat and apples for
+  Highharvestide, and moonflowers for the Feast of the Moon, and likewise for Greyhawk's festival weeks.
+- **Dress the Bar for Your Adventure**, a trim for the bar, alongside the sky's: Curse of Strahd, The Wild Beyond
+  the Witchlight, Descent into Avernus, Rime of the Frostmaiden, Arcana Unleashed, Arcana Unleashed: Deadfall, World
+  of Warcraft, Vecna: Eve of Ruin, Tomb of Annihilation, and Phandelver and Below: The Shattered Obelisk.
 - **Calendar styles.** Each player can pick **Gilded Night** (the default), **Parchment** or **Underdark** under
   **Calendar Style**.
 
 ### Changed
 
 - The bar is solid in every style, rather than letting the scene show through.
+- **Dress the Frame for the Season** is now **Dress the Sky for the Season**, and dresses only the sky's rim, about
+  the day wheel. It is a choice: None, Follow the Seasons, or Just Winter, Spring, Summer or Autumn to keep one
+  season's trim all year. Worlds that had it on now follow the seasons.
 
 ## 1.0.0 — 2026-10-22
 
