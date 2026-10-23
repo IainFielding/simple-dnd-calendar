@@ -56,12 +56,14 @@ The sky surrounding the day wheel can be dressed to reflect the changing seasons
 | **Summer** | **Autumn** |
 | ![Sunflowers for summer](docs/screenshots/trims/sky-summer.png) | ![Fallen leaves for autumn](docs/screenshots/trims/sky-fall.png) |
 
+[Trims and Styles](docs/trims.md) shows every trim for the sky and the bar, and each of the calendar's styles.
+
 
 ### Adventure Themes
 
 The calendar bar can be tailored to suit the setting of your campaign. From the gothic dread of *Curse of Strahd* and the icy wilderness of *Rime of the Frostmaiden* to the infernal battlefields of *Descent into Avernus* and the reality-shattering threat of *Vecna: Eve of Ruin*, themed trims help the calendar blend seamlessly into your adventure.
 
-Every adventure and campaign setting Wizards of the Coast has published for fifth edition has a theme, 48 in all, from *Lost Mine of Phandelver* to *Arcana Unleashed*, and the worlds they're set in: the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven, Spelljammer, Dragonlance, Planescape and more. Each brings its own visual identity, allowing the calendar to complement the stories unfolding at your table. The [GM's guide](docs/gm.md#adventure-trims) lists them all.
+Every adventure and campaign setting Wizards of the Coast has published for fifth edition has a theme, 48 in all, from *Lost Mine of Phandelver* to *Arcana Unleashed*, and the worlds they're set in: the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven, Spelljammer, Dragonlance, Planescape and more. Each brings its own visual identity, allowing the calendar to complement the stories unfolding at your table. [Trims and Styles](docs/trims.md) shows every one.
 
 | Curse of Strahd | Rime of the Frostmaiden | Descent into Avernus |
 | --- | --- | --- |

@@ -72,59 +72,7 @@ The world's own calendar can't be unticked, as the world would lose it. Pick ano
 
 ### Adventure trims
 
-Every D&D adventure and campaign setting Wizards of the Coast has published for fifth edition has a trim for the bar, from *Lost Mine of Phandelver* to *Arcana Unleashed*, and there's one for World of Warcraft: 49 in all, listed in **Dress the Bar for Your Adventure** by name. Where a setting and its adventures share a world, they share a trim, and **Also for** says which books it covers.
-
-| Trim | Also for | What it adds to the bar |
-| --- | --- | --- |
-| Acquisitions Incorporated | | A brass chain in swags, hung with gold coins and contracts under red wax seals |
-| Arcana Unleashed | | A ley line, glowing runes, turning arcane circles, and sparkles |
-| Arcana Unleashed: Deadfall | | Thay's crimson silk, hung with gold tassels, daggers, and red sigils |
-| Astarion's Book of Hungers | | Crimson silk in swags, dark roses at its pins, and blood dripping from it |
-| Bigby Presents: Glory of the Giants | | Stone tablets carved with giant runes, glowing frost and fire |
-| The Book of Many Things | | The Deck's cards on a purple cord, each with its mark, and stars between |
-| Candlekeep Mysteries | | A shelf of books in a row, with candles among them |
-| Curse of Strahd and Ravenloft | *Van Richten's Guide to Ravenloft*, *Ravenloft: The Horrors Within* | A dead, thorny vine, cobwebs in the corners, a spider, bats, and drifting mist |
-| Descent into Avernus | | A hellish glow, iron spikes, hanging chains, and rising embers |
-| Dragon Delves | | A dragon's hoard of coins over the edge, gems of every dragon's colour, and claws gripping it |
-| Dragon of Icespire Peak | | Snow-capped peaks, the white dragon wheeling, and falling snow |
-| Dragonlance | *Shadow of the Dragon Queen* | Krynn's three moons, white, red and black, and silver lances between them |
-| Dragons of Stormwreck Isle | | A wreck's broken timbers, the sea beneath, and lightning |
-| Dungeon of the Mad Mage | | Undermountain's brick, Halaster's turning rune gates, and arcane motes |
-| Eberron | *Rising from the Last War*, *Forge of the Artificer*, *Forgotten Relics* | The lightning rail, and dragonshards of Siberys, Eberron and Khyber |
-| Exandria | *Explorer's Guide to Wildemount*, *Call of the Netherdeep*, *Tal'Dorei Campaign Setting Reborn* | Catha and Ruidus strung on silver, and the swirling sigils and motes of dunamis |
-| Forgotten Realms | *Sword Coast Adventurer's Guide*, *Heroes of Faerûn*, *Adventures in Faerûn* | The Weave as a blue ribbon, Mystra's seven-pointed stars, and Selûne's crescents |
-| Ghosts of Saltmarsh | | Waves, a fishing net in swags, and shells caught in it |
-| Greyhawk | The 2024 *Dungeon Master's Guide* | Castle battlements, with lanterns lit beneath the merlons |
-| Heroes of the Borderlands | | The Keep's palisade of sharpened stakes, with round shields hung on it |
-| Hoard of the Dragon Queen | | The Cult of the Dragon's purple in swags, with dragon eggs and spilled coins |
-| Hold Back the Dead | | A grave's mist, and the dead's hands reaching out of it |
-| Journeys through the Radiant Citadel | | Concord jewels of every colour on a gold chain, shining |
-| Keys from the Golden Vault | | A gold chain hung with keys, gold bars and coins |
-| Locathah Rising | | Kelp, coral, and rising bubbles |
-| Lorwyn-Shadowmoor | *Lorwyn: First Light* | Lorwyn's sunlit flowers along one half, giving way to Shadowmoor's thorns and gloom |
-| The Lost Laboratory of Kwalish | | Copper pipes, turning gears, and glowing vials |
-| Lost Mine of Phandelver | | A mine's rails, pickaxes and lanterns, and Wave Echo Cave's green glow |
-| Netheril | *Netheril's Fall* | Floating enclaves crowned with towers, and the gold rings of their mythallars |
-| Out of the Abyss | | Stalactites, glowing fungus, and the violet motes of faerzress |
-| Phandelver and Below: The Shattered Obelisk | | Dark shards of the obelisk, aberrant tentacles, and a sickly glow |
-| Planescape | *Sigil and the Outlands*, *Morte's Planar Parade*, *Turn of Fortune's Wheel* | Razorvine with leaves like blades, and glowing portals |
-| Princes of the Apocalypse | | The four elements in turn: air, earth, fire and water |
-| Quests from the Infinite Staircase | | A stair climbing along the edge, and doors to other worlds |
-| Ravnica | *Guildmasters' Guide to Ravnica* | Stained glass in the ten guilds' colours, and city spires |
-| Rime of the Frostmaiden | | A thick crust of snow, long icicles, and falling snow |
-| The Rise of Tiamat | | Scales in the five colours of the Dragon Queen's heads, and claws hooked over the edge |
-| Scions of Elemental Evil | | The Temple's cracked stone, and the alchemists' signs of the four elements, burning |
-| Spelljammer | *Astral Adventurer's Guide*, *Boo's Astral Menagerie*, *Light of Xaryxis* | Wildspace, with orbits, planets ringed and plain, and the stars |
-| Storm King's Thunder | | Storm clouds, lightning, and driving rain |
-| Strixhaven | *Strixhaven: A Curriculum of Chaos* | The five colleges' pennants on a gold cord |
-| Tales from the Yawning Portal | | The tavern's beams, hung with tankards and lanterns |
-| Theros | *Mythic Odysseys of Theros*, *Theros: No Silent Secret* | A gold meander, laurel leaves, and the stars of Nyx |
-| Tomb of Annihilation | *The Tortle Package* | Jungle leaves and lianas, bright flowers, and skulls |
-| Uni and the Hunt for the Lost Horn | | A rainbow, flowers, hearts and sparkles |
-| Vecna: Eve of Ruin | | A gloom, necrotic tendrils, and the Eye, watching |
-| Waterdeep: Dragon Heist | | A velvet swag hung with the Masked Lords' masks, and gold dragons |
-| The Wild Beyond the Witchlight | | Curling ribbons, toadstools, sparkles, and fireflies |
-| World of Warcraft | | Riveted bronze plates set with gems, with claws between them |
+Every D&D adventure and campaign setting Wizards of the Coast has published for fifth edition has a trim for the bar, and there's one for World of Warcraft: 49 in all, chosen in **Dress the Bar for Your Adventure**. Where a setting and its adventures share a world, they share a trim. [Trims and Styles](trims.md) shows each one, with the books it covers, and the sky's trims and the styles too.
 
 The adventure trim and the sky's seasonal trim can be used together.
 
