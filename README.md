@@ -4,7 +4,7 @@ Simple D&D Calendar turns the standard D&D 5e calendar into a living part of you
 
 Watch the sun rise and set, see moons wax and wane, and follow the progress of the year at a glance without opening a separate calendar window.
 
-![The calendar at midnight, with Selûne full overhead](docs/screenshots/night.png)
+![The calendar at sunset on a spring evening, the day wheel half day and half night, with Selûne waxing in the sky](docs/screenshots/hero.png)
 
 ## Features
 

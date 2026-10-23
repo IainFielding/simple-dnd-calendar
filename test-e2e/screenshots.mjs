@@ -14,6 +14,10 @@
  * And the moons' events and forecasts, into docs/screenshots/lunar-*.png. To take only those:
  *
  *   npm run docs:screenshots -- --lunar
+ *
+ * And the README's opening picture, docs/screenshots/hero.png. To take only that:
+ *
+ *   npm run docs:screenshots -- --hero
  */
 
 import fs from "node:fs";
@@ -34,6 +38,9 @@ const TRIMS_ONLY = process.argv.includes("--trims");
 
 /** Take only the moons' shots. */
 const LUNAR_ONLY = process.argv.includes("--lunar");
+
+/** Take only the README's opening picture. */
+const HERO_ONLY = process.argv.includes("--hero");
 
 /** The calendar and a margin around it, for a cropped shot. */
 const CLIP = { x: 480, y: 0, width: 640, height: 230 };
@@ -72,12 +79,14 @@ try {
     console.log(`  ${OUT}/${name}.png`);
   };
 
-  if ( !TRIMS_ONLY && !LUNAR_ONLY ) await docShots(ctx, shoot);
-  if ( !TRIMS_ONLY ) await lunarShots(ctx, backdrop);
-  if ( !LUNAR_ONLY ) await trimShots(ctx, shoot);
+  const all = !TRIMS_ONLY && !LUNAR_ONLY && !HERO_ONLY;
+  if ( all || HERO_ONLY ) await heroShot(ctx, shoot);
+  if ( all ) await docShots(ctx, shoot);
+  if ( all || LUNAR_ONLY ) await lunarShots(ctx, backdrop);
+  if ( all || TRIMS_ONLY ) await trimShots(ctx, shoot);
 
   // The whole screen, for context.
-  if ( !TRIMS_ONLY && !LUNAR_ONLY ) {
+  if ( all ) {
     await gm.page.mouse.move(5, 900);
     await gm.page.screenshot({ path: `${OUT}/screen.png` });
     console.log(`  ${OUT}/screen.png`);
@@ -86,6 +95,41 @@ try {
   await player?.close();
   await gm?.close({ shutDownWorld: true });
   await server.stop();
+}
+
+/* -------------------------------------------- */
+
+/**
+ * The README's opening picture: the calendar as it comes, with no trims, at sunset on a spring evening, the day wheel
+ * turned half to day and half to night, and Selûne waxing in the bowl. The evening is the first in spring with no
+ * festival or full or new moon to mark, and Selûne up and clear of the middle of the bowl.
+ * @param {{gm: Session, player: Session}} ctx
+ * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
+ */
+async function heroShot(ctx, shoot) {
+  const { gm } = ctx;
+  await gm.eval(async moduleId => {
+    for ( const key of ["seasonTrim", "barTrim"] ) await game.settings.set(moduleId, key, "none");
+  }, MODULE_ID);
+  const evening = await gm.eval(async moduleId => {
+    const sky = await import(`/modules/${moduleId}/scripts/sky.mjs`);
+    const { festivalKey, moonEventLabels, worldMoons } = await import(`/modules/${moduleId}/scripts/calendar.mjs`);
+    const calendar = game.time.calendar;
+    const [selune] = worldMoons();
+    for ( let day = 90; day < 170; day++ ) {
+      const time = calendar.componentsToTime({ year: 1525 - calendar.years.yearZero, day, hour: 18 });
+      const components = calendar.timeToComponents(time);
+      const phase = sky.moonPhase(calendar, selune, time);
+      const angle = sky.moonSkyAngle(sky.dayFraction(calendar, time), phase);
+      const fromMiddle = Math.abs(sky.wrap(angle - (Math.PI / 2) + Math.PI, 2 * Math.PI) - Math.PI);
+      if ( festivalKey(calendar, components) || moonEventLabels(time).length ) continue;
+      if ( (phase > 0.3) && (phase < 0.42) && sky.aboveHorizon(angle) && (fromMiddle > 0.35) ) return day;
+    }
+    return 120;
+  }, MODULE_ID);
+  console.log(`  The hero's evening: day ${evening} of 1525.`);
+  await setTime(ctx, { year: 1525, day: evening, hour: 18, minute: 0 });
+  await shoot(gm, "hero");
 }
 
 /* -------------------------------------------- */
