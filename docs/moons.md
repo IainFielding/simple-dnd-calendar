@@ -97,6 +97,29 @@ Zarantyr's period is exactly a month, so it is full on the 15th of every month, 
 
 This is Earth's Moon, counted from a real new moon. The real Moon's months vary in length, so a phase here can be up to about half a day from the real one, and the calendar has no time zones. It's close enough to put the full moons on the right nights.
 
+### Exandrian Calendar (Exandria)
+
+One of the module's [additional calendars](gm.md#additional-calendars).
+
+| Moon | Colour | Period | Counted from |
+| --- | --- | --- | --- |
+| **Catha** | Silver-white | 29.82 days | Full on New Dawn, 1 Horisal 836 PD |
+| **Ruidus** | Vermilion | 164 days | New on New Dawn, 1 Horisal 836 PD |
+
+*Tal'Dorei Campaign Setting Reborn* says Catha completes a cycle about once a month, so its period is the average of Exandria's eleven months, 328 ÷ 11 days. Ruidus has a half-year orbit, so it is full twice a year, in the middle of each half. Ruidus is ruddy and dim, and shines vermilion when full, so its lit face is drawn vermilion. The book also says Ruidus sometimes doesn't appear or is unexpectedly full; the module's Ruidus keeps to its cycle, so the GM can call those nights.
+
+### Solamnic Calendar (Krynn)
+
+One of the module's [additional calendars](gm.md#additional-calendars).
+
+| Moon | Colour | Period |
+| --- | --- | --- |
+| **Solinari** | White | 36 days |
+| **Lunitari** | Red | 28 days |
+| **Nuitari** | Black | 8 days |
+
+The three are full together every 504 days, the Night of the Eye, which *Shadow of the Dragon Queen* puts every year and a half: 504 days is exactly a year and a half of Krynn's 336-day year. The adventure opens just after a Night of the Eye, so the module has them full together at midnight as 351 AC begins, and next on the 1st of Fierswelt, 352 AC. Lunitari's period is exactly a month, so it is full at the start of every month. Nuitari, the black moon, is drawn dark against the sky.
+
 ### Other calendars
 
 A calendar not listed here has no moons, until a module or world script adds some.

@@ -28,6 +28,10 @@ Also in **Configure Calendar**, choose the world's **Calendar**. The world reloa
 | Calendar of Greyhawk | Greyhawk (Oerth) | Needfest, Growfest, Richfest, Brewfest | Luna and Celene |
 | Calendar of Khorvaire | Eberron | None | All twelve, Zarantyr to Vult |
 | Gregorian | Earth | None | The Moon |
+| Exandrian Calendar | Exandria (Tal'Dorei, Wildemount) | 21 holidays, from New Dawn to Winter's Crest | Catha and Ruidus |
+| Solamnic Calendar | Krynn (Dragonlance) | None | Solinari, Lunitari and Nuitari |
+
+The last two are the module's own. They're only in the list once you add them: see [Additional calendars](#additional-calendars).
 
 [The Moons](moons.md) covers each calendar's moons in detail.
 
@@ -48,8 +52,23 @@ The module's settings are in **Game Settings → Configure Settings → Simple D
 | **Darken Scenes at Night** | World | Off | Keeps the active scene's darkness in step with the sky. See [Darkness](#darkness). |
 | **Long Summer Days** | World | Off | Moves sunrise and sunset with the seasons: sixteen hours of daylight at midsummer and eight at midwinter. See [Long summer days](#long-summer-days). |
 | **Announce Each Dawn** | World | Off | Posts each new day to the chat as the sun rises. See [Dawn announcements](#dawn-announcements). |
+| **Additional Calendars** | World | None | A button that opens a list of the module's own calendars to add to D&D 5e's. See [Additional calendars](#additional-calendars). |
 
 D&D 5e's own **Calendar Preferences**, which each user sets for themselves, still apply: **Display Calendar HUD** hides or shows the calendar, and **Date Format** and **Time Format** change how the date and time are written.
+
+### Additional calendars
+
+D&D 5e has calendars for the Forgotten Realms, Greyhawk, Eberron and Earth. The module adds more, for other settings. Click **Choose Calendars** under **Additional Calendars**, tick the ones you want, and **Save**. When the world reloads, they're choices in D&D 5e's **Configure Calendar**, alongside its own.
+
+| Calendar | Setting | Source | Starts |
+| --- | --- | --- | --- |
+| Exandrian Calendar | Exandria: Tal'Dorei and Wildemount | *Tal'Dorei Campaign Setting Reborn*, *Explorer's Guide to Wildemount* | 836 PD |
+| Solamnic Calendar | Krynn | *Dragonlance: Shadow of the Dragon Queen* | 351 AC |
+
+- **Exandria**: eleven months of 27 to 32 days, 328 days in all, and seven-day weeks from Miresen to Da'leysen. Its 21 holidays fall on ordinary days, so the date is still shown, and the holiday is marked beside the sky. The seasons start on the holidays that mark them: the Renewal Festival, Zenith, Harvest's Close and Barren Eve. Where the two books differ, the module follows *Tal'Dorei Campaign Setting Reborn*, the newer.
+- **Krynn**: twelve months of four seven-day weeks, from Newkolt to Frostkolt, with the seasons by month as in our own year.
+
+The world's own calendar can't be unticked, as the world would lose it. Pick another calendar in **Configure Calendar** first.
 
 ### Adventure trims
 
@@ -142,7 +161,7 @@ A jump over several days posts only the last dawn, not one for every day passed.
 - Another module that replaces D&D 5e's calendar can stop this one showing. D&D 5e says "The default calendar interface isn't available" when that happens.
 
 **There are no moons, or no festivals.**
-- Moons and festivals depend on the world's **Calendar**. Khorvaire and Gregorian have no festivals, and a calendar other than D&D 5e's four has no moons until a module adds some. See [The Moons](moons.md#changing-the-moons).
+- Moons and festivals depend on the world's **Calendar**. Khorvaire, Gregorian and Krynn have no festivals, and a calendar other than D&D 5e's four and the module's own has no moons until a module adds some. See [The Moons](moons.md#changing-the-moons).
 
 **The scene doesn't darken.**
 - Check **Darken Scenes at Night** is on, the scene is the active one, and its darkness isn't locked.

@@ -111,6 +111,14 @@ Simple D&D Calendar finds a day's festival in either of D&D 5e's two ways:
 
 The festival's name is shown with the marker beside the bowl, in `/date`, and in the dawn announcements.
 
+A festival day can also fall on an ordinary day of a month, as the module's Exandrian calendar does. `CalendarHarptos` then still finds it, but writes the festival's name in place of the date; override `formatMonthDay` and `formatMonthDayYear` to keep the date.
+
+### The module's own calendars
+
+The module adds calendars of its own, which the GM ticks in the **Additional Calendars** menu: `exandria` and `krynn`, their values in `CONFIG.DND5E.calendar.calendars` and the world's `dnd5e.calendar` setting. They're added in the same `dnd5e.setupCalendar` hook, and only those ticked, so a module that registers a calendar under the same value first keeps its own.
+
+To add another to the module, add it to `CALENDARS` in `scripts/calendars.mjs`, with its strings in `lang/en.json` and its moons in `scripts/moons.mjs` under the same key. The menu lists it from there.
+
 ## Adding moons
 
 Give your calendar moons in the `sogrom-simple-dnd-calendar.moons` hook. It fires once, during Foundry's `setup`, before the calendar first draws. It's passed every calendar's moons, keyed by the same `value` you registered the calendar under, and the world's calendar:
@@ -265,6 +273,7 @@ The module's settings can be read with `game.settings.get("sogrom-simple-dnd-cal
 | `sceneDarkness` | World | `true` or `false` |
 | `seasonalDaylight` | World | `true` or `false` |
 | `announceDays` | World | `true` or `false` |
+| `calendars` | World | The additional calendars ticked, such as `{ exandria: true, krynn: false }` |
 
 ### Chat commands
 

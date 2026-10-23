@@ -30,6 +30,10 @@ All notable changes to Simple D&D Calendar.
   of Warcraft, Vecna: Eve of Ruin, Tomb of Annihilation, and Phandelver and Below: The Shattered Obelisk.
 - **Calendar styles.** Each player can pick **Gilded Night** (the default), **Parchment** or **Underdark** under
   **Calendar Style**.
+- **Additional calendars**, for settings D&D 5e doesn't cover. The GM ticks them under **Additional Calendars**, and
+  they join D&D 5e's **Configure Calendar**: the **Exandrian Calendar** of Tal'Dorei and Wildemount, with its 21
+  holidays and the moons Catha and Ruidus; and Dragonlance's **Solamnic Calendar**, with Solinari, Lunitari and
+  Nuitari full together on the Night of the Eye every year and a half.
 
 ### Changed
 
