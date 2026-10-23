@@ -87,7 +87,7 @@ try {
   if ( all || HERO_ONLY ) await heroShot(ctx, shoot);
   if ( all ) await docShots(ctx, shoot);
   if ( all || LUNAR_ONLY ) await lunarShots(ctx, backdrop);
-  if ( all || TRIMS_ONLY ) await trimShots(ctx, shoot);
+  if ( all || TRIMS_ONLY ) await trimShots(ctx, shoot, backdrop);
 
   // The whole screen, for context.
   if ( all ) {
@@ -316,7 +316,7 @@ async function lunarShots(ctx, backdrop) {
  * @param {{gm: Session, player: Session}} ctx
  * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
  */
-async function trimShots(ctx, shoot) {
+async function trimShots(ctx, shoot, backdrop) {
   const { gm } = ctx;
   const set = (key, value) => gm.eval(({ moduleId, key, value }) => game.settings.set(moduleId, key, value),
     { moduleId: MODULE_ID, key, value });
@@ -339,6 +339,38 @@ async function trimShots(ctx, shoot) {
     await setTime(ctx, { year, day, hour: 19, minute: 0 });
     await expectSkyTrim(gm, kind);
     await shoot(gm, `trims/festival-${kind}`);
+  }
+
+  // The Exandrian calendar's own holidays, on the module's calendar, put up for the world while they're shot.
+  const holidays = { newdawn: "NewDawn", hillsgold: "Hillsgold", challenging: "DayOfChallenging",
+    merryfrond: "MerryfrondsDay", deepsolace: "DeepSolace", artisansfaire: "ArtisansFaire", elvendawn: "Elvendawn",
+    largesse: "MornOfLargesse", hazel: "HazelFestival", civilization: "CivilizationsDawn", ascension: "NightOfAscension",
+    zanscup: "ZansCup", barreneve: "BarrenEve", embertide: "Embertide" };
+  const wanted = Object.entries(holidays).filter(([kind]) => !TRIM_NAMES.length || TRIM_NAMES.includes(kind));
+  if ( wanted.length ) {
+    const switchCalendar = async (calendar, calendars) => {
+      await set("calendars", calendars);
+      await gm.reload();
+      await useCalendar(gm, calendar);
+      await ctx.player.reload();
+      for ( const session of [gm, ctx.player] ) {
+        await waitForCanvas(session, backdrop);
+        await session.eval(() => ui.sidebar.collapse?.());
+      }
+      // A reload can raise Foundry's own warnings, which would cover the shots.
+      await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+    };
+    await switchCalendar("exandria", { exandria: true });
+    try {
+      for ( const [kind, holiday] of wanted ) {
+        const { year, day } = await festivalDay(gm, 836, holiday);
+        await setTime(ctx, { year, day, hour: 19, minute: 0 });
+        await expectSkyTrim(gm, kind);
+        await shoot(gm, `trims/festival-${kind}`);
+      }
+    } finally {
+      await switchCalendar("harptos", {});
+    }
   }
 
   // Each adventure on the bar, with the sky bare, open and then collapsed.

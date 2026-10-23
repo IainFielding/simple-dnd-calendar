@@ -16,14 +16,15 @@ All notable changes to Simple D&D Calendar.
   the Golden Vault and Dragon Delves; and for the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven,
   Spelljammer, Dragonlance, Planescape, Greyhawk, Lorwyn-Shadowmoor and Netheril. A setting and its adventures share
   a trim. Curse of Strahd's now covers Ravenloft too.
+- **Every Exandrian holiday dresses the sky.** Fourteen new trims for the sky, from New Dawn's sunrise and the
+  Day of Challenging's storm to Barren Eve's candles and Embertide's embers; the other seven holidays share the
+  festivals' trims, as the Renewal Festival shares Greengrass's.
 - **Trims and Styles**, a page in the docs with a picture of every trim for the bar and the sky, and each style.
 
 ### Changed
 
 - **Eberron's moons follow their months.** As *Rising from the Last War* names each month for the moon closest to
   the world then, each of the twelve moons is full in the middle of its own month in 998 YK.
-- **Exandria's season festivals dress the sky**: the Renewal Festival, Zenith, Harvest's Close and Winter's Crest
-  share the trims of Greengrass, Midsummer, Highharvestide and Midwinter.
 - The module's artwork on Foundry's setup screen shows the calendar as it comes, on a spring evening.
 
 ## 1.4.0 — 2026-10-23

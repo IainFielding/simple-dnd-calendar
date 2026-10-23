@@ -3,7 +3,7 @@
 Every way to dress the calendar, with a picture of each. The GM picks the trims, for everyone, and each player picks the style, for their own screen, in **Game Settings → Configure Settings → Simple D&D Calendar**. A bar trim and a sky trim can be used together.
 
 - [Bar trims](#bar-trims): one for each adventure and setting
-- [Sky trims](#sky-trims): the seasons, and festival days
+- [Sky trims](#sky-trims): the seasons, festival days, and Exandria's holidays
 - [Styles](#styles): how the calendar itself looks
 
 ## Bar trims
@@ -329,10 +329,10 @@ While the sky follows the seasons, a festival day is dressed for the festival. F
 | Trim | Harptos | Greyhawk | Exandria | What it adds |
 | --- | --- | --- | --- | --- |
 | Midwinter | Midwinter | Needfest | Winter's Crest | Holly and bells |
-| Greengrass | Greengrass | Growfest | Renewal Festival | Fresh grass and daisies |
-| Midsummer | Midsummer | Richfest | Zenith | Lanterns |
+| Greengrass | Greengrass | Growfest | Renewal Festival, Wild's Grandeur | Fresh grass and daisies |
+| Midsummer | Midsummer | Richfest | Zenith, Highsummer | Lanterns |
 | Shieldmeet | Shieldmeet | | | Banners and shields |
-| Harvest | Highharvestide | Brewfest | Harvest's Close | Wheat and apples |
+| Harvest | Highharvestide | Brewfest | Harvest's Close, Harvest's Rise | Wheat and apples |
 | Feast of the Moon | Feast of the Moon | | | Moonflowers and silver crescents |
 
 | Midwinter | Greengrass | Midsummer |
@@ -340,6 +340,39 @@ While the sky follows the seasons, a festival day is dressed for the festival. F
 | ![Midwinter, with holly and bells](screenshots/trims/festival-midwinter.png) | ![Greengrass, with fresh grass and daisies](screenshots/trims/festival-greengrass.png) | ![Midsummer, with lanterns](screenshots/trims/festival-midsummer.png) |
 | **Shieldmeet** | **Harvest** | **Feast of the Moon** |
 | ![Shieldmeet, with banners and shields](screenshots/trims/festival-shieldmeet.png) | ![Highharvestide, with wheat and apples](screenshots/trims/festival-harvest.png) | ![The Feast of the Moon, with moonflowers and silver crescents](screenshots/trims/festival-moonfeast.png) |
+
+### Exandria's holidays
+
+Every holiday of the module's [Exandrian calendar](gm.md#additional-calendars) dresses the sky. Seven share the festivals' trims above; the rest have their own.
+
+| Holiday | Date | What it adds |
+| --- | --- | --- |
+| New Dawn | 1st of Horisal | Golden sunrise rays fanning from the rim, and small suns |
+| Hillsgold | 27th of Horisal | Rolling golden hills, and gold catching the light |
+| Day of Challenging | 7th of Misuthar | The Stormlord's storm clouds, lightning, and rain |
+| Merryfrond's Day | 31st of Thunsheer | Curling green fronds and bright confetti |
+| Deep Solace | 8th of Unndilar | Stonework set with glowing amber crystals |
+| Artisan's Faire | 15th of Brussendar | Bunting in many colours, hung with painted jugs |
+| Elvendawn | 20th of Brussendar | A pale vine of silver leaves and white blossom, and starlight |
+| Morn of Largesse | 14th of Sydenstar | Purses of gifts on a ribbon, and coins |
+| The Hazel Festival | 10th of Quen'pillar | Hazel leaves, nuts and catkins |
+| Civilization's Dawn | 22nd of Quen'pillar | A laurel garland hung with sealed scrolls |
+| Night of Ascension | 13th of Cuersaar | The Raven Queen's black feathers drifting through a violet mist |
+| Zan's Cup | 21st of Cuersaar | Goblets of wine on a cord, and bunches of grapes |
+| Barren Eve | 2nd of Duscar | Countless candles lit round the rim, for those lost in war |
+| Embertide | 5th of Duscar | Embers glowing along the rim, and flames rising |
+
+| New Dawn | Hillsgold | Day of Challenging |
+| --- | --- | --- |
+| ![New Dawn, with sunrise rays](screenshots/trims/festival-newdawn.png) | ![Hillsgold, with golden hills](screenshots/trims/festival-hillsgold.png) | ![The Day of Challenging, with storm clouds and lightning](screenshots/trims/festival-challenging.png) |
+| **Merryfrond's Day** | **Deep Solace** | **Artisan's Faire** |
+| ![Merryfrond's Day, with fronds and confetti](screenshots/trims/festival-merryfrond.png) | ![Deep Solace, with stonework and amber crystals](screenshots/trims/festival-deepsolace.png) | ![Artisan's Faire, with bunting and painted jugs](screenshots/trims/festival-artisansfaire.png) |
+| **Elvendawn** | **Morn of Largesse** | **The Hazel Festival** |
+| ![Elvendawn, with silver leaves and white blossom](screenshots/trims/festival-elvendawn.png) | ![The Morn of Largesse, with purses and coins](screenshots/trims/festival-largesse.png) | ![The Hazel Festival, with hazel leaves and nuts](screenshots/trims/festival-hazel.png) |
+| **Civilization's Dawn** | **Night of Ascension** | **Zan's Cup** |
+| ![Civilization's Dawn, with laurel and scrolls](screenshots/trims/festival-civilization.png) | ![The Night of Ascension, with black feathers](screenshots/trims/festival-ascension.png) | ![Zan's Cup, with goblets and grapes](screenshots/trims/festival-zanscup.png) |
+| **Barren Eve** | **Embertide** | |
+| ![Barren Eve, with candles](screenshots/trims/festival-barreneve.png) | ![Embertide, with embers and flames](screenshots/trims/festival-embertide.png) | |
 
 ## Styles
 
