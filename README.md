@@ -61,11 +61,13 @@ The sky surrounding the day wheel can be dressed to reflect the changing seasons
 
 The calendar bar can be tailored to suit the setting of your campaign. From the gothic dread of *Curse of Strahd* and the icy wilderness of *Rime of the Frostmaiden* to the infernal battlefields of *Descent into Avernus* and the reality-shattering threat of *Vecna: Eve of Ruin*, themed trims help the calendar blend seamlessly into your adventure.
 
-A growing collection of themes is included, covering a range of official adventures and fantasy settings. Each brings its own visual identity, allowing the calendar to complement the stories unfolding at your table.
+Every adventure and campaign setting Wizards of the Coast has published for fifth edition has a theme, 48 in all, from *Lost Mine of Phandelver* to *Arcana Unleashed*, and the worlds they're set in: the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven, Spelljammer, Dragonlance, Planescape and more. Each brings its own visual identity, allowing the calendar to complement the stories unfolding at your table. The [GM's guide](docs/gm.md#adventure-trims) lists them all.
 
 | Curse of Strahd | Rime of the Frostmaiden | Descent into Avernus |
 | --- | --- | --- |
 | ![Curse of Strahd trim](docs/screenshots/trims/bar-ravenloft.png) | ![Rime of the Frostmaiden trim](docs/screenshots/trims/bar-icewind.png) | ![Descent into Avernus trim](docs/screenshots/trims/bar-avernus.png) |
+| **Forgotten Realms** | **Eberron** | **Spelljammer** |
+| ![Forgotten Realms trim](docs/screenshots/trims/bar-realms.png) | ![Eberron trim](docs/screenshots/trims/bar-eberron.png) | ![Spelljammer trim](docs/screenshots/trims/bar-spelljammer.png) |
 
 ### Darkness
 

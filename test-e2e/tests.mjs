@@ -47,6 +47,63 @@ test("the GM is offered to turn the calendar on, once", async ({ gm }) => {
   assertEqual(await gm.page.locator(".application.dialog", { hasText: "Turn On the Calendar?" }).count(), 0, "dialogs");
 });
 
+test("the GM adds Exandria and Krynn from the Additional Calendars menu, with their dates, holidays and moons",
+  async ctx => {
+    const { gm, player } = ctx;
+    const openMenu = async () => {
+      await gm.eval(async moduleId => {
+        const { type } = game.settings.menus.get(`${moduleId}.calendarsMenu`);
+        await new type().render({ force: true });
+      }, MODULE_ID);
+      const menu = gm.page.locator("#sdc-calendars-menu");
+      await menu.waitFor({ timeout: 10_000 });
+      return menu;
+    };
+    try {
+      // Tick both, save, and decline the offer to reload, so the harness reloads each user itself.
+      let menu = await openMenu();
+      await menu.locator("input[name=exandria]").check();
+      await menu.locator("input[name=krynn]").check();
+      await menu.locator("button[type=submit]").click();
+      const reloadPrompt = gm.page.locator("#reload-world-confirm");
+      await reloadPrompt.waitFor({ timeout: 10_000 });
+      await reloadPrompt.locator("button[data-action=no]").click();
+      await gm.reload();
+      const offered = await gm.eval(() => CONFIG.DND5E.calendar.calendars.map(c => c.value));
+      assert(offered.includes("exandria") && offered.includes("krynn"), `Configure Calendar's choices: ${offered}`);
+
+      // Exandria: Zenith, the first day of summer, is the 26th of Unndilar.
+      await useCalendar(gm, "exandria");
+      await player.reload();
+      await setTime(ctx, { year: 836, day: 145, hour: 12 });
+      const exandria = await readCalendar(player);
+      assertEqual([exandria.date.toLowerCase(), exandria.season, exandria.festival], ["unndilar 26th", "Summer", "Zenith"],
+        "Exandria's date, season and holiday");
+      assertEqual(await player.eval(id => game.modules.get(id).api.moons.exandria.map(m => m.id), MODULE_ID),
+        ["catha", "ruidus"], "Exandria's moons");
+
+      // The world's calendar can't be unticked.
+      menu = await openMenu();
+      assertEqual(await menu.locator("input[name=exandria]").isDisabled(), true, "the box for the world's calendar");
+      await gm.eval(() => foundry.applications.instances.get("sdc-calendars-menu")?.close());
+
+      // Krynn: the three moons are full together, the Night of the Eye, as 351 AC begins.
+      await useCalendar(gm, "krynn");
+      await player.reload();
+      await setTime(ctx, { year: 351, day: 0, hour: 0 });
+      const krynn = await readCalendar(player);
+      assertEqual(krynn.date.toLowerCase(), "1 newkolt", "Krynn's date");
+      for ( const moon of ["Solinari", "Lunitari", "Nuitari"] ) {
+        assert(krynn.moonEvents?.includes(moon), `the moons full together: ${krynn.moonEvents}`);
+      }
+    } finally {
+      await useCalendar(gm, "harptos");
+      await gm.eval(id => game.settings.set(id, "calendars", {}), MODULE_ID);
+      await gm.reload();
+      await player.reload();
+    }
+  });
+
 /* -------------------------------------------- */
 /*  Display                                     */
 /* -------------------------------------------- */

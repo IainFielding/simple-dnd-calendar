@@ -163,18 +163,18 @@ export const FESTIVALS = {
 };
 
 /**
- * The trim for a festival day, by the festival's name in D&D 5e's calendars.
+ * The trim for a festival day, by the festival's name in D&D 5e's calendars or the module's additional ones.
  * @param {string} [name]  The festival's localization key, such as "DND5E.CALENDAR.Harptos.Festival.Midwinter".
  * @returns {string|null}
  */
 export function festivalTrimKind(name = "") {
   const key = String(name).split(".").at(-1);
   return {
-    Midwinter: "midwinter", Needfest: "midwinter",
-    Greengrass: "greengrass", Growfest: "greengrass",
-    Midsummer: "midsummer", Richfest: "midsummer",
+    Midwinter: "midwinter", Needfest: "midwinter", WintersCrest: "midwinter",
+    Greengrass: "greengrass", Growfest: "greengrass", RenewalFestival: "greengrass",
+    Midsummer: "midsummer", Richfest: "midsummer", Zenith: "midsummer",
     Shieldmeet: "shieldmeet",
-    Highharvestide: "harvest", Brewfest: "harvest",
+    Highharvestide: "harvest", Brewfest: "harvest", HarvestsClose: "harvest",
     FeastOfTheMoon: "moonfeast"
   }[key] ?? null;
 }

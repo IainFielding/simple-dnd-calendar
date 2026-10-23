@@ -30,6 +30,16 @@ All notable changes to Simple D&D Calendar.
   of Warcraft, Vecna: Eve of Ruin, Tomb of Annihilation, and Phandelver and Below: The Shattered Obelisk.
 - **Calendar styles.** Each player can pick **Gilded Night** (the default), **Parchment** or **Underdark** under
   **Calendar Style**.
+- **Additional calendars**, for settings D&D 5e doesn't cover. The GM ticks them under **Additional Calendars**, and
+  they join D&D 5e's **Configure Calendar**: the **Exandrian Calendar** of Tal'Dorei and Wildemount, with its 21
+  holidays and the moons Catha and Ruidus; and Dragonlance's **Solamnic Calendar**, with Solinari, Lunitari and
+  Nuitari full together on the Night of the Eye every year and a half.
+- **A trim for every adventure and setting.** **Dress the Bar for Your Adventure** now has a trim for every D&D
+  adventure and campaign setting Wizards of the Coast has published for fifth edition, 48 in all, listed by name:
+  from Lost Mine of Phandelver, Storm King's Thunder and Waterdeep: Dragon Heist to Candlekeep Mysteries, Keys from
+  the Golden Vault and Dragon Delves; and for the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven,
+  Spelljammer, Dragonlance, Planescape, Greyhawk, Lorwyn-Shadowmoor and Netheril. A setting and its adventures share
+  a trim. Curse of Strahd's now covers Ravenloft too.
 
 ### Changed
 
@@ -37,6 +47,8 @@ All notable changes to Simple D&D Calendar.
 - **Dress the Frame for the Season** is now **Dress the Sky for the Season**, and dresses only the sky's rim, about
   the day wheel. It is a choice: None, Follow the Seasons, or Just Winter, Spring, Summer or Autumn to keep one
   season's trim all year. Worlds that had it on now follow the seasons.
+- **Eberron's moons follow their months.** As *Rising from the Last War* names each month for the moon closest to
+  the world then, each of the twelve moons is full in the middle of its own month in 998 YK.
 
 ## 1.0.0 — 2026-10-22
 

@@ -28,6 +28,10 @@ Also in **Configure Calendar**, choose the world's **Calendar**. The world reloa
 | Calendar of Greyhawk | Greyhawk (Oerth) | Needfest, Growfest, Richfest, Brewfest | Luna and Celene |
 | Calendar of Khorvaire | Eberron | None | All twelve, Zarantyr to Vult |
 | Gregorian | Earth | None | The Moon |
+| Exandrian Calendar | Exandria (Tal'Dorei, Wildemount) | 21 holidays, from New Dawn to Winter's Crest | Catha and Ruidus |
+| Solamnic Calendar | Krynn (Dragonlance) | None | Solinari, Lunitari and Nuitari |
+
+The last two are the module's own. They're only in the list once you add them: see [Additional calendars](#additional-calendars).
 
 [The Moons](moons.md) covers each calendar's moons in detail.
 
@@ -44,27 +48,83 @@ The module's settings are in **Game Settings → Configure Settings → Simple D
 | **Animate Time Changes** | Player | On | Plays a change of time out on the calendar: the clock runs, the wheel turns and the moons move. Off, the calendar jumps straight to the new time. |
 | **Calendar Style** | Player | Gilded Night | How the calendar looks: **Gilded Night** (gold on a night sky), **Parchment** (bronze and ink on parchment) or **Underdark** (steel on stone). |
 | **Dress the Sky for the Season** | World | None | Trims the rim of the sky round the day wheel. **Follow the Seasons** changes with the year and dresses festival days for the festival. **Just Winter**, **Just Spring**, **Just Summer** or **Just Autumn** keeps to one season all year. |
-| **Dress the Bar for Your Adventure** | World | None | Trims the bar for the adventure you're running. See [Adventure trims](#adventure-trims). |
+| **Dress the Bar for Your Adventure** | World | None | Trims the bar for the adventure you're running, or the world it's set in. See [Adventure trims](#adventure-trims). |
 | **Darken Scenes at Night** | World | Off | Keeps the active scene's darkness in step with the sky. See [Darkness](#darkness). |
 | **Long Summer Days** | World | Off | Moves sunrise and sunset with the seasons: sixteen hours of daylight at midsummer and eight at midwinter. See [Long summer days](#long-summer-days). |
 | **Announce Each Dawn** | World | Off | Posts each new day to the chat as the sun rises. See [Dawn announcements](#dawn-announcements). |
+| **Additional Calendars** | World | None | A button that opens a list of the module's own calendars to add to D&D 5e's. See [Additional calendars](#additional-calendars). |
 
 D&D 5e's own **Calendar Preferences**, which each user sets for themselves, still apply: **Display Calendar HUD** hides or shows the calendar, and **Date Format** and **Time Format** change how the date and time are written.
 
+### Additional calendars
+
+D&D 5e has calendars for the Forgotten Realms, Greyhawk, Eberron and Earth. The module adds more, for other settings. Click **Choose Calendars** under **Additional Calendars**, tick the ones you want, and **Save**. When the world reloads, they're choices in D&D 5e's **Configure Calendar**, alongside its own.
+
+| Calendar | Setting | Source | Starts |
+| --- | --- | --- | --- |
+| Exandrian Calendar | Exandria: Tal'Dorei and Wildemount | *Tal'Dorei Campaign Setting Reborn*, *Explorer's Guide to Wildemount* | 836 PD |
+| Solamnic Calendar | Krynn | *Dragonlance: Shadow of the Dragon Queen* | 351 AC |
+
+- **Exandria**: eleven months of 27 to 32 days, 328 days in all, and seven-day weeks from Miresen to Da'leysen. Its 21 holidays fall on ordinary days, so the date is still shown, and the holiday is marked beside the sky. The seasons start on the holidays that mark them: the Renewal Festival, Zenith, Harvest's Close and Barren Eve. Where the two books differ, the module follows *Tal'Dorei Campaign Setting Reborn*, the newer.
+- **Krynn**: twelve months of four seven-day weeks, from Newkolt to Frostkolt, with the seasons by month as in our own year.
+
+The world's own calendar can't be unticked, as the world would lose it. Pick another calendar in **Configure Calendar** first.
+
 ### Adventure trims
 
-| Trim | What it adds to the bar |
-| --- | --- |
-| Curse of Strahd | A dead, thorny vine, cobwebs in the corners, a spider, bats, and drifting mist |
-| The Wild Beyond the Witchlight | Curling ribbons, toadstools, sparkles, and fireflies |
-| Descent into Avernus | A hellish glow, iron spikes, hanging chains, and rising embers |
-| Rime of the Frostmaiden | A thick crust of snow, long icicles, and falling snow |
-| Arcana Unleashed | A ley line, glowing runes, turning arcane circles, and sparkles |
-| Arcana Unleashed: Deadfall | Thay's crimson silk, hung with gold tassels, daggers, and red sigils |
-| World of Warcraft | Riveted bronze plates set with gems, with claws between them |
-| Vecna: Eve of Ruin | A gloom, necrotic tendrils, and the Eye, watching |
-| Tomb of Annihilation | Jungle leaves and lianas, bright flowers, and skulls |
-| Phandelver and Below: The Shattered Obelisk | Dark shards of the obelisk, aberrant tentacles, and a sickly glow |
+Every D&D adventure and campaign setting Wizards of the Coast has published for fifth edition has a trim for the bar, from *Lost Mine of Phandelver* to *Arcana Unleashed*, and there's one for World of Warcraft: 49 in all, listed in **Dress the Bar for Your Adventure** by name. Where a setting and its adventures share a world, they share a trim, and **Also for** says which books it covers.
+
+| Trim | Also for | What it adds to the bar |
+| --- | --- | --- |
+| Acquisitions Incorporated | | A brass chain in swags, hung with gold coins and contracts under red wax seals |
+| Arcana Unleashed | | A ley line, glowing runes, turning arcane circles, and sparkles |
+| Arcana Unleashed: Deadfall | | Thay's crimson silk, hung with gold tassels, daggers, and red sigils |
+| Astarion's Book of Hungers | | Crimson silk in swags, dark roses at its pins, and blood dripping from it |
+| Bigby Presents: Glory of the Giants | | Stone tablets carved with giant runes, glowing frost and fire |
+| The Book of Many Things | | The Deck's cards on a purple cord, each with its mark, and stars between |
+| Candlekeep Mysteries | | A shelf of books in a row, with candles among them |
+| Curse of Strahd and Ravenloft | *Van Richten's Guide to Ravenloft*, *Ravenloft: The Horrors Within* | A dead, thorny vine, cobwebs in the corners, a spider, bats, and drifting mist |
+| Descent into Avernus | | A hellish glow, iron spikes, hanging chains, and rising embers |
+| Dragon Delves | | A dragon's hoard of coins over the edge, gems of every dragon's colour, and claws gripping it |
+| Dragon of Icespire Peak | | Snow-capped peaks, the white dragon wheeling, and falling snow |
+| Dragonlance | *Shadow of the Dragon Queen* | Krynn's three moons, white, red and black, and silver lances between them |
+| Dragons of Stormwreck Isle | | A wreck's broken timbers, the sea beneath, and lightning |
+| Dungeon of the Mad Mage | | Undermountain's brick, Halaster's turning rune gates, and arcane motes |
+| Eberron | *Rising from the Last War*, *Forge of the Artificer*, *Forgotten Relics* | The lightning rail, and dragonshards of Siberys, Eberron and Khyber |
+| Exandria | *Explorer's Guide to Wildemount*, *Call of the Netherdeep*, *Tal'Dorei Campaign Setting Reborn* | Catha and Ruidus strung on silver, and the swirling sigils and motes of dunamis |
+| Forgotten Realms | *Sword Coast Adventurer's Guide*, *Heroes of Faerûn*, *Adventures in Faerûn* | The Weave as a blue ribbon, Mystra's seven-pointed stars, and Selûne's crescents |
+| Ghosts of Saltmarsh | | Waves, a fishing net in swags, and shells caught in it |
+| Greyhawk | The 2024 *Dungeon Master's Guide* | Castle battlements, with lanterns lit beneath the merlons |
+| Heroes of the Borderlands | | The Keep's palisade of sharpened stakes, with round shields hung on it |
+| Hoard of the Dragon Queen | | The Cult of the Dragon's purple in swags, with dragon eggs and spilled coins |
+| Hold Back the Dead | | A grave's mist, and the dead's hands reaching out of it |
+| Journeys through the Radiant Citadel | | Concord jewels of every colour on a gold chain, shining |
+| Keys from the Golden Vault | | A gold chain hung with keys, gold bars and coins |
+| Locathah Rising | | Kelp, coral, and rising bubbles |
+| Lorwyn-Shadowmoor | *Lorwyn: First Light* | Lorwyn's sunlit flowers along one half, giving way to Shadowmoor's thorns and gloom |
+| The Lost Laboratory of Kwalish | | Copper pipes, turning gears, and glowing vials |
+| Lost Mine of Phandelver | | A mine's rails, pickaxes and lanterns, and Wave Echo Cave's green glow |
+| Netheril | *Netheril's Fall* | Floating enclaves crowned with towers, and the gold rings of their mythallars |
+| Out of the Abyss | | Stalactites, glowing fungus, and the violet motes of faerzress |
+| Phandelver and Below: The Shattered Obelisk | | Dark shards of the obelisk, aberrant tentacles, and a sickly glow |
+| Planescape | *Sigil and the Outlands*, *Morte's Planar Parade*, *Turn of Fortune's Wheel* | Razorvine with leaves like blades, and glowing portals |
+| Princes of the Apocalypse | | The four elements in turn: air, earth, fire and water |
+| Quests from the Infinite Staircase | | A stair climbing along the edge, and doors to other worlds |
+| Ravnica | *Guildmasters' Guide to Ravnica* | Stained glass in the ten guilds' colours, and city spires |
+| Rime of the Frostmaiden | | A thick crust of snow, long icicles, and falling snow |
+| The Rise of Tiamat | | Scales in the five colours of the Dragon Queen's heads, and claws hooked over the edge |
+| Scions of Elemental Evil | | The Temple's cracked stone, and the alchemists' signs of the four elements, burning |
+| Spelljammer | *Astral Adventurer's Guide*, *Boo's Astral Menagerie*, *Light of Xaryxis* | Wildspace, with orbits, planets ringed and plain, and the stars |
+| Storm King's Thunder | | Storm clouds, lightning, and driving rain |
+| Strixhaven | *Strixhaven: A Curriculum of Chaos* | The five colleges' pennants on a gold cord |
+| Tales from the Yawning Portal | | The tavern's beams, hung with tankards and lanterns |
+| Theros | *Mythic Odysseys of Theros*, *Theros: No Silent Secret* | A gold meander, laurel leaves, and the stars of Nyx |
+| Tomb of Annihilation | *The Tortle Package* | Jungle leaves and lianas, bright flowers, and skulls |
+| Uni and the Hunt for the Lost Horn | | A rainbow, flowers, hearts and sparkles |
+| Vecna: Eve of Ruin | | A gloom, necrotic tendrils, and the Eye, watching |
+| Waterdeep: Dragon Heist | | A velvet swag hung with the Masked Lords' masks, and gold dragons |
+| The Wild Beyond the Witchlight | | Curling ribbons, toadstools, sparkles, and fireflies |
+| World of Warcraft | | Riveted bronze plates set with gems, with claws between them |
 
 The adventure trim and the sky's seasonal trim can be used together.
 
@@ -142,7 +202,7 @@ A jump over several days posts only the last dawn, not one for every day passed.
 - Another module that replaces D&D 5e's calendar can stop this one showing. D&D 5e says "The default calendar interface isn't available" when that happens.
 
 **There are no moons, or no festivals.**
-- Moons and festivals depend on the world's **Calendar**. Khorvaire and Gregorian have no festivals, and a calendar other than D&D 5e's four has no moons until a module adds some. See [The Moons](moons.md#changing-the-moons).
+- Moons and festivals depend on the world's **Calendar**. Khorvaire, Gregorian and Krynn have no festivals, and a calendar other than D&D 5e's four and the module's own has no moons until a module adds some. See [The Moons](moons.md#changing-the-moons).
 
 **The scene doesn't darken.**
 - Check **Darken Scenes at Night** is on, the scene is the active one, and its darkness isn't locked.

@@ -46,7 +46,12 @@
       "Rhaan": "Rhaan",
       "Sypheros": "Sypheros",
       "Aryth": "Aryth",
-      "Vult": "Vult"
+      "Vult": "Vult",
+      "Catha": "Catha",
+      "Ruidus": "Ruidus",
+      "Solinari": "Solinari",
+      "Lunitari": "Lunitari",
+      "Nuitari": "Nuitari"
     },
     "Settings": {
       "Animate": {
@@ -72,18 +77,57 @@
       },
       "BarTrim": {
         "Name": "Dress the Bar for Your Adventure",
-        "Hint": "Trim the calendar's bar for the adventure you're running, for everyone.",
+        "Hint": "Trim the calendar's bar for the adventure you're running or the world it's set in, for everyone.",
         "None": "None",
-        "Ravenloft": "Curse of Strahd",
-        "Feywild": "The Wild Beyond the Witchlight",
-        "Avernus": "Descent into Avernus",
-        "Icewind": "Rime of the Frostmaiden",
+        "Acqinc": "Acquisitions Incorporated",
         "Arcana": "Arcana Unleashed",
         "Thay": "Arcana Unleashed: Deadfall",
-        "Warcraft": "World of Warcraft",
-        "Vecna": "Vecna: Eve of Ruin",
+        "Astarion": "Astarion's Book of Hungers",
+        "Glory": "Bigby Presents: Glory of the Giants",
+        "Manythings": "The Book of Many Things",
+        "Candlekeep": "Candlekeep Mysteries",
+        "Ravenloft": "Curse of Strahd and Ravenloft",
+        "Avernus": "Descent into Avernus",
+        "Delves": "Dragon Delves",
+        "Icespire": "Dragon of Icespire Peak",
+        "Dragonlance": "Dragonlance",
+        "Stormwreck": "Dragons of Stormwreck Isle",
+        "Madmage": "Dungeon of the Mad Mage",
+        "Eberron": "Eberron",
+        "Exandria": "Exandria",
+        "Realms": "Forgotten Realms",
+        "Saltmarsh": "Ghosts of Saltmarsh",
+        "Greyhawk": "Greyhawk",
+        "Borderlands": "Heroes of the Borderlands",
+        "Dragonqueen": "Hoard of the Dragon Queen",
+        "Holdbackdead": "Hold Back the Dead",
+        "Radiantcitadel": "Journeys through the Radiant Citadel",
+        "Goldenvault": "Keys from the Golden Vault",
+        "Locathah": "Locathah Rising",
+        "Lorwyn": "Lorwyn-Shadowmoor",
+        "Kwalish": "The Lost Laboratory of Kwalish",
+        "Phandelver": "Lost Mine of Phandelver",
+        "Netheril": "Netheril",
+        "Underdark": "Out of the Abyss",
+        "Obelisk": "Phandelver and Below: The Shattered Obelisk",
+        "Planescape": "Planescape",
+        "Elemental": "Princes of the Apocalypse",
+        "Staircase": "Quests from the Infinite Staircase",
+        "Ravnica": "Ravnica",
+        "Icewind": "Rime of the Frostmaiden",
+        "Tiamat": "The Rise of Tiamat",
+        "Scions": "Scions of Elemental Evil",
+        "Spelljammer": "Spelljammer",
+        "Giants": "Storm King's Thunder",
+        "Strixhaven": "Strixhaven",
+        "Yawningportal": "Tales from the Yawning Portal",
+        "Theros": "Theros",
         "Chult": "Tomb of Annihilation",
-        "Obelisk": "Phandelver and Below: The Shattered Obelisk"
+        "Unicorn": "Uni and the Hunt for the Lost Horn",
+        "Vecna": "Vecna: Eve of Ruin",
+        "Dragonheist": "Waterdeep: Dragon Heist",
+        "Feywild": "The Wild Beyond the Witchlight",
+        "Warcraft": "World of Warcraft"
       },
       "SceneDarkness": {
         "Name": "Darken Scenes at Night",
@@ -96,6 +140,11 @@
       "AnnounceDays": {
         "Name": "Announce Each Dawn",
         "Hint": "Post each new day to the chat as the sun rises on it, with the date, the start of a season, and any festival. A jump over several days posts only the last."
+      },
+      "Calendars": {
+        "Name": "Additional Calendars",
+        "Label": "Choose Calendars",
+        "Hint": "Add calendars for settings D&D 5e doesn't cover, such as Exandria and Krynn, to its Configure Calendar."
       }
     },
     "Chat": {
@@ -114,6 +163,109 @@
       "Recovery": "With the calendar on, D&D 5e recovers daily, dawn and dusk item uses as time passes rather than on a long rest, unless its Daily Recovery Mode says otherwise.",
       "Yes": "Turn It On",
       "No": "Not Now"
+    },
+    "Calendars": {
+      "Title": "Additional Calendars",
+      "Hint": "Tick the calendars to add to D&D 5e's. Once the world reloads, they are choices in D&D 5e's Configure Calendar, with their moons, seasons and holidays on the calendar.",
+      "InUse": "The world's calendar, so it can't be removed."
+    },
+    "Calendar": {
+      "Exandria": {
+        "Name": "Exandrian Calendar (Exandria)",
+        "Hint": "Tal'Dorei and Wildemount: eleven months over 328 days, from 836 PD, with Catha and Ruidus.",
+        "Month": {
+          "Horisal": "Horisal",
+          "Misuthar": "Misuthar",
+          "Dualahei": "Dualahei",
+          "Thunsheer": "Thunsheer",
+          "Unndilar": "Unndilar",
+          "Brussendar": "Brussendar",
+          "Sydenstar": "Sydenstar",
+          "Fessuran": "Fessuran",
+          "Quenpillar": "Quen'pillar",
+          "Cuersaar": "Cuersaar",
+          "Duscar": "Duscar"
+        },
+        "Day": {
+          "Miresen": "Miresen",
+          "Grissen": "Grissen",
+          "Whelsen": "Whelsen",
+          "Conthsen": "Conthsen",
+          "Folsen": "Folsen",
+          "Yulisen": "Yulisen",
+          "Daleysen": "Da'leysen"
+        },
+        "Season": {
+          "Spring": "Spring",
+          "Summer": "Summer",
+          "Autumn": "Autumn",
+          "Winter": "Winter"
+        },
+        "Festival": {
+          "NewDawn": "New Dawn",
+          "Hillsgold": "Hillsgold",
+          "DayOfChallenging": "Day of Challenging",
+          "RenewalFestival": "Renewal Festival",
+          "WildsGrandeur": "Wild's Grandeur",
+          "HarvestsRise": "Harvest's Rise",
+          "MerryfrondsDay": "Merryfrond's Day",
+          "DeepSolace": "Deep Solace",
+          "Zenith": "Zenith",
+          "ArtisansFaire": "Artisan's Faire",
+          "Elvendawn": "Elvendawn",
+          "Highsummer": "Highsummer",
+          "MornOfLargesse": "Morn of Largesse",
+          "HarvestsClose": "Harvest's Close",
+          "HazelFestival": "The Hazel Festival",
+          "CivilizationsDawn": "Civilization's Dawn",
+          "NightOfAscension": "Night of Ascension",
+          "ZansCup": "Zan's Cup",
+          "BarrenEve": "Barren Eve",
+          "Embertide": "Embertide",
+          "WintersCrest": "Winter's Crest"
+        },
+        "Format": {
+          "MonthDay": "{B} {D}",
+          "MonthDayYear": "{B} {D}, {y} PD"
+        }
+      },
+      "Krynn": {
+        "Name": "Solamnic Calendar (Krynn)",
+        "Hint": "Dragonlance: twelve months of 28 days, from 351 AC, with Solinari, Lunitari and Nuitari.",
+        "Month": {
+          "Newkolt": "Newkolt",
+          "Deepkolt": "Deepkolt",
+          "Brookgreen": "Brookgreen",
+          "Yurthgreen": "Yurthgreen",
+          "Fleurgreen": "Fleurgreen",
+          "Holmswelt": "Holmswelt",
+          "Fierswelt": "Fierswelt",
+          "Paleswelt": "Paleswelt",
+          "Reapember": "Reapember",
+          "Gildember": "Gildember",
+          "Darkember": "Darkember",
+          "Frostkolt": "Frostkolt"
+        },
+        "Day": {
+          "Linaras": "Linaras",
+          "Palast": "Palast",
+          "Magetag": "Magetag",
+          "Kirinor": "Kirinor",
+          "Misham": "Misham",
+          "Bakukal": "Bakukal",
+          "Bracha": "Bracha"
+        },
+        "Season": {
+          "Spring": "Spring",
+          "Summer": "Summer",
+          "Autumn": "Autumn",
+          "Winter": "Winter"
+        },
+        "Format": {
+          "MonthDay": "{d} {B}",
+          "MonthDayYear": "{d} {B} {y} AC"
+        }
+      }
     }
   }
 }

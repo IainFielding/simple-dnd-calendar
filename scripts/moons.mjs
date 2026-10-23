@@ -1,5 +1,6 @@
 /**
- * The moons of each of D&D 5e's calendars, keyed by the calendar's value in `CONFIG.DND5E.calendar.calendars`.
+ * The moons of each of D&D 5e's calendars and the module's additional ones, keyed by the calendar's value in
+ * `CONFIG.DND5E.calendar.calendars`.
  *
  * Each moon's phase is known at one moment, its epoch, and runs on from there at its period. Modules and world
  * scripts can change these, or add moons for their own calendars, in the `sogrom-simple-dnd-calendar.moons` hook,
@@ -32,8 +33,10 @@ export const MOONS = {
     { id: "celene", name: "SDC.Moon.Celene", period: 91, color: "#bfe6e3", epoch: { year: 576, day: 3 }, epochPhase: 0.5 }
   ],
 
-  // Eberron's twelve moons, one for each month, each a week slower than the one before. Their phases are spread
-  // evenly at the start of 998 YK, where D&D 5e's Calendar of Khorvaire begins, rather than taken from any one source.
+  // Eberron's twelve moons, one for each month, each a week slower than the one before. Rising from the Last War names
+  // each month for the moon whose orbit brings it closest to the world then, so each moon is full in the middle of its
+  // own month in 998 YK, where D&D 5e's Calendar of Khorvaire begins. The book gives no periods, so the moons drift
+  // from their months in later years, all but Zarantyr, which is full on the 15th of every month.
   khorvaire: [
     ["zarantyr", "#f4f4f6"], ["olarune", "#f2c99a"], ["therendor", "#d9d9d6"], ["eyre", "#e9eef2"],
     ["dravago", "#d9c6ec"], ["nymm", "#f6e7a1"], ["lharvion", "#e8e4dc"], ["barrakas", "#d7dade"],
@@ -42,7 +45,24 @@ export const MOONS = {
     id, color,
     name: `SDC.Moon.${id.charAt(0).toUpperCase()}${id.slice(1)}`,
     period: 28 + (7 * index),
-    epoch: { year: 998, day: 0 },
-    epochPhase: index / 12
-  }))
+    epoch: { year: 998, day: (28 * index) + 14 },
+    epochPhase: 0.5
+  })),
+
+  // Exandria's two moons, for the module's Exandrian calendar. Silver-white Catha completes a cycle about once a
+  // month, so once in each of the eleven months' average length, and is full on New Dawn in 836 PD. Small, ruddy
+  // Ruidus has a half-year orbit, new on New Dawn and full in the middle of the year, when it shines vermilion.
+  exandria: [
+    { id: "catha", name: "SDC.Moon.Catha", period: 328 / 11, color: "#eef0f6", epoch: { year: 836, day: 0 }, epochPhase: 0.5 },
+    { id: "ruidus", name: "SDC.Moon.Ruidus", period: 164, color: "#c4472c", epoch: { year: 836, day: 0 } }
+  ],
+
+  // Krynn's three moons, for the module's Solamnic calendar: white Solinari every 36 days, red Lunitari every 28 and
+  // black Nuitari every 8. They are full together every 504 days, the Night of the Eye that Shadow of the Dragon Queen
+  // puts every year and a half, and the adventure opens just after one, so they are full together as 351 AC begins.
+  krynn: [
+    { id: "solinari", name: "SDC.Moon.Solinari", period: 36, color: "#f4f6fb", epoch: { year: 351, day: 0 }, epochPhase: 0.5 },
+    { id: "lunitari", name: "SDC.Moon.Lunitari", period: 28, color: "#d8433a", epoch: { year: 351, day: 0 }, epochPhase: 0.5 },
+    { id: "nuitari", name: "SDC.Moon.Nuitari", period: 8, color: "#3b3450", epoch: { year: 351, day: 0 }, epochPhase: 0.5 }
+  ]
 };
