@@ -8,8 +8,8 @@ const strings = JSON.parse(readFileSync(new URL("../lang/en.json", import.meta.u
 const lookup = key => key.split(".").reduce((o, k) => o?.[k], strings);
 
 describe("the moon catalogue", () => {
-  it("has moons for each of D&D 5e's calendars", () => {
-    expect(Object.keys(MOONS).sort()).toEqual(["gregorian", "greyhawk", "harptos", "khorvaire"]);
+  it("has moons for each of D&D 5e's calendars and the module's additional ones", () => {
+    expect(Object.keys(MOONS).sort()).toEqual(["exandria", "gregorian", "greyhawk", "harptos", "khorvaire", "krynn"]);
     expect(MOONS.khorvaire).toHaveLength(12);
   });
 

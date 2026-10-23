@@ -57,7 +57,11 @@ describe("the festivals' and adventures' trim", () => {
       "DND5E.CALENDAR.Harptos.Festival.Shieldmeet": "shieldmeet",
       "DND5E.CALENDAR.Harptos.Festival.Highharvestide": "harvest",
       "DND5E.CALENDAR.Greyhawk.Festival.Brewfest": "harvest",
-      "DND5E.CALENDAR.Harptos.Festival.FeastOfTheMoon": "moonfeast"
+      "DND5E.CALENDAR.Harptos.Festival.FeastOfTheMoon": "moonfeast",
+      "SDC.Calendar.Exandria.Festival.RenewalFestival": "greengrass",
+      "SDC.Calendar.Exandria.Festival.Zenith": "midsummer",
+      "SDC.Calendar.Exandria.Festival.HarvestsClose": "harvest",
+      "SDC.Calendar.Exandria.Festival.WintersCrest": "midwinter"
     };
     for ( const [name, kind] of Object.entries(festivals) ) {
       expect(festivalTrimKind(name)).toBe(kind);

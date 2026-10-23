@@ -1,4 +1,6 @@
 import { registerAnnouncements } from "./announce.mjs";
+import { addCalendars, registerCalendarsSetting } from "./calendars.mjs";
+import { CalendarsMenu } from "./calendars-menu.mjs";
 import { registerChatCommands } from "./chat.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import { darknessNow, registerDarknessHooks, syncDarkness } from "./darkness.mjs";
@@ -12,7 +14,21 @@ import { BAR_TRIM_CHOICES, SKY_TRIM_CHOICES } from "./trim.mjs";
 /*  Initialization                              */
 /* -------------------------------------------- */
 
+// D&D 5e picks the world's calendar during its own init, before the module's, so the additional calendars join its
+// list from the hook it calls just before.
+Hooks.once("dnd5e.setupCalendar", addCalendars);
+
 Hooks.once("init", () => {
+  registerCalendarsSetting();
+  game.settings.registerMenu(MODULE_ID, "calendarsMenu", {
+    name: "SDC.Settings.Calendars.Name",
+    label: "SDC.Settings.Calendars.Label",
+    hint: "SDC.Settings.Calendars.Hint",
+    icon: "fa-solid fa-calendar-plus",
+    type: CalendarsMenu,
+    restricted: true
+  });
+
   game.settings.register(MODULE_ID, "animate", {
     name: "SDC.Settings.Animate.Name",
     hint: "SDC.Settings.Animate.Hint",
