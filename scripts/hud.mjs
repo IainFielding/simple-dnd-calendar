@@ -267,9 +267,11 @@ export function createCalendarHUD(CalendarHUD) {
           + `<circle class="dark" cx="${MOON_RADIUS}" cy="${MOON_RADIUS}" r="${MOON_RADIUS - 0.5}"/>`
           + `<path class="lit"/><circle class="edge" cx="${MOON_RADIUS}" cy="${MOON_RADIUS}" r="${MOON_RADIUS - 0.5}"/>`
           + "</svg>";
+        const trail = (config.trail === "tears") ? this.#tears(config) : null;
+        if ( trail ) this.#el.moons.append(trail);
         this.#el.moons.append(element);
         return { config, epoch: sky.epochTime(calendar, config), element, path: element.querySelector(".lit"),
-          phase: null, label: null };
+          trail, glints: trail ? [...trail.querySelectorAll(".sdc-tear")] : [], phase: null, label: null };
       });
     }
 
@@ -455,6 +457,7 @@ export function createCalendarHUD(CalendarHUD) {
         const { x, y } = sky.orbitPoint(angle, { x: SKY.cx, y: SKY.cy, r: SKY.orbit });
         const visible = sky.aboveHorizon(angle) && (y > -MOON_RADIUS);
         moon.element.hidden = !visible;
+        if ( moon.trail ) this.#drawTrail(moon, angle, visible, sky.darkness(hour, sunrise, sunset, hoursPerDay));
         if ( !visible ) continue;
         moon.element.style.transform = `translate(${x - MOON_RADIUS}px, ${y - MOON_RADIUS}px)`;
         if ( (moon.phase === null) || (Math.abs(p - moon.phase) > 0.002) ) {
@@ -467,6 +470,49 @@ export function createCalendarHUD(CalendarHUD) {
           moon.element.dataset.tooltip = label;
         }
       }
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * The Tears of Selûne, a trail of glints for a moon, laid over the bowl beneath the moons.
+     * @param {object} config  The moon's config.
+     * @returns {HTMLElement}
+     */
+    #tears(config) {
+      const element = document.createElement("div");
+      element.className = "sdc-tears";
+      element.style.setProperty("--moon-color", config.color);
+      const glints = sky.TEARS.map((glint, i) => `<circle class="sdc-tear" r="${glint.r}" `
+        + `style="animation-delay: ${(-0.7 * i).toFixed(1)}s"/>`).join("");
+      element.innerHTML = `<svg viewBox="0 0 ${SKY.width} ${SKY.height}" width="${SKY.width}" height="${SKY.height}" `
+        + `aria-hidden="true">${glints}</svg>`;
+      return element;
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Draw a moon's trail behind it, fading out as the sky grows light. Each glint shows only while it is in the bowl.
+     * @param {object} moon       The moon, as kept in #moons.
+     * @param {number} angle      The moon's sky angle.
+     * @param {boolean} visible   Whether the moon itself is drawn.
+     * @param {number} darkness   How dark it is, from 0 in daylight to 1 at night.
+     */
+    #drawTrail(moon, angle, visible, darkness) {
+      moon.trail.hidden = !visible || (darkness <= 0);
+      if ( moon.trail.hidden ) return;
+      moon.trail.style.opacity = darkness.toFixed(2);
+      const orbit = { x: SKY.cx, y: SKY.cy, r: SKY.orbit };
+      sky.TEARS.forEach((glint, i) => {
+        const { x, y, angle: at } = sky.trailPoint(angle, glint, orbit);
+        const shown = sky.aboveHorizon(at) && (y > glint.r);
+        const circle = moon.glints[i];
+        circle.setAttribute("visibility", shown ? "visible" : "hidden");
+        if ( !shown ) return;
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+      });
     }
 
     /* -------------------------------------------- */

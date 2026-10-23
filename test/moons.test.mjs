@@ -42,4 +42,9 @@ describe("the moon catalogue", () => {
     expect(selune.epoch.hour).toBe(-0.75 * 24);
     expect(selune.epochPhase).toBe(0.5);
   });
+
+  it("gives Selûne, and only Selûne, the Tears' trail", () => {
+    const trailed = Object.values(MOONS).flat().filter(m => m.trail);
+    expect(trailed.map(m => [m.id, m.trail])).toEqual([["selune", "tears"]]);
+  });
 });

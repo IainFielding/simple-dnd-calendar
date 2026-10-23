@@ -332,6 +332,18 @@
 #sdc-calendar .sdc-moon .lit { fill: var(--moon-color); }
 #sdc-calendar .sdc-moon .edge { fill: none; stroke: rgb(255 255 255 / 35%); stroke-width: 1; }
 
+/* The Tears of Selûne, glittering after her. They shine by themselves, whatever her phase, and fade by day. */
+#sdc-calendar .sdc-tears {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 1.5px var(--moon-color));
+}
+
+#sdc-calendar .sdc-tears svg { display: block; overflow: visible; }
+#sdc-calendar .sdc-tear { fill: var(--moon-color); animation: sdc-twinkle 3.5s ease-in-out infinite; }
+
 /* The part of the day, set on the wheel's rim. */
 #sdc-calendar .sdc-phase {
   position: absolute;
@@ -762,6 +774,7 @@
   }
 
   #sdc-calendar .sdc-glint,
+  #sdc-calendar .sdc-tear,
   #sdc-calendar .sdc-mote,
   #sdc-calendar .sdc-sparkle,
   #sdc-calendar .sdc-firefly,

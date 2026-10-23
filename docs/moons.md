@@ -53,7 +53,7 @@ Selûne's period is the one given in Forgotten Realms lore, and the module takes
 
 Selûne's period is exactly a twelfth of the Harptos year averaged over a Shieldmeet cycle: 48 turns take 1,461 days, which is four years, Shieldmeet included. So Selûne's phases fall on the same dates every four years. In 1501 DR, for instance, she is full on 30 Hammer, the day before Midwinter.
 
-The Tears of Selûne, the trail of shards that follows her, aren't drawn.
+The Tears of Selûne, the glittering shards that follow her, trail behind her across the sky. They twinkle by their own light, however much of Selûne's face is lit, and fade away as the sky grows light.
 
 ### Calendar of Greyhawk (Oerth)
 
@@ -115,6 +115,7 @@ Each moon has:
 | `color` | The colour of its lit face, such as `"#eef1ff"`. |
 | `epoch` | A moment its phase is known: `{ year, day, hour }`, with the year as the calendar shows it, the day of the year counted from 0, and the hour of that day. The hour may be negative, or more than a day's hours, to land between days. |
 | `epochPhase` | Its phase at the epoch: `0` new, `0.25` first quarter, `0.5` full, `0.75` last quarter. By default `0`. |
+| `trail` | Optional. `"tears"` draws a trail of glints behind it, as the Tears of Selûne follow her. |
 
 For example, to give a homebrew calendar a red moon that was full at midnight starting its first day:
 

@@ -17,6 +17,8 @@ All notable changes to Simple D&D Calendar.
   dawn, noon, dusk or midnight (`/advance dawn`).
 - **Each dawn in the chat.** Turn on **Announce Each Dawn** and each new day is posted as the sun rises, with its
   date, the start of a season and any festival.
+- **The Tears of Selûne** glitter after her across the bowl, fading as the sky grows light. Modules can give any
+  moon the same trail with `trail: "tears"` in the `sogrom-simple-dnd-calendar.moons` hook.
 - **Full and new moons are marked** beside the bowl on the day they fall, and so are moons full together, such as
   Luna and Celene on Needfest. `/date` and the dawn in the chat say so too.
 - **When's the next full moon?** Hover the season band for each moon's phase and the date it is next full.

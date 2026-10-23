@@ -17,11 +17,11 @@ export const MOONS = {
 
   // Selûne turns every 30 days and 10½ hours, and was full at the start of 1372 DR. Counted forward through the
   // Shieldmeet years, that full moon recurs three-quarters of a day before the start of 1501 DR, where D&D 5e's
-  // Calendar of Harptos begins.
+  // Calendar of Harptos begins. The Tears of Selûne follow her.
   harptos: [
     {
       id: "selune", name: "SDC.Moon.Selune", period: 30.4375, color: "#eef1ff",
-      epoch: { year: 1501, day: 0, hour: -18 }, epochPhase: 0.5
+      epoch: { year: 1501, day: 0, hour: -18 }, epochPhase: 0.5, trail: "tears"
     }
   ],
 
