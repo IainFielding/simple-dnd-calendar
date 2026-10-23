@@ -1,50 +1,10 @@
+import { BAT, BROAD_LEAF, loose, rune, scatter, STAR } from "./trim-motifs.mjs";
 import { band, f, facesDown, follow, pick, place, point, swags, walk } from "./trim-path.mjs";
 
 /**
  * The adventures' trim, for a GM who wants the frame dressed for the campaign rather than the season. It is drawn
  * along the bar alone, leaving the sky clear for the moons.
  */
-
-const STAR = "M0,-2L.5,-.5L2,0L.5,.5L0,2L-.5,.5L-2,0L-.5,-.5Z";
-const BAT = "M0,0Q-1.5,-1.5 -3,-.5Q-4.5,-2 -6,-.2Q-4.5,0 -4,1.2Q-2,.4 0,1.5Q2,.4 4,1.2Q4.5,0 6,-.2Q4.5,-2 3,-.5"
-  + "Q1.5,-1.5 0,0Z";
-const BROAD_LEAF = "M0,0C2.5,-3 7,-2.5 8,0C7,2.5 2.5,3 0,0Z";
-
-/** The strokes runes and sigils are made from, in a small box about their middle. */
-const RUNE_STROKES = ["M-1.5,-2V2", "M1.5,-2V2", "M-1.5,-2L1.5,2", "M-1.5,2L1.5,-2", "M-1.5,0H1.5", "M0,-2.5V2.5",
-  "M-1.5,-2H1.5", "M-1.5,2H1.5", "M-1.5,-2L0,0L1.5,-2", "M-1.5,2L0,0L1.5,2"];
-
-/**
- * A made-up rune of two or three strokes.
- * @param {() => number} random
- * @returns {string}  SVG path data.
- */
-function rune(random) {
-  const strokes = new Set();
-  const count = 2 + Math.floor(random() * 2);
-  while ( strokes.size < count ) strokes.add(pick(random, RUNE_STROKES));
-  return [...strokes].join("");
-}
-
-/**
- * A piece that drifts on its own in screen space, unturned by the outline: a mote, an ember, a snowflake.
- * @param {{x: number, y: number}} p
- * @param {string} inner  The piece, drawn about its own middle.
- * @returns {string}
- */
-function loose(p, inner) {
-  return `<g transform="translate(${f(p.x)} ${f(p.y)})">${inner}</g>`;
-}
-
-/**
- * Animation timing to scatter pieces that move alike.
- * @param {() => number} random
- * @param {number} period  The animation's length, in seconds.
- * @returns {string}
- */
-function scatter(random, period) {
-  return `style="animation-delay: -${f(random() * period)}s"`;
-}
 
 /** How each adventure dresses an outline. Each piece is handed the class to add to it. */
 export const ADVENTURES = {

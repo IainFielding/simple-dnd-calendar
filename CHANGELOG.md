@@ -34,6 +34,12 @@ All notable changes to Simple D&D Calendar.
   they join D&D 5e's **Configure Calendar**: the **Exandrian Calendar** of Tal'Dorei and Wildemount, with its 21
   holidays and the moons Catha and Ruidus; and Dragonlance's **Solamnic Calendar**, with Solinari, Lunitari and
   Nuitari full together on the Night of the Eye every year and a half.
+- **A trim for every adventure and setting.** **Dress the Bar for Your Adventure** now has a trim for every D&D
+  adventure and campaign setting Wizards of the Coast has published for fifth edition, 48 in all, listed by name:
+  from Lost Mine of Phandelver, Storm King's Thunder and Waterdeep: Dragon Heist to Candlekeep Mysteries, Keys from
+  the Golden Vault and Dragon Delves; and for the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven,
+  Spelljammer, Dragonlance, Planescape, Greyhawk, Lorwyn-Shadowmoor and Netheril. A setting and its adventures share
+  a trim. Curse of Strahd's now covers Ravenloft too.
 
 ### Changed
 

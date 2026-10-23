@@ -522,7 +522,7 @@
 #sdc-calendar .sdc-sunflower .heart { fill: #6b3f1d; }
 
 #sdc-calendar .sdc-mote {
-  fill: #fff0a8;
+  fill: var(--c, #fff0a8);
   animation: sdc-twinkle 4s ease-in-out infinite;
 }
 
@@ -686,6 +686,312 @@
 #sdc-calendar .sdc-tentacle { fill: none; stroke: #a8619a; stroke-width: 1.5; stroke-linecap: round; }
 #sdc-calendar .sdc-mote.aberrant { fill: #8aff9a; }
 
+/* Shared pieces, coloured by a c-<name> class */
+#sdc-calendar .sdc-trim .c-white { --c: #f2efe6; }
+#sdc-calendar .sdc-trim .c-black { --c: #26222e; }
+#sdc-calendar .sdc-trim .c-red { --c: #d2342e; }
+#sdc-calendar .sdc-trim .c-orange { --c: #f08a2c; }
+#sdc-calendar .sdc-trim .c-gold { --c: #e8bd4a; }
+#sdc-calendar .sdc-trim .c-sun { --c: #ffd25a; }
+#sdc-calendar .sdc-trim .c-sand { --c: #d8b77a; }
+#sdc-calendar .sdc-trim .c-green { --c: #3fa04a; }
+#sdc-calendar .sdc-trim .c-teal { --c: #3cc3b4; }
+#sdc-calendar .sdc-trim .c-blue { --c: #3f7fe0; }
+#sdc-calendar .sdc-trim .c-violet { --c: #9a62e8; }
+#sdc-calendar .sdc-trim .c-pink { --c: #f08ac8; }
+#sdc-calendar .sdc-trim .c-silver { --c: #c9d0da; }
+#sdc-calendar .sdc-trim .c-bronze { --c: #c07a3a; }
+#sdc-calendar .sdc-trim .c-fire { --c: #ff9a2a; }
+#sdc-calendar .sdc-trim .c-catha { --c: #eef0f6; }
+#sdc-calendar .sdc-trim .c-ruidus { --c: #c4472c; }
+#sdc-calendar .sdc-trim .c-solinari { --c: #f4f6fb; }
+#sdc-calendar .sdc-trim .c-lunitari { --c: #d8433a; }
+#sdc-calendar .sdc-trim .c-nuitari { --c: #2e2840; }
+#sdc-calendar .sdc-trim .c-siberys { --c: #f2c94c; }
+#sdc-calendar .sdc-trim .c-eberron { --c: #d8402e; }
+#sdc-calendar .sdc-trim .c-khyber { --c: #3a4fa8; }
+#sdc-calendar .sdc-trim .c-dunamis { --c: #a88aff; }
+
+#sdc-calendar .sdc-coin circle { fill: var(--c); stroke: #7a5a18; stroke-width: 0.35; }
+#sdc-calendar .sdc-coin .rim { fill: none; stroke: rgb(255 245 200 / 70%); }
+#sdc-calendar .sdc-jewel { fill: var(--c); stroke: rgb(255 255 255 / 45%); stroke-width: 0.3; }
+#sdc-calendar .sdc-jewel-shine { stroke: #fff; stroke-width: 0.4; stroke-linecap: round; opacity: 0.8; }
+#sdc-calendar .sdc-flame { fill: var(--c); filter: drop-shadow(0 0 1.2px var(--c)); }
+#sdc-calendar .sdc-book rect { fill: var(--c); stroke: rgb(0 0 0 / 35%); stroke-width: 0.25; }
+#sdc-calendar .sdc-book .band { stroke: #e8c46a; stroke-width: 0.35; }
+#sdc-calendar .sdc-candle .wax { fill: #efe6cf; }
+#sdc-calendar .sdc-key { fill: none; stroke: #e8bd4a; stroke-width: 0.7; stroke-linecap: round; }
+#sdc-calendar .sdc-lamp .chain { stroke: #6c625a; stroke-width: 0.4; }
+#sdc-calendar .sdc-lamp .cage { fill: #3a302a; stroke: #8a6a3a; stroke-width: 0.35; }
+#sdc-calendar .sdc-lamp .light { fill: #ffcc6a; filter: drop-shadow(0 0 1.5px #ffae3a); }
+#sdc-calendar .sdc-orb circle:first-child { fill: var(--c); filter: drop-shadow(0 0 1.2px var(--c)); }
+#sdc-calendar .sdc-orb .shade { fill: rgb(0 0 0 / 22%); }
+#sdc-calendar .sdc-cloud { fill: #6a7890; stroke: #a0aec0; stroke-width: 0.35; }
+#sdc-calendar .sdc-planet circle { fill: var(--c); }
+#sdc-calendar .sdc-planet .ring { fill: none; stroke: #f2e6c8; stroke-width: 0.5; opacity: 0.85; }
+#sdc-calendar .sdc-card rect { fill: #f4ecd8; stroke: #8a6a3a; stroke-width: 0.3; }
+#sdc-calendar .sdc-card .mark { fill: #7a2a8a; }
+#sdc-calendar .sdc-stone { fill: #7a7068; stroke: #4a4440; stroke-width: 0.3; }
+#sdc-calendar .sdc-pennant path { fill: var(--c); stroke: rgb(0 0 0 / 30%); stroke-width: 0.2; }
+#sdc-calendar .sdc-shell path:first-child { fill: #f2c8b0; stroke: #b07a64; stroke-width: 0.3; }
+#sdc-calendar .sdc-shell .ribs { fill: none; stroke: #c48a72; stroke-width: 0.3; }
+#sdc-calendar .sdc-crystal path:first-child { fill: var(--c); stroke: rgb(255 255 255 / 40%); stroke-width: 0.25;
+  filter: drop-shadow(0 0 1px var(--c)); }
+#sdc-calendar .sdc-crystal .facet { fill: none; stroke: rgb(255 255 255 / 45%); stroke-width: 0.25; }
+#sdc-calendar .sdc-drip { fill: var(--c); }
+#sdc-calendar .sdc-bubble { fill: rgb(200 235 255 / 20%); stroke: rgb(220 245 255 / 75%); stroke-width: 0.35; }
+#sdc-calendar .sdc-bloom circle { fill: var(--c); }
+#sdc-calendar .sdc-bloom .heart { fill: #f6d36a; }
+#sdc-calendar .sdc-gold-cord { fill: none; stroke: #d9a93a; stroke-width: 0.7; }
+#sdc-calendar .sdc-silver-cord { fill: none; stroke: #b8c0cc; stroke-width: 0.5; }
+
+/* Settings: the Forgotten Realms */
+#sdc-calendar[data-bar-trim="realms"] { --sdc-glow: rgb(90 150 255 / 36%); }
+#sdc-calendar .sdc-weave { fill: none; stroke: #5aa0ff; stroke-width: 1; filter: drop-shadow(0 0 1px #3a7aff); }
+#sdc-calendar .sdc-weave.faint { stroke: #a8c8ff; stroke-width: 0.5; opacity: 0.7; }
+#sdc-calendar .sdc-mystra { fill: #eef4ff; stroke: #5aa0ff; stroke-width: 0.35; filter: drop-shadow(0 0 1.2px #7ab0ff); }
+#sdc-calendar .sdc-crescent-moon { fill: #e6ecf8; }
+#sdc-calendar .sdc-sparkle.weave { fill: #cfe2ff; }
+
+/* Ravnica */
+#sdc-calendar[data-bar-trim="ravnica"] { --sdc-glow: rgb(220 200 140 / 30%); }
+#sdc-calendar .sdc-lead { fill: #1c1a20; stroke: #b89a5a; stroke-width: 0.4; }
+#sdc-calendar .sdc-pane { fill: var(--c); opacity: 0.85; }
+#sdc-calendar .sdc-spire { fill: #2a2630; stroke: #b89a5a; stroke-width: 0.35; }
+
+/* Acquisitions Incorporated */
+#sdc-calendar[data-bar-trim="acqinc"] { --sdc-glow: rgb(230 190 80 / 32%); }
+#sdc-calendar .sdc-brass-chain { fill: none; stroke: #c99a3a; stroke-width: 0.9; stroke-dasharray: 1.4 0.6; }
+#sdc-calendar .sdc-scroll { fill: #f2e6c4; stroke: #a08050; stroke-width: 0.3; }
+#sdc-calendar .sdc-scroll-line { stroke: #8a7650; stroke-width: 0.3; }
+#sdc-calendar .sdc-seal { fill: #b0202a; }
+
+/* Eberron */
+#sdc-calendar[data-bar-trim="eberron"] { --sdc-glow: rgb(240 200 80 / 34%); }
+#sdc-calendar .sdc-rail { fill: none; stroke: #6a7280; stroke-width: 1.2; }
+#sdc-calendar .sdc-rail.spark { stroke: #8ad8ff; stroke-width: 0.5; stroke-dasharray: 3 9; filter: drop-shadow(0 0 1px #4ab8ff);
+  animation: sdc-rail 2s linear infinite; }
+
+/* Exandria */
+#sdc-calendar[data-bar-trim="exandria"] { --sdc-glow: rgb(160 130 255 / 34%); }
+#sdc-calendar .sdc-dunamis { fill: none; stroke: #b49cff; stroke-width: 0.45; filter: drop-shadow(0 0 1px #8a6aff); }
+
+/* Theros */
+#sdc-calendar[data-bar-trim="theros"] { --sdc-glow: rgb(240 200 90 / 32%); }
+#sdc-calendar .sdc-meander-ground { fill: #1e1a2e; stroke: #d9b04a; stroke-width: 0.4; }
+#sdc-calendar .sdc-meander { fill: none; stroke: #e8c25a; stroke-width: 0.55; }
+#sdc-calendar .sdc-leaf.laurel { fill: #7a9a3a; }
+#sdc-calendar .sdc-sparkle.nyx { fill: #b9a8ff; }
+
+/* Strixhaven */
+#sdc-calendar[data-bar-trim="strixhaven"] { --sdc-glow: rgb(150 180 255 / 30%); }
+
+/* Spelljammer */
+#sdc-calendar[data-bar-trim="spelljammer"] { --sdc-glow: rgb(120 110 255 / 36%); }
+#sdc-calendar .sdc-wildspace { fill: #120f30; stroke: #6a5ae0; stroke-width: 0.4; }
+#sdc-calendar .sdc-orbit { fill: none; stroke: rgb(200 190 255 / 60%); stroke-width: 0.45; stroke-dasharray: 2 2; }
+#sdc-calendar .sdc-star-dot { fill: #f2f0ff; animation: sdc-twinkle 4s ease-in-out infinite; }
+
+/* Dragonlance */
+#sdc-calendar[data-bar-trim="dragonlance"] { --sdc-glow: rgb(200 200 230 / 30%); }
+#sdc-calendar .sdc-scale-line { fill: none; stroke: #b8c0cc; stroke-width: 0.8; }
+#sdc-calendar .sdc-lance { stroke: #c9d0da; stroke-width: 0.7; stroke-linecap: round; }
+#sdc-calendar .sdc-lance-head { fill: #eef2f8; }
+#sdc-calendar .sdc-pennon { fill: #3a6ad0; }
+
+/* Planescape */
+#sdc-calendar[data-bar-trim="planescape"] { --sdc-glow: rgb(255 170 90 / 30%); }
+#sdc-calendar .sdc-razorvine { fill: none; stroke: #3a5a3a; stroke-width: 1.1; }
+#sdc-calendar .sdc-blade { fill: #a8b4a8; stroke: #3a4a3a; stroke-width: 0.2; }
+#sdc-calendar .sdc-portal .arch { fill: var(--c); animation: sdc-glow 5s ease-in-out infinite; }
+#sdc-calendar .sdc-portal .frame { fill: none; stroke: #b8a890; stroke-width: 0.9; stroke-linejoin: round; }
+
+/* Greyhawk */
+#sdc-calendar[data-bar-trim="greyhawk"] { --sdc-glow: rgb(255 190 100 / 30%); }
+#sdc-calendar .sdc-wall { fill: #6a625c; stroke: #3e3833; stroke-width: 0.3; }
+#sdc-calendar .sdc-merlon { fill: #7a726a; stroke: #3e3833; stroke-width: 0.3; }
+
+/* Lorwyn-Shadowmoor */
+#sdc-calendar[data-bar-trim="lorwyn"] { --sdc-glow: rgb(255 210 120 / 30%); }
+#sdc-calendar .sdc-vine.lorwyn { stroke: #5a9a3a; }
+#sdc-calendar .sdc-vine.shadowmoor { stroke: #7a5a8a; }
+#sdc-calendar .sdc-thorn.shadowmoor { fill: #8a6a9a; }
+#sdc-calendar .sdc-bloom.c-gloom path { fill: #5a3a7a; stroke: #b49ad0; stroke-width: 0.25; }
+#sdc-calendar .sdc-bloom.c-gloom .heart { fill: #c8e0ff; filter: drop-shadow(0 0 1px #8ab0ff); }
+#sdc-calendar .sdc-mist.shadow { fill: rgb(150 120 190 / 30%); }
+
+/* Netheril */
+#sdc-calendar[data-bar-trim="netheril"] { --sdc-glow: rgb(240 200 110 / 32%); }
+#sdc-calendar .sdc-ley.gold { stroke: #f2c94c; }
+#sdc-calendar .sdc-isle { fill: #6a5a4a; stroke: #3a3028; stroke-width: 0.3; }
+#sdc-calendar .sdc-isle-top { fill: #5a8a3a; }
+#sdc-calendar .sdc-tower { fill: #d8d0c0; stroke: #8a8070; stroke-width: 0.3; }
+#sdc-calendar .sdc-mythallar { fill: none; stroke: #f2c94c; stroke-width: 0.5; filter: drop-shadow(0 0 1px #e8a82a); }
+#sdc-calendar .sdc-mythallar.inner { stroke-dasharray: 1 1; }
+
+/* More adventures */
+#sdc-calendar .sdc-trim .c-wave { --c: #6aff9a; }
+#sdc-calendar .sdc-trim .c-faerzress { --c: #c08aff; }
+#sdc-calendar .sdc-trim .c-grave { --c: #a8e07a; }
+#sdc-calendar .sdc-trim .c-water { --c: #4aa8ff; }
+#sdc-calendar .sdc-trim .c-air { --c: #d8ecff; }
+#sdc-calendar .sdc-trim .c-earth { --c: #a8803a; }
+#sdc-calendar .sdc-trim .c-frost { --c: #8ad8ff; }
+#sdc-calendar .sdc-trim .c-blood { --c: #9a0f1a; }
+#sdc-calendar .sdc-trim .c-spark { --c: #8ae0ff; }
+
+/* Lost Mine of Phandelver */
+#sdc-calendar[data-bar-trim="phandelver"] { --sdc-glow: rgb(100 230 140 / 30%); }
+#sdc-calendar .sdc-rail-track { fill: none; stroke: #b8bcc4; stroke-width: 0.8; }
+#sdc-calendar .sdc-sleeper { fill: #7a5434; }
+#sdc-calendar .sdc-pick-handle { stroke: #7a5634; stroke-width: 0.7; stroke-linecap: round; }
+#sdc-calendar .sdc-pick-head { fill: #b8c0c8; stroke: #5a6068; stroke-width: 0.25; }
+
+/* Hoard of the Dragon Queen */
+#sdc-calendar[data-bar-trim="dragonqueen"] { --sdc-glow: rgb(150 70 200 / 36%); }
+#sdc-calendar .sdc-cult-cloth { fill: none; stroke: #6a2a8a; stroke-width: 1.6; }
+#sdc-calendar .sdc-egg ellipse { fill: var(--c); stroke: rgb(0 0 0 / 35%); stroke-width: 0.3; }
+#sdc-calendar .sdc-egg .speck { fill: rgb(255 255 255 / 45%); }
+
+/* The Rise of Tiamat */
+#sdc-calendar[data-bar-trim="tiamat"] { --sdc-glow: rgb(220 70 70 / 32%); }
+#sdc-calendar .sdc-scale { fill: var(--c); stroke: rgb(0 0 0 / 45%); stroke-width: 0.25; }
+#sdc-calendar .sdc-talon { fill: #e8dcc0; stroke: #6a5a40; stroke-width: 0.25; }
+#sdc-calendar .sdc-talon.dark { fill: #2a2420; stroke: #8a6a3a; }
+
+/* Princes of the Apocalypse */
+#sdc-calendar[data-bar-trim="elemental"] { --sdc-glow: rgb(255 160 80 / 30%); }
+#sdc-calendar .sdc-element-line { fill: none; stroke: #6a6058; stroke-width: 0.8; }
+#sdc-calendar .sdc-air { fill: none; stroke: #d8ecff; stroke-width: 0.6; stroke-linecap: round; }
+#sdc-calendar .sdc-water { fill: #4aa8ff; }
+
+/* Out of the Abyss */
+#sdc-calendar[data-bar-trim="underdark"] { --sdc-glow: rgb(170 100 255 / 34%); }
+#sdc-calendar .sdc-cave-rock { fill: #3a3440; }
+#sdc-calendar .sdc-stalactite { fill: #5a5260; stroke: #2a2430; stroke-width: 0.25; }
+#sdc-calendar .sdc-fungus .cap { fill: var(--c); filter: drop-shadow(0 0 1.2px var(--c)); }
+#sdc-calendar .sdc-fungus .dot { fill: rgb(255 255 255 / 70%); }
+
+/* Storm King's Thunder */
+#sdc-calendar[data-bar-trim="giants"] { --sdc-glow: rgb(140 190 255 / 34%); }
+#sdc-calendar .sdc-bolt { fill: #fff6a8; filter: drop-shadow(0 0 1.5px #a8d8ff); animation: sdc-flicker 6s infinite; }
+#sdc-calendar .sdc-rain { stroke: rgb(190 215 255 / 70%); stroke-width: 0.35; animation: sdc-fall 1.2s linear infinite; }
+
+/* Tales from the Yawning Portal */
+#sdc-calendar[data-bar-trim="yawningportal"] { --sdc-glow: rgb(255 180 90 / 30%); }
+#sdc-calendar .sdc-beam { fill: #5a3e26; stroke: #2e1e12; stroke-width: 0.3; }
+#sdc-calendar .sdc-beam-grain { fill: none; stroke: #3e2a18; stroke-width: 0.3; stroke-dasharray: 8 3; }
+#sdc-calendar .sdc-hook { stroke: #6c625a; stroke-width: 0.4; }
+#sdc-calendar .sdc-tankard .body { fill: #8a6a3a; stroke: #4a3418; stroke-width: 0.3; }
+#sdc-calendar .sdc-tankard .handle { fill: none; stroke: #4a3418; stroke-width: 0.5; }
+#sdc-calendar .sdc-tankard .foam { fill: #f6f0e0; }
+
+/* Waterdeep: Dragon Heist */
+#sdc-calendar[data-bar-trim="dragonheist"] { --sdc-glow: rgb(80 130 255 / 32%); }
+#sdc-calendar .sdc-velvet { fill: none; stroke: #2a3a8a; stroke-width: 1.6; }
+#sdc-calendar .sdc-mask { fill: #f2ecd8; stroke: #c9a24a; stroke-width: 0.35; }
+#sdc-calendar .sdc-mask-eye { fill: #1a1622; }
+
+/* Dungeon of the Mad Mage */
+#sdc-calendar[data-bar-trim="madmage"] { --sdc-glow: rgb(170 90 255 / 36%); }
+#sdc-calendar .sdc-brick { fill: #8a7266; }
+#sdc-calendar .sdc-mortar { fill: none; stroke: #2a2220; stroke-width: 0.35; }
+#sdc-calendar .sdc-gate { fill: rgb(150 80 255 / 25%); stroke: #c08aff; stroke-width: 0.5; filter: drop-shadow(0 0 1.5px #9a5aff); }
+#sdc-calendar .sdc-gate-rune { fill: none; stroke: #e0c8ff; stroke-width: 1.4; }
+
+/* Ghosts of Saltmarsh */
+#sdc-calendar[data-bar-trim="saltmarsh"] { --sdc-glow: rgb(80 180 220 / 32%); }
+#sdc-calendar .sdc-waves { fill: #1e5a7a; }
+#sdc-calendar .sdc-wave-crest { fill: none; stroke: #bfe8f6; stroke-width: 0.5; }
+#sdc-calendar .sdc-net { fill: none; stroke: #c8b48a; stroke-width: 0.35; }
+
+/* Dragon of Icespire Peak */
+#sdc-calendar[data-bar-trim="icespire"] { --sdc-glow: rgb(180 220 255 / 34%); }
+#sdc-calendar .sdc-peak { fill: #5a6a7a; stroke: #3a4652; stroke-width: 0.3; }
+#sdc-calendar .sdc-peak-snow { fill: #f2f8ff; }
+#sdc-calendar .sdc-wyrm { fill: #eaf4ff; stroke: #7a9ab8; stroke-width: 0.3; }
+
+/* Candlekeep Mysteries */
+#sdc-calendar[data-bar-trim="candlekeep"] { --sdc-glow: rgb(255 200 110 / 32%); }
+#sdc-calendar .sdc-shelf { fill: #5a3e26; stroke: #2e1e12; stroke-width: 0.3; }
+
+/* Journeys through the Radiant Citadel */
+#sdc-calendar[data-bar-trim="radiantcitadel"] { --sdc-glow: rgb(255 220 120 / 38%); }
+#sdc-calendar .sdc-ray { stroke: #ffe8a0; stroke-width: 0.35; stroke-linecap: round; opacity: 0.8; }
+#sdc-calendar .sdc-sparkle.radiant { fill: #fff2c0; }
+
+/* Dragons of Stormwreck Isle */
+#sdc-calendar[data-bar-trim="stormwreck"] { --sdc-glow: rgb(120 180 220 / 32%); }
+#sdc-calendar .sdc-plank { fill: #6a4a2e; stroke: #3a2614; stroke-width: 0.3; }
+
+/* Keys from the Golden Vault */
+#sdc-calendar[data-bar-trim="goldenvault"] { --sdc-glow: rgb(240 200 80 / 36%); }
+#sdc-calendar .sdc-ingot { fill: #e8bd4a; stroke: #8a6418; stroke-width: 0.3; }
+
+/* Quests from the Infinite Staircase */
+#sdc-calendar[data-bar-trim="staircase"] { --sdc-glow: rgb(160 200 255 / 32%); }
+#sdc-calendar .sdc-stair { fill: #8a8090; stroke: #4a4450; stroke-width: 0.3; }
+#sdc-calendar .sdc-door .frame { fill: #6a5a4a; }
+#sdc-calendar .sdc-door .leaf { fill: var(--c); filter: drop-shadow(0 0 1px var(--c)); }
+#sdc-calendar .sdc-door .knob { fill: #f2d488; }
+
+/* Heroes of the Borderlands */
+#sdc-calendar[data-bar-trim="borderlands"] { --sdc-glow: rgb(230 170 90 / 30%); }
+#sdc-calendar .sdc-palisade-rail { fill: none; stroke: #3e2a18; stroke-width: 0.8; }
+#sdc-calendar .sdc-stake { fill: #8a6438; stroke: #4a3418; stroke-width: 0.3; }
+#sdc-calendar .sdc-buckler circle { fill: var(--c); stroke: #4a3418; stroke-width: 0.5; }
+#sdc-calendar .sdc-buckler .boss { fill: #c9d0da; }
+
+/* Hold Back the Dead */
+#sdc-calendar[data-bar-trim="holdbackdead"] { --sdc-glow: rgb(140 220 110 / 32%); }
+#sdc-calendar .sdc-mist.grave { fill: rgb(160 220 140 / 22%); }
+#sdc-calendar .sdc-hand { fill: #8a9a72; stroke: #4a5a3a; stroke-width: 0.25; }
+
+/* Scions of Elemental Evil */
+#sdc-calendar[data-bar-trim="scions"] { --sdc-glow: rgb(255 120 60 / 30%); }
+#sdc-calendar .sdc-temple-stone { fill: #5e5850; stroke: #3a3530; stroke-width: 0.3; }
+#sdc-calendar .sdc-crack { fill: none; stroke: #2a2622; stroke-width: 0.35; }
+#sdc-calendar .sdc-sign { fill: none; stroke: var(--c); stroke-width: 0.7; stroke-linejoin: round;
+  filter: drop-shadow(0 0 1.2px var(--c)); animation: sdc-glow 5s ease-in-out infinite; }
+
+/* Uni and the Hunt for the Lost Horn */
+#sdc-calendar[data-bar-trim="unicorn"] { --sdc-glow: rgb(255 170 230 / 34%); }
+#sdc-calendar .sdc-rainbow { fill: none; stroke: var(--c); stroke-width: 0.95; }
+#sdc-calendar .sdc-heart { fill: #ff7ab8; }
+
+/* The Book of Many Things */
+#sdc-calendar[data-bar-trim="manythings"] { --sdc-glow: rgb(170 110 255 / 34%); }
+#sdc-calendar .sdc-deck-cord { fill: none; stroke: #7a3aa8; stroke-width: 0.6; }
+
+/* Bigby Presents: Glory of the Giants */
+#sdc-calendar[data-bar-trim="glory"] { --sdc-glow: rgb(150 200 255 / 32%); }
+#sdc-calendar .sdc-tablet { fill: #6e6a64; stroke: #3a3632; stroke-width: 0.35; }
+#sdc-calendar .sdc-rune.frost { stroke: #a8e4ff; filter: drop-shadow(0 0 1.2px #4ab8ff); }
+#sdc-calendar .sdc-rune.fire { stroke: #ffb46a; filter: drop-shadow(0 0 1.2px #ff6a1a); }
+
+/* Astarion's Book of Hungers */
+#sdc-calendar[data-bar-trim="astarion"] { --sdc-glow: rgb(170 20 40 / 38%); }
+#sdc-calendar .sdc-rose circle { fill: #6a0a1a; }
+#sdc-calendar .sdc-rose .curl { fill: none; stroke: #c02a3a; stroke-width: 0.4; }
+
+/* Locathah Rising */
+#sdc-calendar[data-bar-trim="locathah"] { --sdc-glow: rgb(60 200 200 / 32%); }
+#sdc-calendar .sdc-kelp { fill: none; stroke: #3a8a4a; stroke-width: 1.1; stroke-linecap: round; }
+#sdc-calendar .sdc-coral { fill: none; stroke: var(--c); stroke-width: 0.8; stroke-linecap: round; }
+#sdc-calendar .sdc-bubble { animation: sdc-rise 4s ease-out infinite; }
+
+/* The Lost Laboratory of Kwalish */
+#sdc-calendar[data-bar-trim="kwalish"] { --sdc-glow: rgb(120 210 255 / 32%); }
+#sdc-calendar .sdc-pipe { fill: none; stroke: #b0683a; stroke-width: 1.4; }
+#sdc-calendar .sdc-pipe.thin { stroke: #8a5230; stroke-width: 0.7; }
+#sdc-calendar .sdc-pipe-joint { fill: #d8a050; }
+#sdc-calendar .sdc-gear { fill: #c9a050; stroke: #6a4a20; stroke-width: 0.25; fill-rule: evenodd; }
+#sdc-calendar .sdc-vial { fill: rgb(200 235 255 / 25%); stroke: #c8e8f8; stroke-width: 0.3; }
+#sdc-calendar .sdc-vial-liquid { fill: #6aff9a; filter: drop-shadow(0 0 1px #3ad86a); }
+
+/* Dragon Delves */
+#sdc-calendar[data-bar-trim="delves"] { --sdc-glow: rgb(240 190 70 / 36%); }
+
 /* ---------------------------------------------------------------------------------------------- */
 /*  Chat                                                                                          */
 /* ---------------------------------------------------------------------------------------------- */
@@ -744,6 +1050,10 @@
   55% { opacity: 0.95; }
 }
 
+@keyframes sdc-rail {
+  to { stroke-dashoffset: -12; }
+}
+
 @keyframes sdc-drift {
   0%, 100% { translate: -4px 0; opacity: 0.5; }
   50% { translate: 4px 1px; opacity: 1; }
@@ -779,7 +1089,10 @@
   #sdc-calendar .sdc-sparkle,
   #sdc-calendar .sdc-firefly,
   #sdc-calendar .sdc-ember,
-  #sdc-calendar .sdc-flake {
+  #sdc-calendar .sdc-flake,
+  #sdc-calendar .sdc-star-dot,
+  #sdc-calendar .sdc-rain,
+  #sdc-calendar .sdc-bubble {
     animation: none;
     opacity: 0.8;
   }
@@ -789,7 +1102,11 @@
   #sdc-calendar .sdc-mist,
   #sdc-calendar .sdc-rune,
   #sdc-calendar .sdc-spin,
-  #sdc-calendar .sdc-eye .iris {
+  #sdc-calendar .sdc-eye .iris,
+  #sdc-calendar .sdc-rail.spark,
+  #sdc-calendar .sdc-portal .arch,
+  #sdc-calendar .sdc-bolt,
+  #sdc-calendar .sdc-sign {
     animation: none;
   }
 }
