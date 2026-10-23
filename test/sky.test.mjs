@@ -304,3 +304,35 @@ describe("the moons", () => {
     });
   });
 });
+
+describe("the Tears of Selûne", () => {
+  const orbit = { x: 160, y: -40, r: 128 };
+  const MOON_RADIUS = 13;
+
+  it("trail behind the moon along its path, thinning as they go", () => {
+    const angle = Math.PI / 2;
+    let last = angle;
+    for ( const glint of sky.TEARS ) {
+      const { angle: at } = sky.trailPoint(angle, glint, orbit);
+      expect(at).toBeLessThan(last);
+      last = at;
+    }
+    const sizes = sky.TEARS.map(g => g.r);
+    expect(sizes.at(-1)).toBeLessThan(sizes[0]);
+  });
+
+  it("start clear of the moon's face", () => {
+    const angle = Math.PI / 2;
+    const moon = sky.orbitPoint(angle, orbit);
+    for ( const glint of sky.TEARS ) {
+      const { x, y } = sky.trailPoint(angle, glint, orbit);
+      expect(Math.hypot(x - moon.x, y - moon.y)).toBeGreaterThan(MOON_RADIUS + glint.r);
+    }
+  });
+
+  it("wrap round past the horizon with the moon", () => {
+    const { angle } = sky.trailPoint(0.05, sky.TEARS[0], orbit);
+    expect(angle).toBeGreaterThan(Math.PI);
+    expect(sky.aboveHorizon(angle)).toBe(false);
+  });
+});

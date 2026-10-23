@@ -360,6 +360,7 @@ export function yearFraction(calendar, components, fraction) {
  *                                  calendar shows it, a day of that year counted from 0, and an hour of that day
  *                                  (which may be negative, or more than a day's hours, to land between days).
  * @property {number} [epochPhase=0]  The phase at the epoch: 0 new, 0.5 full.
+ * @property {"tears"} [trail]      A trail drawn following it across the sky: "tears" for the Tears of Selûne.
  */
 
 /** The eight phases, in order from new, each centred on its own eighth of the cycle. */
@@ -472,6 +473,36 @@ export function aboveHorizon(angle) {
  */
 export function orbitPoint(angle, { x, y, r }) {
   return { x: round(x + (r * Math.cos(angle))), y: round(y + (r * Math.sin(angle))) };
+}
+
+/**
+ * The Tears of Selûne, the glittering shards that follow her: for each glint, how far it trails behind her along her
+ * path, in radians; how far it strays off her path, outwards, in pixels; and its radius. They start clear of her face
+ * and thin out as they trail away.
+ * @type {ReadonlyArray<{behind: number, out: number, r: number}>}
+ */
+export const TEARS = Object.freeze([
+  { behind: 0.16, out: -3, r: 1.4 },
+  { behind: 0.2, out: 3, r: 1.1 },
+  { behind: 0.24, out: -1, r: 1.2 },
+  { behind: 0.29, out: 4, r: 0.9 },
+  { behind: 0.33, out: -4, r: 1 },
+  { behind: 0.38, out: 1, r: 0.8 },
+  { behind: 0.43, out: -2, r: 0.7 },
+  { behind: 0.49, out: 3, r: 0.6 }
+]);
+
+/**
+ * Where a glint of a moon's trail is, from where the moon is. A moon's sky angle grows through the day, so its trail
+ * lies at smaller angles.
+ * @param {number} angle  The moon's sky angle, from {@link moonSkyAngle}.
+ * @param {{behind: number, out: number}} glint  One of {@link TEARS}.
+ * @param {{x: number, y: number, r: number}} orbit  The moons' orbit.
+ * @returns {{x: number, y: number, angle: number}}
+ */
+export function trailPoint(angle, glint, orbit) {
+  const at = wrap(angle - glint.behind, TAU);
+  return { ...orbitPoint(at, { ...orbit, r: orbit.r + glint.out }), angle: at };
 }
 
 /**
