@@ -171,10 +171,15 @@ export function festivalTrimKind(name = "") {
   const key = String(name).split(".").at(-1);
   return {
     Midwinter: "midwinter", Needfest: "midwinter", WintersCrest: "midwinter",
-    Greengrass: "greengrass", Growfest: "greengrass", RenewalFestival: "greengrass",
-    Midsummer: "midsummer", Richfest: "midsummer", Zenith: "midsummer",
+    Greengrass: "greengrass", Growfest: "greengrass", RenewalFestival: "greengrass", WildsGrandeur: "greengrass",
+    Midsummer: "midsummer", Richfest: "midsummer", Zenith: "midsummer", Highsummer: "midsummer",
     Shieldmeet: "shieldmeet",
-    Highharvestide: "harvest", Brewfest: "harvest", HarvestsClose: "harvest",
-    FeastOfTheMoon: "moonfeast"
+    Highharvestide: "harvest", Brewfest: "harvest", HarvestsClose: "harvest", HarvestsRise: "harvest",
+    FeastOfTheMoon: "moonfeast",
+    // The Exandrian calendar's other holidays, each with its own trim.
+    NewDawn: "newdawn", Hillsgold: "hillsgold", DayOfChallenging: "challenging", MerryfrondsDay: "merryfrond",
+    DeepSolace: "deepsolace", ArtisansFaire: "artisansfaire", Elvendawn: "elvendawn", MornOfLargesse: "largesse",
+    HazelFestival: "hazel", CivilizationsDawn: "civilization", NightOfAscension: "ascension", ZansCup: "zanscup",
+    BarrenEve: "barreneve", Embertide: "embertide"
   }[key] ?? null;
 }

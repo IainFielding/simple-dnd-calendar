@@ -7,13 +7,18 @@
  * named "screenshot" in the test world, added by hand, is the backdrop: it is activated and viewed for the shots.
  * Without one, the fixtures' blank scene is used.
  *
- * Each sky and bar trim is shot too, into docs/screenshots/trims. To take only those:
+ * Each sky and bar trim is shot too, into docs/screenshots/trims. To take only those, or only some bar trims by name:
  *
  *   npm run docs:screenshots -- --trims
+ *   npm run docs:screenshots -- --trims yawningportal candlekeep
  *
  * And the moons' events and forecasts, into docs/screenshots/lunar-*.png. To take only those:
  *
  *   npm run docs:screenshots -- --lunar
+ *
+ * And the README's opening picture, docs/screenshots/hero.png. To take only that:
+ *
+ *   npm run docs:screenshots -- --hero
  */
 
 import fs from "node:fs";
@@ -32,8 +37,14 @@ fs.mkdirSync(OUT, { recursive: true });
 /** Take only the trims' shots. */
 const TRIMS_ONLY = process.argv.includes("--trims");
 
+/** The bar trims to take, if only some are named, as for `--trims yawningportal`. */
+const TRIM_NAMES = process.argv.slice(2).filter(a => !a.startsWith("--"));
+
 /** Take only the moons' shots. */
 const LUNAR_ONLY = process.argv.includes("--lunar");
+
+/** Take only the README's opening picture. */
+const HERO_ONLY = process.argv.includes("--hero");
 
 /** The calendar and a margin around it, for a cropped shot. */
 const CLIP = { x: 480, y: 0, width: 640, height: 230 };
@@ -72,12 +83,14 @@ try {
     console.log(`  ${OUT}/${name}.png`);
   };
 
-  if ( !TRIMS_ONLY && !LUNAR_ONLY ) await docShots(ctx, shoot);
-  if ( !TRIMS_ONLY ) await lunarShots(ctx, backdrop);
-  if ( !LUNAR_ONLY ) await trimShots(ctx, shoot);
+  const all = !TRIMS_ONLY && !LUNAR_ONLY && !HERO_ONLY;
+  if ( all || HERO_ONLY ) await heroShot(ctx, shoot);
+  if ( all ) await docShots(ctx, shoot);
+  if ( all || LUNAR_ONLY ) await lunarShots(ctx, backdrop);
+  if ( all || TRIMS_ONLY ) await trimShots(ctx, shoot, backdrop);
 
   // The whole screen, for context.
-  if ( !TRIMS_ONLY && !LUNAR_ONLY ) {
+  if ( all ) {
     await gm.page.mouse.move(5, 900);
     await gm.page.screenshot({ path: `${OUT}/screen.png` });
     console.log(`  ${OUT}/screen.png`);
@@ -86,6 +99,47 @@ try {
   await player?.close();
   await gm?.close({ shutDownWorld: true });
   await server.stop();
+}
+
+/* -------------------------------------------- */
+
+/**
+ * The README's opening picture, and Foundry's setup-screen artwork: the calendar as it comes, with no trims, at sunset
+ * on a spring evening, the day wheel turned half to day and half to night, and Selûne waxing in the bowl. The evening
+ * is the first in spring with no festival or full or new moon to mark, and Selûne up and clear of the middle of the
+ * bowl.
+ * @param {{gm: Session, player: Session}} ctx
+ * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
+ */
+async function heroShot(ctx, shoot) {
+  const { gm } = ctx;
+  await gm.eval(async moduleId => {
+    for ( const key of ["seasonTrim", "barTrim"] ) await game.settings.set(moduleId, key, "none");
+  }, MODULE_ID);
+  const evening = await gm.eval(async moduleId => {
+    const sky = await import(`/modules/${moduleId}/scripts/sky.mjs`);
+    const { festivalKey, moonEventLabels, worldMoons } = await import(`/modules/${moduleId}/scripts/calendar.mjs`);
+    const calendar = game.time.calendar;
+    const [selune] = worldMoons();
+    for ( let day = 90; day < 170; day++ ) {
+      const time = calendar.componentsToTime({ year: 1525 - calendar.years.yearZero, day, hour: 18 });
+      const components = calendar.timeToComponents(time);
+      const phase = sky.moonPhase(calendar, selune, time);
+      const angle = sky.moonSkyAngle(sky.dayFraction(calendar, time), phase);
+      const fromMiddle = Math.abs(sky.wrap(angle - (Math.PI / 2) + Math.PI, 2 * Math.PI) - Math.PI);
+      if ( festivalKey(calendar, components) || moonEventLabels(time).length ) continue;
+      if ( (phase > 0.3) && (phase < 0.42) && sky.aboveHorizon(angle) && (fromMiddle > 0.35) ) return day;
+    }
+    return 120;
+  }, MODULE_ID);
+  console.log(`  The hero's evening: day ${evening} of 1525.`);
+  await setTime(ctx, { year: 1525, day: evening, hour: 18, minute: 0 });
+  await shoot(gm, "hero");
+
+  // The same evening, taller, for the module's artwork on Foundry's setup screen (see "media" in module.json).
+  fs.mkdirSync("assets", { recursive: true });
+  await gm.page.screenshot({ path: "assets/cover.jpg", type: "jpeg", quality: 88, clip: { ...CLIP, height: 416 } });
+  console.log("  assets/cover.jpg");
 }
 
 /* -------------------------------------------- */
@@ -102,14 +156,9 @@ async function docShots(ctx, shoot) {
   // The season's trim is off by default; it is on in these first shots, to show it.
   await gm.eval(moduleId => game.settings.set(moduleId, "seasonTrim", "follow"), MODULE_ID);
 
-  // A full Selûne riding high on a winter's night, then the same day at noon and at dusk.
+  // A full Selûne riding high on a winter's night, then noon in spring and dusk at the end of summer.
   await setTime(ctx, { year: 1501, day: 30, hour: 0, minute: 10 });
   await shoot(gm, "night");
-
-  // The same night, taller, for the module's artwork on Foundry's setup screen (see "media" in module.json).
-  fs.mkdirSync("assets", { recursive: true });
-  await gm.page.screenshot({ path: "assets/cover.jpg", type: "jpeg", quality: 88, clip: { ...CLIP, height: 416 } });
-  console.log("  assets/cover.jpg");
 
   await setTime(ctx, { year: 1525, day: 120, hour: 12, minute: 0 });
   await shoot(gm, "day");
@@ -267,23 +316,24 @@ async function lunarShots(ctx, backdrop) {
  * @param {{gm: Session, player: Session}} ctx
  * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
  */
-async function trimShots(ctx, shoot) {
+async function trimShots(ctx, shoot, backdrop) {
   const { gm } = ctx;
   const set = (key, value) => gm.eval(({ moduleId, key, value }) => game.settings.set(moduleId, key, value),
     { moduleId: MODULE_ID, key, value });
   fs.mkdirSync(`${OUT}/trims`, { recursive: true });
 
-  // The seasons, mid-season, and each festival on its day, at dusk.
+  // The seasons, mid-season, and each festival on its day, at dusk; unless only some bar trims are named.
   await set("barTrim", "none");
   await set("seasonTrim", "follow");
-  const seasons = { winter: [1525, 15], spring: [1525, 100], summer: [1525, 180], fall: [1525, 300] };
+  const seasons = TRIM_NAMES.length ? {} : { winter: [1525, 15], spring: [1525, 100], summer: [1525, 180],
+    fall: [1525, 300] };
   for ( const [kind, [year, day]] of Object.entries(seasons) ) {
     await setTime(ctx, { year, day, hour: 19, minute: 0 });
     await expectSkyTrim(gm, kind);
     await shoot(gm, `trims/sky-${kind}`);
   }
-  const festivals = { midwinter: "Midwinter", greengrass: "Greengrass", midsummer: "Midsummer",
-    shieldmeet: "Shieldmeet", harvest: "Highharvestide", moonfeast: "FeastOfTheMoon" };
+  const festivals = TRIM_NAMES.length ? {} : { midwinter: "Midwinter", greengrass: "Greengrass",
+    midsummer: "Midsummer", shieldmeet: "Shieldmeet", harvest: "Highharvestide", moonfeast: "FeastOfTheMoon" };
   for ( const [kind, festival] of Object.entries(festivals) ) {
     const { year, day } = await festivalDay(gm, 1524, festival);
     await setTime(ctx, { year, day, hour: 19, minute: 0 });
@@ -291,12 +341,44 @@ async function trimShots(ctx, shoot) {
     await shoot(gm, `trims/festival-${kind}`);
   }
 
+  // The Exandrian calendar's own holidays, on the module's calendar, put up for the world while they're shot.
+  const holidays = { newdawn: "NewDawn", hillsgold: "Hillsgold", challenging: "DayOfChallenging",
+    merryfrond: "MerryfrondsDay", deepsolace: "DeepSolace", artisansfaire: "ArtisansFaire", elvendawn: "Elvendawn",
+    largesse: "MornOfLargesse", hazel: "HazelFestival", civilization: "CivilizationsDawn", ascension: "NightOfAscension",
+    zanscup: "ZansCup", barreneve: "BarrenEve", embertide: "Embertide" };
+  const wanted = Object.entries(holidays).filter(([kind]) => !TRIM_NAMES.length || TRIM_NAMES.includes(kind));
+  if ( wanted.length ) {
+    const switchCalendar = async (calendar, calendars) => {
+      await set("calendars", calendars);
+      await gm.reload();
+      await useCalendar(gm, calendar);
+      await ctx.player.reload();
+      for ( const session of [gm, ctx.player] ) {
+        await waitForCanvas(session, backdrop);
+        await session.eval(() => ui.sidebar.collapse?.());
+      }
+      // A reload can raise Foundry's own warnings, which would cover the shots.
+      await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+    };
+    await switchCalendar("exandria", { exandria: true });
+    try {
+      for ( const [kind, holiday] of wanted ) {
+        const { year, day } = await festivalDay(gm, 836, holiday);
+        await setTime(ctx, { year, day, hour: 19, minute: 0 });
+        await expectSkyTrim(gm, kind);
+        await shoot(gm, `trims/festival-${kind}`);
+      }
+    } finally {
+      await switchCalendar("harptos", {});
+    }
+  }
+
   // Each adventure on the bar, with the sky bare, open and then collapsed.
   await set("seasonTrim", "none");
   await setTime(ctx, { year: 1525, day: 100, hour: 21, minute: 0 });
   const adventures = await gm.eval(moduleId => Object.keys(game.settings.settings.get(`${moduleId}.barTrim`)?.choices ?? {})
     .filter(k => k !== "none"), MODULE_ID);
-  for ( const kind of adventures ) {
+  for ( const kind of adventures.filter(k => !TRIM_NAMES.length || TRIM_NAMES.includes(k)) ) {
     await set("barTrim", kind);
     await gm.page.waitForFunction(kind => document.getElementById("sdc-calendar")?.dataset.barTrim === kind, kind);
     await shoot(gm, `trims/bar-${kind}`);
