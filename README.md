@@ -20,7 +20,7 @@ Beneath the date, a band of seasonal colours slides gently through the year, sho
 
 ### Animated Day Wheel
 
-At the heart of the display is an animated day wheel that turns with the passing hours. Dawn rises from the east, daylight reaches its height at noon, and evening gives way to night as the wheel completes its journey. Visual markers clearly show dawn, day, dusk, and night.
+At the heart of the display is an animated day wheel that tracks the passage of time. Dawn rises in the east, sunlight reaches its peak at noon, and evening gradually gives way to night as the wheel turns through the day. Clear visual indicators make it easy to see the current phase of the day at a glance, from first light to deepest night.
 
 | Noon in spring | Dusk at the end of summer |
 | --- | --- |
@@ -30,13 +30,15 @@ At the heart of the display is an animated day wheel that turns with the passing
 
 The moons of the active calendar travel across the sky as time passes, each displaying its current phase. Full moons climb high overhead at midnight, new moons remain close to the sun, and every phase in between is represented. Hover over a moon to learn its name and current phase.
 
-| Selûne full over the Forgotten Realms | Luna and Celene full together on Oerth in GreyHawk | Eberron's twelve moons |
+| Selûne full over the Forgotten Realms | Luna and Celene full together on Oerth| Eberron's twelve moons |
 | --- | --- | --- |
 | ![A full moon marked on the calendar, with its tooltip](docs/screenshots/lunar-full.png) | ![Greyhawk's two moons full together](docs/screenshots/lunar-greyhawk.png) | ![Eberron's twelve moons in the night sky](docs/screenshots/lunar-khorvaire.png) |
 
 ### Festivals and Lunar Events
 
 The calendar marks the great festivals of the year alongside celestial events such as full moons, new moons, and notable lunar alignments. Whether the party is gathering for Greengrass, celebrating Midsummer, giving thanks at Highharvestide, enduring the depths of Midwinter, honouring the Feast of the Moon, or welcoming the rare Shieldmeet, the calendar keeps the changing seasons and skies close at hand.
+
+To reflect the passage of the year, festival days can also bring subtle seasonal decorations to the sky and calendar. Midwinter and Needfest are marked with holly and bells, Greengrass and Growfest with fresh grass and daisies, Midsummer and Richfest with lanterns, Shieldmeet with banners and shields, Highharvestide and Brewfest with wheat and apples, and the Feast of the Moon with moonflowers and silver crescents.
 
 | Greengrass | Midsummer | Highharvestide |
 | --- | --- | --- |
@@ -54,15 +56,12 @@ The sky surrounding the day wheel can be dressed to reflect the changing seasons
 | **Summer** | **Autumn** |
 | ![Sunflowers for summer](docs/screenshots/trims/sky-summer.png) | ![Fallen leaves for autumn](docs/screenshots/trims/sky-fall.png) |
 
-When following the seasons, the sky can also celebrate the world's festivals.
-
-Midwinter and Needfest are marked with holly and bells, Greengrass and Growfest with fresh grass and daisies, Midsummer and Richfest with lanterns, Shieldmeet with banners and shields, Highharvestide and Brewfest with wheat and apples, and the Feast of the Moon with moonflowers and silver crescents.
 
 ### Adventure Themes
 
-The calendar bar can be tailored to match the tone of your campaign. Whether your party is wandering the mists of *Curse of Strahd*, surviving the frozen wastes of *Rime of the Frostmaiden*, descending into *Avernus*, or confronting *Vecna*, themed trims help the calendar feel at home in the world around it.
+The calendar bar can be tailored to suit the setting of your campaign. From the gothic dread of *Curse of Strahd* and the icy wilderness of *Rime of the Frostmaiden* to the infernal battlefields of *Descent into Avernus* and the reality-shattering threat of *Vecna: Eve of Ruin*, themed trims help the calendar blend seamlessly into your adventure.
 
-Included themes span a variety of adventures and settings, including Curse of Strahd, The Wild Beyond the Witchlight, Rime of the Frostmaiden, Descent into Avernus, Vecna: Eve of Ruin, Tomb of Annihilation, and World of Warcraft.
+A growing collection of themes is included, covering a range of official adventures and fantasy settings. Each brings its own visual identity, allowing the calendar to complement the stories unfolding at your table.
 
 | Curse of Strahd | Rime of the Frostmaiden | Descent into Avernus |
 | --- | --- | --- |
