@@ -384,22 +384,36 @@ test("the season band's tooltip gives the season and when each moon is next full
   assert(tooltip.includes("Full Moon, full today"), `the tooltip on the day: ${tooltip}`);
 });
 
-test("buttons other modules add with D&D 5e's hook appear and work", async ({ gm }) => {
+test("buttons other modules add with D&D 5e's hook appear and work", async ({ gm, player }) => {
+  // Shaped like Tomb of Annihilation's Travel Tracker button: GM-only, on the left, with a click handler.
+  const add = async () => {
+    globalThis.__sdcHook = Hooks.on("dnd5e.prepareCalendarButtons", (app, buttons) => buttons.push({
+      action: "sdcTest", icon: "fa-solid fa-route", position: "start", tooltip: "Test", visible: game.user.isGM,
+      onClick: () => { globalThis.__sdcClicked = true; }
+    }));
+    await dnd5e.ui.calendar.render();
+  };
+  const remove = async () => {
+    Hooks.off("dnd5e.prepareCalendarButtons", globalThis.__sdcHook);
+    await dnd5e.ui.calendar.render();
+  };
   try {
-    await gm.eval(async () => {
-      globalThis.__sdcHook = Hooks.on("dnd5e.prepareCalendarButtons", (app, buttons) => buttons.push({
-        action: "sdcTest", icon: "fa-solid fa-dragon", position: "start", tooltip: "Test",
-        onClick: () => { globalThis.__sdcClicked = true; }
-      }));
-      await dnd5e.ui.calendar.render();
+    await gm.eval(add);
+    await player.eval(add);
+    const shown = await gm.eval(() => {
+      const bar = document.querySelector("#sdc-calendar .sdc-start").getBoundingClientRect();
+      const button = document.querySelector("#sdc-calendar .sdc-start button[data-action=sdcTest]");
+      const r = button?.getBoundingClientRect();
+      return { start: !!button, fits: !!r && (r.width > 0) && (r.left >= bar.left) && (r.right <= bar.right) };
     });
+    assertEqual(shown, { start: true, fits: true }, "the GM's added button on the left of the bar");
+    assertEqual(await player.eval(() => !!document.querySelector("#sdc-calendar button[data-action=sdcTest]")),
+      false, "the GM-only button for a player");
     await gm.page.locator("#sdc-calendar button[data-action=sdcTest]").click();
     await waitFor(gm, () => globalThis.__sdcClicked === true, null, "the added button's click handler");
   } finally {
-    await gm.eval(async () => {
-      Hooks.off("dnd5e.prepareCalendarButtons", globalThis.__sdcHook);
-      await dnd5e.ui.calendar.render();
-    });
+    await gm.eval(remove);
+    await player.eval(remove);
   }
 });
 
