@@ -878,13 +878,26 @@
 #sdc-calendar .sdc-rain { stroke: rgb(190 215 255 / 70%); stroke-width: 0.35; animation: sdc-fall 1.2s linear infinite; }
 
 /* Tales from the Yawning Portal */
-#sdc-calendar[data-bar-trim="yawningportal"] { --sdc-glow: rgb(255 180 90 / 30%); }
-#sdc-calendar .sdc-beam { fill: #5a3e26; stroke: #2e1e12; stroke-width: 0.3; }
-#sdc-calendar .sdc-beam-grain { fill: none; stroke: #3e2a18; stroke-width: 0.3; stroke-dasharray: 8 3; }
+#sdc-calendar[data-bar-trim="yawningportal"] { --sdc-glow: rgb(255 170 80 / 34%); }
+#sdc-calendar .sdc-beam { fill: #6b4a2c; stroke: #2e1e12; stroke-width: 0.35; }
+#sdc-calendar .sdc-beam-grain { fill: none; stroke: #4a3220; stroke-width: 0.3; stroke-dasharray: 9 2 4 3; }
+#sdc-calendar .sdc-strap { fill: #3a3634; stroke: #1e1c1a; stroke-width: 0.25; }
+#sdc-calendar .sdc-bolt-head { fill: #8a8480; }
+#sdc-calendar .sdc-rope { fill: none; stroke: #d4b47a; stroke-width: 1.2; stroke-dasharray: 1.2 0.45; }
+#sdc-calendar .sdc-rope.line { stroke-width: 0.45; stroke-dasharray: 0.6 0.3; }
 #sdc-calendar .sdc-hook { stroke: #6c625a; stroke-width: 0.4; }
-#sdc-calendar .sdc-tankard .body { fill: #8a6a3a; stroke: #4a3418; stroke-width: 0.3; }
-#sdc-calendar .sdc-tankard .handle { fill: none; stroke: #4a3418; stroke-width: 0.5; }
+#sdc-calendar .sdc-tankard .body { fill: #9a7240; stroke: #4a3418; stroke-width: 0.3; }
+#sdc-calendar .sdc-tankard .hoop { stroke: #4a4440; stroke-width: 0.4; }
+#sdc-calendar .sdc-tankard .handle { fill: none; stroke: #4a3418; stroke-width: 0.55; }
 #sdc-calendar .sdc-tankard .foam { fill: #f6f0e0; }
+#sdc-calendar .sdc-winch .bracket { fill: none; stroke: #3a3634; stroke-width: 0.6; }
+#sdc-calendar .sdc-winch .wheel { fill: #7a5634; stroke: #2e1e12; stroke-width: 0.4; }
+#sdc-calendar .sdc-winch .spokes { stroke: #2e1e12; stroke-width: 0.35; }
+#sdc-calendar .sdc-sway { animation: sdc-sway 6s ease-in-out infinite; }
+#sdc-calendar .sdc-bucket { fill: #7a5634; stroke: #2e1e12; stroke-width: 0.3; }
+#sdc-calendar .sdc-bucket-band { stroke: #3a3634; stroke-width: 0.35; }
+#sdc-calendar .sdc-bucket-handle { fill: none; stroke: #3a3634; stroke-width: 0.35; }
+#sdc-calendar .sdc-lurker { fill: #ffd84a; filter: drop-shadow(0 0 1px #ffb020); animation: sdc-blink 7s ease-in-out infinite; }
 
 /* Waterdeep: Dragon Heist */
 #sdc-calendar[data-bar-trim="dragonheist"] { --sdc-glow: rgb(80 130 255 / 32%); }
@@ -1050,6 +1063,18 @@
   55% { opacity: 0.95; }
 }
 
+@keyframes sdc-sway {
+  0%, 100% { rotate: -2deg; }
+  50% { rotate: 2deg; }
+}
+
+@keyframes sdc-blink {
+  0%, 40%, 100% { opacity: 0; }
+  48%, 88% { opacity: 1; }
+  91% { opacity: 0; }
+  94% { opacity: 1; }
+}
+
 @keyframes sdc-rail {
   to { stroke-dashoffset: -12; }
 }
@@ -1106,7 +1131,13 @@
   #sdc-calendar .sdc-rail.spark,
   #sdc-calendar .sdc-portal .arch,
   #sdc-calendar .sdc-bolt,
-  #sdc-calendar .sdc-sign {
+  #sdc-calendar .sdc-sign,
+  #sdc-calendar .sdc-sway {
     animation: none;
+  }
+
+  #sdc-calendar .sdc-lurker {
+    animation: none;
+    opacity: 0.8;
   }
 }

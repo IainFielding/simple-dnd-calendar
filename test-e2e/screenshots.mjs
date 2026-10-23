@@ -7,9 +7,10 @@
  * named "screenshot" in the test world, added by hand, is the backdrop: it is activated and viewed for the shots.
  * Without one, the fixtures' blank scene is used.
  *
- * Each sky and bar trim is shot too, into docs/screenshots/trims. To take only those:
+ * Each sky and bar trim is shot too, into docs/screenshots/trims. To take only those, or only some bar trims by name:
  *
  *   npm run docs:screenshots -- --trims
+ *   npm run docs:screenshots -- --trims yawningportal candlekeep
  *
  * And the moons' events and forecasts, into docs/screenshots/lunar-*.png. To take only those:
  *
@@ -35,6 +36,9 @@ fs.mkdirSync(OUT, { recursive: true });
 
 /** Take only the trims' shots. */
 const TRIMS_ONLY = process.argv.includes("--trims");
+
+/** The bar trims to take, if only some are named, as for `--trims yawningportal`. */
+const TRIM_NAMES = process.argv.slice(2).filter(a => !a.startsWith("--"));
 
 /** Take only the moons' shots. */
 const LUNAR_ONLY = process.argv.includes("--lunar");
@@ -318,17 +322,18 @@ async function trimShots(ctx, shoot) {
     { moduleId: MODULE_ID, key, value });
   fs.mkdirSync(`${OUT}/trims`, { recursive: true });
 
-  // The seasons, mid-season, and each festival on its day, at dusk.
+  // The seasons, mid-season, and each festival on its day, at dusk; unless only some bar trims are named.
   await set("barTrim", "none");
   await set("seasonTrim", "follow");
-  const seasons = { winter: [1525, 15], spring: [1525, 100], summer: [1525, 180], fall: [1525, 300] };
+  const seasons = TRIM_NAMES.length ? {} : { winter: [1525, 15], spring: [1525, 100], summer: [1525, 180],
+    fall: [1525, 300] };
   for ( const [kind, [year, day]] of Object.entries(seasons) ) {
     await setTime(ctx, { year, day, hour: 19, minute: 0 });
     await expectSkyTrim(gm, kind);
     await shoot(gm, `trims/sky-${kind}`);
   }
-  const festivals = { midwinter: "Midwinter", greengrass: "Greengrass", midsummer: "Midsummer",
-    shieldmeet: "Shieldmeet", harvest: "Highharvestide", moonfeast: "FeastOfTheMoon" };
+  const festivals = TRIM_NAMES.length ? {} : { midwinter: "Midwinter", greengrass: "Greengrass",
+    midsummer: "Midsummer", shieldmeet: "Shieldmeet", harvest: "Highharvestide", moonfeast: "FeastOfTheMoon" };
   for ( const [kind, festival] of Object.entries(festivals) ) {
     const { year, day } = await festivalDay(gm, 1524, festival);
     await setTime(ctx, { year, day, hour: 19, minute: 0 });
@@ -341,7 +346,7 @@ async function trimShots(ctx, shoot) {
   await setTime(ctx, { year: 1525, day: 100, hour: 21, minute: 0 });
   const adventures = await gm.eval(moduleId => Object.keys(game.settings.settings.get(`${moduleId}.barTrim`)?.choices ?? {})
     .filter(k => k !== "none"), MODULE_ID);
-  for ( const kind of adventures ) {
+  for ( const kind of adventures.filter(k => !TRIM_NAMES.length || TRIM_NAMES.includes(k)) ) {
     await set("barTrim", kind);
     await gm.page.waitForFunction(kind => document.getElementById("sdc-calendar")?.dataset.barTrim === kind, kind);
     await shoot(gm, `trims/bar-${kind}`);

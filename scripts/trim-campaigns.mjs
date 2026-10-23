@@ -124,14 +124,49 @@ export const CAMPAIGNS = {
     ].join("");
   },
 
-  /** Tales from the Yawning Portal: the tavern's beams, and tankards and lanterns hung from them. */
+  /**
+   * Tales from the Yawning Portal: the taproom's iron-strapped beam, with rope swagged along it and tankards and
+   * lanterns hung from it; a winch at each end lowering a bucket into the well; and eyes in the dark of Undermountain.
+   */
   yawningportal(path, random, cls) {
-    const parts = [`<path class="sdc-beam" d="${band(path, () => -0.5, () => 3.4)}"/>`,
-      `<path class="sdc-beam-grain" d="${follow(path, () => 1.6)}"/>`];
-    parts.push(hang(path, random, cls, { min: 30, max: 46, offset: 3.4, upright: true, down: 0.5, scale: [1.9, 2.1] },
-      (r, i) => (i % 3 === 1 ? lantern() : "<path class=\"sdc-hook\" d=\"M0,0V1.6\"/>"
-        + "<g class=\"sdc-tankard\"><rect class=\"body\" x=\"-1.6\" y=\"1.6\" width=\"3.2\" height=\"4\" rx=\".3\"/>"
-        + "<path class=\"handle\" d=\"M1.6,2.4H2.6V4.6H1.6\"/><path class=\"foam\" d=\"M-1.8,1.8Q0,.8 1.8,1.8V2.4H-1.8Z\"/></g>")));
+    const { d, pins, lows, sags } = swags(path, random, 26, 40, 5);
+    const winches = [110, 490].map(x => x - 40 + (39 * Math.PI / 2));
+    const clear = s => winches.every(w => Math.abs(s - w) > 10);
+    const parts = [`<path class="sdc-beam" d="${band(path, () => -0.5, () => 4.2)}"/>`,
+      `<path class="sdc-beam-grain" d="${follow(path, () => 1.4)}"/>`,
+      `<path class="sdc-beam-grain" d="${follow(path, () => 2.9)}"/>`];
+    for ( let s = 16; s < path.length - 8; s += 34 ) {
+      const p = point(path, s, 1.8);
+      parts.push(`<g class="sdc-piece${cls(p)}" ${place(p)}><rect class="sdc-strap" x="-1.3" y="-2.3" width="2.6" `
+        + "height=\"4.6\"/><circle class=\"sdc-bolt-head\" cy=\"-1\" r=\".45\"/><circle class=\"sdc-bolt-head\" cy=\"1\" r=\".45\"/></g>");
+    }
+    parts.push(`<path class="sdc-rope" d="${d}"/>`);
+    pins.slice(1, -1).forEach((s, i) => {
+      if ( (facesDown(path, s) < 0.5) || !clear(s) ) return;
+      const p = { ...point(path, s, 4.2), deg: 0 };
+      parts.push(`<g class="sdc-piece${cls(p)}" ${place(p, 0, 2.2)}>${i % 3 === 1 ? lantern()
+        : "<path class=\"sdc-hook\" d=\"M0,0V1.4\"/><g class=\"sdc-tankard\">"
+          + "<rect class=\"body\" x=\"-1.7\" y=\"1.6\" width=\"3.4\" height=\"4.2\" rx=\".4\"/>"
+          + "<path class=\"hoop\" d=\"M-1.7,2.8H1.7M-1.7,4.6H1.7\"/><path class=\"handle\" d=\"M1.7,2.4H2.8V4.8H1.7\"/>"
+          + "<path class=\"foam\" d=\"M-2,2Q-1.2,.6 0,1.2Q1.2,.6 2,2V2.4H.9V3.4Q.6,3.9 .3,3.4V2.4H-2Z\"/></g>"}</g>`);
+    });
+    for ( const s of lows ) {
+      const p = point(path, s, sags(s) + 15 + (random() * 4));
+      if ( (random() < 0.5) || (facesDown(path, s) < 0.8) ) continue;
+      parts.push(`<g class="sdc-piece${cls(p)}" transform="translate(${f(p.x)} ${f(p.y)})"><g class="sdc-lurker" `
+        + `${scatter(random, 7)}><ellipse cx="-1.5" rx=".9" ry=".6"/><ellipse cx="1.5" rx=".9" ry=".6"/></g></g>`);
+    }
+    for ( const s of winches ) {
+      const p = { ...point(path, s, 4.2), deg: 0 };
+      const length = 8 + (random() * 2);
+      parts.push(`<g class="sdc-piece${cls(p)}" ${place(p, 0, 2.1)}><g class="sdc-winch">`
+        + "<path class=\"bracket\" d=\"M-1.6,0L0,2.6L1.6,0\"/><circle class=\"wheel\" cy=\"2.6\" r=\"2.2\"/>"
+        + "<path class=\"spokes\" d=\"M0,.4V4.8M-2.2,2.6H2.2\"/></g>"
+        + `<g class="sdc-sway" ${scatter(random, 6)}><path class="sdc-rope line" d="M2.2,2.6V${f(length)}"/>`
+        + `<g transform="translate(2.2 ${f(length)})"><path class="sdc-bucket" d="M-2,0H2L1.5,3.2H-1.5Z"/>`
+        + "<path class=\"sdc-bucket-band\" d=\"M-1.8,1H1.8M-1.6,2.2H1.6\"/><path class=\"sdc-bucket-handle\" d=\"M-2,0Q0,-2 2,0\"/>"
+        + "</g></g></g>");
+    }
     return parts.join("");
   },
 

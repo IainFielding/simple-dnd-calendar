@@ -264,7 +264,7 @@ The five colleges' pennants on a gold cord. Also for *Strixhaven: A Curriculum o
 
 ![The Tales from the Yawning Portal trim on the bar](screenshots/trims/bar-yawningportal.png)
 
-The tavern's beams, hung with tankards and lanterns.
+The taproom's iron-strapped beam, with rope, tankards and lanterns hung from it, a winch at each end lowering a bucket into the well, and eyes watching from the dark of Undermountain.
 
 ### Theros
 
