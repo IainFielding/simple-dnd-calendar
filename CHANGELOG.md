@@ -2,7 +2,57 @@
 
 All notable changes to Simple D&D Calendar.
 
-## Unreleased
+## 1.5.0 — Unreleased
+
+### New
+
+- **Additional calendars**, for settings D&D 5e doesn't cover. The GM ticks them under **Additional Calendars**, and
+  they join D&D 5e's **Configure Calendar**: the **Exandrian Calendar** of Tal'Dorei and Wildemount, with its 21
+  holidays and the moons Catha and Ruidus; and Dragonlance's **Solamnic Calendar**, with Solinari, Lunitari and
+  Nuitari full together on the Night of the Eye every year and a half.
+- **A trim for every adventure and setting.** **Dress the Bar for Your Adventure** now has a trim for every D&D
+  adventure and campaign setting Wizards of the Coast has published for fifth edition, 48 in all, listed by name:
+  from Lost Mine of Phandelver, Storm King's Thunder and Waterdeep: Dragon Heist to Candlekeep Mysteries, Keys from
+  the Golden Vault and Dragon Delves; and for the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven,
+  Spelljammer, Dragonlance, Planescape, Greyhawk, Lorwyn-Shadowmoor and Netheril. A setting and its adventures share
+  a trim. Curse of Strahd's now covers Ravenloft too.
+- **Trims and Styles**, a page in the docs with a picture of every trim for the bar and the sky, and each style.
+
+### Changed
+
+- **Eberron's moons follow their months.** As *Rising from the Last War* names each month for the moon closest to
+  the world then, each of the twelve moons is full in the middle of its own month in 998 YK.
+- **Exandria's season festivals dress the sky**: the Renewal Festival, Zenith, Harvest's Close and Winter's Crest
+  share the trims of Greengrass, Midsummer, Highharvestide and Midwinter.
+- The module's artwork on Foundry's setup screen shows the calendar as it comes, on a spring evening.
+
+## 1.4.0 — 2026-10-23
+
+### New
+
+- **The Tears of Selûne** glitter after her across the bowl, fading as the sky grows light. Modules can give any
+  moon the same trail with `trail: "tears"` in the `sogrom-simple-dnd-calendar.moons` hook.
+- **Works with Tomb of Annihilation.** The GM's Adventure Tracker button, which the adventure adds to D&D 5e's
+  calendar, sits on the bar with the other buttons.
+
+## 1.3.0 — 2026-10-23
+
+### New
+
+- **Festivals dress the sky** for the day while it follows the seasons: holly and bells for Midwinter, grass and
+  daisies for Greengrass, lanterns for Midsummer, bunting and shields for Shieldmeet, wheat and apples for
+  Highharvestide, and moonflowers for the Feast of the Moon, and likewise for Greyhawk's festival weeks.
+- **Dress the Bar for Your Adventure**, a trim for the bar, alongside the sky's: Curse of Strahd, The Wild Beyond
+  the Witchlight, Descent into Avernus, Rime of the Frostmaiden, Arcana Unleashed, Arcana Unleashed: Deadfall, World
+  of Warcraft, Vecna: Eve of Ruin, Tomb of Annihilation, and Phandelver and Below: The Shattered Obelisk.
+
+### Changed
+
+- **Dress the Frame for the Season** is now **Dress the Sky for the Season**, and dresses only the sky's rim, about
+  the day wheel. It is a choice: None, Follow the Seasons, or Just Winter, Spring, Summer or Autumn to keep one
+  season's trim all year. Worlds that had it on now follow the seasons.
+
+## 1.2.0 — 2026-10-22
 
 ### New
 
@@ -17,38 +67,22 @@ All notable changes to Simple D&D Calendar.
   dawn, noon, dusk or midnight (`/advance dawn`).
 - **Each dawn in the chat.** Turn on **Announce Each Dawn** and each new day is posted as the sun rises, with its
   date, the start of a season and any festival.
-- **The Tears of Selûne** glitter after her across the bowl, fading as the sky grows light. Modules can give any
-  moon the same trail with `trail: "tears"` in the `sogrom-simple-dnd-calendar.moons` hook.
 - **Full and new moons are marked** beside the bowl on the day they fall, and so are moons full together, such as
   Luna and Celene on Needfest. `/date` and the dawn in the chat say so too.
 - **When's the next full moon?** Hover the season band for each moon's phase and the date it is next full.
-- **Festivals dress the sky** for the day while it follows the seasons: holly and bells for Midwinter, grass and
-  daisies for Greengrass, lanterns for Midsummer, bunting and shields for Shieldmeet, wheat and apples for
-  Highharvestide, and moonflowers for the Feast of the Moon, and likewise for Greyhawk's festival weeks.
-- **Dress the Bar for Your Adventure**, a trim for the bar, alongside the sky's: Curse of Strahd, The Wild Beyond
-  the Witchlight, Descent into Avernus, Rime of the Frostmaiden, Arcana Unleashed, Arcana Unleashed: Deadfall, World
-  of Warcraft, Vecna: Eve of Ruin, Tomb of Annihilation, and Phandelver and Below: The Shattered Obelisk.
 - **Calendar styles.** Each player can pick **Gilded Night** (the default), **Parchment** or **Underdark** under
   **Calendar Style**.
-- **Additional calendars**, for settings D&D 5e doesn't cover. The GM ticks them under **Additional Calendars**, and
-  they join D&D 5e's **Configure Calendar**: the **Exandrian Calendar** of Tal'Dorei and Wildemount, with its 21
-  holidays and the moons Catha and Ruidus; and Dragonlance's **Solamnic Calendar**, with Solinari, Lunitari and
-  Nuitari full together on the Night of the Eye every year and a half.
-- **A trim for every adventure and setting.** **Dress the Bar for Your Adventure** now has a trim for every D&D
-  adventure and campaign setting Wizards of the Coast has published for fifth edition, 48 in all, listed by name:
-  from Lost Mine of Phandelver, Storm King's Thunder and Waterdeep: Dragon Heist to Candlekeep Mysteries, Keys from
-  the Golden Vault and Dragon Delves; and for the Forgotten Realms, Eberron, Exandria, Ravnica, Theros, Strixhaven,
-  Spelljammer, Dragonlance, Planescape, Greyhawk, Lorwyn-Shadowmoor and Netheril. A setting and its adventures share
-  a trim. Curse of Strahd's now covers Ravenloft too.
 
 ### Changed
 
 - The bar is solid in every style, rather than letting the scene show through.
-- **Dress the Frame for the Season** is now **Dress the Sky for the Season**, and dresses only the sky's rim, about
-  the day wheel. It is a choice: None, Follow the Seasons, or Just Winter, Spring, Summer or Autumn to keep one
-  season's trim all year. Worlds that had it on now follow the seasons.
-- **Eberron's moons follow their months.** As *Rising from the Last War* names each month for the moon closest to
-  the world then, each of the twelve moons is full in the middle of its own month in 998 YK.
+
+## 1.1.0 — 2026-10-22
+
+### New
+
+- **The frame dressed for the season**: frost and icicles in winter, a flowering vine in spring, sunflowers in
+  summer, and fallen leaves in autumn. Off by default; the GM can turn it on with **Dress the Frame for the Season**.
 
 ## 1.0.0 — 2026-10-22
 
@@ -58,8 +92,6 @@ All notable changes to Simple D&D Calendar.
   of the year's seasons beneath it showing the date, and a bowl of sky with a day wheel that turns through the day.
 - **Moons** for each of D&D 5e's calendars, showing their phases as they cross the sky: Selûne; Luna and Celene; the
   twelve moons of Eberron; and Earth's Moon.
-- **The frame dressed for the season**: frost and icicles in winter, a flowering vine in spring, sunflowers in
-  summer, and fallen leaves in autumn. Off by default; the GM can turn it on with **Dress the Frame for the Season**.
 - **Festival days** marked beside the bowl.
 - **Changes of time play out**, with the clock running and the wheel and moons moving, unless **Animate Time
   Changes** is turned off.
