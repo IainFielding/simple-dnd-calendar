@@ -4,12 +4,6 @@
       "Expand": "Show the Sky",
       "Collapse": "Hide the Sky"
     },
-    "Phase": {
-      "Dawn": "Dawn",
-      "Day": "Day",
-      "Dusk": "Dusk",
-      "Night": "Night"
-    },
     "MoonPhase": {
       "New": "New Moon",
       "WaxingCrescent": "Waxing Crescent",
@@ -52,6 +46,10 @@
       "Solinari": "Solinari",
       "Lunitari": "Lunitari",
       "Nuitari": "Nuitari"
+    },
+    "Sun": {
+      "Sun": "The Sun",
+      "Liga": "Liga"
     },
     "Settings": {
       "Animate": {

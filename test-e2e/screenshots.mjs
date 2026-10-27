@@ -19,6 +19,10 @@
  * And the README's opening picture, docs/screenshots/hero.png. To take only that:
  *
  *   npm run docs:screenshots -- --hero
+ *
+ * And the sun's course across the bowl, into docs/screenshots/sun-*.png. To take only those:
+ *
+ *   npm run docs:screenshots -- --sun
  */
 
 import fs from "node:fs";
@@ -45,6 +49,9 @@ const LUNAR_ONLY = process.argv.includes("--lunar");
 
 /** Take only the README's opening picture. */
 const HERO_ONLY = process.argv.includes("--hero");
+
+/** Take only the sun's shots. */
+const SUN_ONLY = process.argv.includes("--sun");
 
 /** The calendar and a margin around it, for a cropped shot. */
 const CLIP = { x: 480, y: 0, width: 640, height: 230 };
@@ -77,15 +84,17 @@ try {
 
   const shoot = async (session, name, clip = CLIP) => {
     await waitForCanvas(session, backdrop);
+    await hideNotifications(session);
     await session.page.mouse.move(5, 900);
     await session.page.waitForTimeout(300);
     await session.page.screenshot({ path: `${OUT}/${name}.png`, clip });
     console.log(`  ${OUT}/${name}.png`);
   };
 
-  const all = !TRIMS_ONLY && !LUNAR_ONLY && !HERO_ONLY;
+  const all = !TRIMS_ONLY && !LUNAR_ONLY && !HERO_ONLY && !SUN_ONLY;
   if ( all || HERO_ONLY ) await heroShot(ctx, shoot);
   if ( all ) await docShots(ctx, shoot);
+  if ( all || SUN_ONLY ) await sunShots(ctx, shoot);
   if ( all || LUNAR_ONLY ) await lunarShots(ctx, backdrop);
   if ( all || TRIMS_ONLY ) await trimShots(ctx, shoot, backdrop);
 
@@ -99,6 +108,46 @@ try {
   await player?.close();
   await gm?.close({ shutDownWorld: true });
   await server.stop();
+}
+
+/* -------------------------------------------- */
+
+/**
+ * Hide Foundry's notifications, which would sit over a shot: the test browser draws without a graphics card, so each
+ * load warns that hardware acceleration is off. A reload brings them back, so this is called before every shot.
+ * @param {Session} session
+ */
+async function hideNotifications(session) {
+  await session.page.evaluate(() => {
+    if ( document.getElementById("sdc-hide-notifications") ) return;
+    const style = document.createElement("style");
+    style.id = "sdc-hide-notifications";
+    style.textContent = "#notifications { display: none !important; }";
+    document.head.append(style);
+  });
+}
+
+/* -------------------------------------------- */
+
+/**
+ * The sun crossing the bowl: climbing through a spring morning, at the bottom of the bowl at noon, behind a new
+ * Selûne, and up early on midsummer's morning with Long Summer Days on.
+ * @param {{gm: Session, player: Session}} ctx
+ * @param {(session: Session, name: string, clip?: object) => Promise<void>} shoot
+ */
+async function sunShots(ctx, shoot) {
+  const { gm } = ctx;
+  await setTime(ctx, { year: 1525, day: 120, hour: 8, minute: 30 });
+  await shoot(gm, "sun-morning");
+  await setTime(ctx, { year: 1525, day: 120, hour: 12, minute: 0 });
+  await shoot(gm, "sun-noon");
+  // Selûne is new at a quarter past eleven on the 15th of Hammer, 1501 DR, and passes over the sun.
+  await setTime(ctx, { year: 1501, day: 14, hour: 11, minute: 15 });
+  await shoot(gm, "sun-eclipse");
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", true), MODULE_ID);
+  await setTime(ctx, { year: 1525, day: 170, hour: 6, minute: 0 });
+  await shoot(gm, "sun-midsummer-dawn");
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", false), MODULE_ID);
 }
 
 /* -------------------------------------------- */
@@ -215,8 +264,7 @@ async function lunarShots(ctx, backdrop) {
     await waitForCanvas(gm, backdrop);
     const target = gm.page.locator(`#sdc-calendar ${selector}`);
     await target.waitFor({ state: "visible", timeout: 10_000 });
-    // A reload brings back Foundry's warning about hardware acceleration, which would sit over the shot.
-    await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+    await hideNotifications(gm);
     await gm.page.mouse.move(5, 900);
     await target.hover();
     await gm.page.waitForFunction(() => document.getElementById("tooltip")?.classList.contains("active"));
@@ -299,7 +347,7 @@ async function lunarShots(ctx, backdrop) {
   console.log(`  ${crowded.count} of Eberron's moons in the sky on day ${crowded.day} of ${crowded.year} at ${crowded.hour}:00.`);
   await setTime(ctx, { year: crowded.year, day: crowded.day, hour: crowded.hour, minute: 0 });
   await waitForCanvas(gm, backdrop);
-  await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+  await hideNotifications(gm);
   await gm.page.mouse.move(5, 900);
   await gm.page.waitForTimeout(400);
   await gm.page.screenshot({ path: `${OUT}/lunar-khorvaire.png`, clip: CLIP });
@@ -357,8 +405,7 @@ async function trimShots(ctx, shoot, backdrop) {
         await waitForCanvas(session, backdrop);
         await session.eval(() => ui.sidebar.collapse?.());
       }
-      // A reload can raise Foundry's own warnings, which would cover the shots.
-      await gm.page.addStyleTag({ content: "#notifications { display: none !important; }" });
+      await hideNotifications(gm);
     };
     await switchCalendar("exandria", { exandria: true });
     try {

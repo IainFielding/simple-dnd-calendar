@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
+import { DEFAULT_SUNS } from "./suns.mjs";
 
 /**
  * Helpers for reading the world calendar, shared by the calendar HUD and the chat.
@@ -54,6 +55,16 @@ export function festivalKey(calendar, components) {
 export function worldMoons() {
   const key = game.settings.get("dnd5e", "calendar");
   return game.modules.get(MODULE_ID).api?.moons[key] ?? [];
+}
+
+/**
+ * The world calendar's suns. Every world has a sun, so a calendar with none listed has the usual one; a module can
+ * give a calendar an empty list for a sunless sky.
+ * @returns {import("./sky.mjs").SunConfig[]}
+ */
+export function worldSuns() {
+  const key = game.settings.get("dnd5e", "calendar");
+  return game.modules.get(MODULE_ID).api?.suns?.[key] ?? DEFAULT_SUNS;
 }
 
 /**

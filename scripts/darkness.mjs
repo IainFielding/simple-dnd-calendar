@@ -57,6 +57,7 @@ export function darknessNow() {
   const fraction = sky.dayFraction(calendar, time);
   const sunrise = calendar.sunrise?.(components) ?? (hoursPerDay * 0.25);
   const sunset = calendar.sunset?.(components) ?? (hoursPerDay * 0.75);
-  const moonlight = sky.moonlight(fraction, worldMoons().map(moon => sky.moonPhase(calendar, moon, time)));
+  const moonlight = sky.moonlight(fraction, worldMoons().map(moon => sky.moonPhase(calendar, moon, time)),
+    sunrise / hoursPerDay, sunset / hoursPerDay);
   return sky.darkness(fraction * hoursPerDay, sunrise, sunset, hoursPerDay, moonlight);
 }

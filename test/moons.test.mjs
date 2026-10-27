@@ -27,9 +27,8 @@ describe("the moon catalogue", () => {
     }
   });
 
-  it("names every phase and part of the day in the language file", () => {
+  it("names every phase and moon event in the language file", () => {
     for ( const phase of sky.PHASES ) expect(typeof lookup(`SDC.MoonPhase.${phase}`), phase).toBe("string");
-    for ( const phase of ["Dawn", "Day", "Dusk", "Night"] ) expect(typeof lookup(`SDC.Phase.${phase}`)).toBe("string");
     for ( const event of ["Full", "FullTogether", "New"] ) expect(typeof lookup(`SDC.MoonEvent.${event}`)).toBe("string");
   });
 

@@ -8,6 +8,7 @@ import { patchDaylight } from "./daylight.mjs";
 import { createCalendarHUD } from "./hud.mjs";
 import { MOONS } from "./moons.mjs";
 import * as sky from "./sky.mjs";
+import { SUNS } from "./suns.mjs";
 import { BAR_TRIM_CHOICES, SKY_TRIM_CHOICES } from "./trim.mjs";
 
 /* -------------------------------------------- */
@@ -136,7 +137,8 @@ Hooks.once("init", () => {
   }
   CONFIG.DND5E.calendar.application = createCalendarHUD(CalendarHUD);
 
-  game.modules.get(MODULE_ID).api = { moons: foundry.utils.deepClone(MOONS), sky, darknessNow };
+  game.modules.get(MODULE_ID).api = { moons: foundry.utils.deepClone(MOONS), suns: foundry.utils.deepClone(SUNS), sky,
+    darknessNow };
 });
 
 /* -------------------------------------------- */
@@ -151,7 +153,19 @@ Hooks.once("setup", () => {
    * @param {string} calendar  The world's calendar.
    */
   const api = game.modules.get(MODULE_ID).api;
-  if ( api ) Hooks.callAll(`${MODULE_ID}.moons`, api.moons, game.settings.get("dnd5e", "calendar"));
+  if ( !api ) return;
+  const calendar = game.settings.get("dnd5e", "calendar");
+  Hooks.callAll(`${MODULE_ID}.moons`, api.moons, calendar);
+
+  /**
+   * A hook event that fires once, before the calendar is first drawn, to let modules and world scripts change the
+   * suns of D&D 5e's calendars or add suns for their own. A calendar with no suns listed has the usual one.
+   * @function sogrom-simple-dnd-calendar.suns
+   * @param {Record<string, import("./sky.mjs").SunConfig[]>} suns  Suns keyed by calendar, as in
+   *                                                                  `CONFIG.DND5E.calendar.calendars`.
+   * @param {string} calendar  The world's calendar.
+   */
+  Hooks.callAll(`${MODULE_ID}.suns`, api.suns, calendar);
 });
 
 /* -------------------------------------------- */

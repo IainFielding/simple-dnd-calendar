@@ -165,7 +165,7 @@ test("the day wheel turns through the day", async ctx => {
   assertEqual(rotations, { 0: "rotate(-180.00)", 6: "rotate(-90.00)", 12: "rotate(0.00)", 18: "rotate(90.00)" }, "wheel");
 });
 
-test("the icon on the wheel shows the part of the day", async ctx => {
+test("the calendar marks the part of the day", async ctx => {
   const phases = {};
   for ( const [hour, minute] of [[2, 0], [5, 30], [12, 0], [18, 30]] ) {
     await setTime(ctx, { year: 1525, day: 100, hour, minute });
@@ -271,6 +271,39 @@ test("Selûne rides the bowl when she is up, with her phase", async ctx => {
   assertEqual((await readCalendar(ctx.player)).moonEvents, null, "the moon's event a week later");
 });
 
+test("the sun crosses the bowl by day, rising and setting with the season", async ctx => {
+  const { gm, player } = ctx;
+  const read = session => session.eval(() => {
+    const sun = document.querySelector("#sdc-calendar .sdc-sun");
+    if ( !sun || sun.hidden ) return { shown: false, name: sun?.dataset.tooltip ?? null };
+    const box = sun.getBoundingClientRect();
+    const bowl = document.querySelector("#sdc-calendar .sdc-sky").getBoundingClientRect();
+    return { shown: true, name: sun.dataset.tooltip, dx: Math.round((box.x + (box.width / 2)) - (bowl.x + (bowl.width / 2))),
+      y: Math.round(box.y - bowl.y) };
+  });
+
+  // At noon the sun is at the bottom of the bowl.
+  await setTime(ctx, { year: 1525, day: 170, hour: 12 });
+  const noon = await read(player);
+  assert(noon.shown && (Math.abs(noon.dx) < 3) && (noon.y > 60), `the noon sun is not at the bottom of the bowl: ${JSON.stringify(noon)}`);
+  assertEqual(noon.name, "The Sun", "the sun's name");
+
+  // Through the morning it climbs from the right; at night it is gone.
+  await setTime(ctx, { year: 1525, day: 170, hour: 8 });
+  const morning = await read(player);
+  assert(morning.shown && (morning.dx > 60), `the morning sun is not on the right: ${JSON.stringify(morning)}`);
+  await setTime(ctx, { year: 1525, day: 170, hour: 0 });
+  assertEqual((await read(player)).shown, false, "the sun at midnight");
+
+  // At six on midsummer's morning it is on the horizon, until the GM turns on long summer days, when it has been up
+  // two hours.
+  await setTime(ctx, { year: 1525, day: 170, hour: 6 });
+  assertEqual((await read(player)).shown, false, "the sun at six before long summer days");
+  await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", true), MODULE_ID);
+  await waitFor(player, () => !document.querySelector("#sdc-calendar .sdc-sun").hidden, null,
+    "the sun to be up at six on midsummer's morning");
+});
+
 test("summer days are long and winter days short, once the GM turns it on", async ctx => {
   const { gm, player } = ctx;
   const read = session => session.eval(() => {
@@ -278,7 +311,7 @@ test("summer days are long and winter days short, once the GM turns it on", asyn
     const root = document.getElementById("sdc-calendar");
     return {
       sunrise: calendar.sunrise(game.time.components),
-      phase: root.querySelector(".sdc-phase").dataset.phase,
+      phase: root.dataset.dayPhase,
       face: root.querySelector(".sdc-wheel-day").getAttribute("d")
     };
   });
@@ -290,7 +323,7 @@ test("summer days are long and winter days short, once the GM turns it on", asyn
 
   await gm.eval(moduleId => game.settings.set(moduleId, "seasonalDaylight", true), MODULE_ID);
   for ( const session of [gm, player] ) {
-    await waitFor(session, () => document.querySelector("#sdc-calendar .sdc-phase").dataset.phase === "day", null,
+    await waitFor(session, () => document.getElementById("sdc-calendar").dataset.dayPhase === "day", null,
       "five in the morning to be daytime at midsummer");
   }
   const summer = await read(player);
@@ -598,7 +631,7 @@ test("the dawn that starts a season or a festival says so", async ctx => {
 /*  Other Calendars                             */
 /* -------------------------------------------- */
 
-test("the Calendar of Greyhawk has Luna and Celene", async ctx => {
+test("the Calendar of Greyhawk has Luna and Celene, and Liga for its sun", async ctx => {
   const { gm, player } = ctx;
   try {
     await useCalendar(gm, "greyhawk");
@@ -609,6 +642,9 @@ test("the Calendar of Greyhawk has Luna and Celene", async ctx => {
     assertEqual([...calendar.moons].sort(), ["Celene: Full Moon", "Luna: Full Moon"], "moons");
     assertEqual(calendar.moonEvents, "Luna and Celene are full together", "the moons' event");
     assertEqual(calendar.festival, "Needfest", "festival");
+    await setTime(ctx, { year: 576, day: 3, hour: 12 });
+    const sun = await player.eval(() => document.querySelector("#sdc-calendar .sdc-sun:not([hidden])")?.dataset.tooltip);
+    assertEqual(sun, "Liga", "the sun's name on Oerth");
   } finally {
     if ( await useCalendar(gm, "harptos") ) await player.reload();
   }

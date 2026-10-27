@@ -11,6 +11,7 @@ The module id is `sogrom-simple-dnd-calendar`. Everything here targets Foundry V
 | The calendars: years, months, weekdays, seasons, festivals, sunrise and sunset | D&D 5e (built on Foundry's `CalendarData`) | Register a calendar in the `dnd5e.setupCalendar` hook |
 | The calendar bar's buttons | D&D 5e | The `dnd5e.prepareCalendarButtons` hook |
 | The moons | Simple D&D Calendar | The `sogrom-simple-dnd-calendar.moons` hook |
+| The suns | Simple D&D Calendar | The `sogrom-simple-dnd-calendar.suns` hook |
 | The sky, trims, darkness, chat commands and announcements | Simple D&D Calendar | Read from your calendar: see [What the module reads from a calendar](#what-the-module-reads-from-a-calendar) |
 
 So a new calendar takes two steps. Register it with D&D 5e, which makes it a choice in **Configure Calendar** and gives it festivals and seasons. Then give it moons through this module. The two are independent: your calendar works without this module, and the moons are only drawn when it's active.
@@ -183,6 +184,34 @@ Hooks.on("sogrom-simple-dnd-calendar.moons", moons => {
 
 The built-in keys are `gregorian`, `greyhawk`, `harptos` and `khorvaire`, and the moons are listed in [The Moons](moons.md).
 
+## Changing the suns
+
+Every world has a sun, so a calendar with none listed gets the usual one: yellow, named "The Sun". To name, recolour or resize it, or to give a world more than one, use the `sogrom-simple-dnd-calendar.suns` hook. It fires during `setup`, just after the moons' hook, and is passed every calendar's suns keyed the same way, and the world's calendar:
+
+```js
+Hooks.on("sogrom-simple-dnd-calendar.suns", suns => {
+  suns["sundered-isles"] = [
+    { id: "ember", name: "The Ember", color: "#ffb347", size: 1.1 },
+    { id: "spark", name: "The Spark", color: "#cfe8ff", size: 0.6, offset: 2 }   // Rises two hours after the Ember.
+  ];
+  suns.gregorian = [];                                                          // No sun at all.
+});
+```
+
+Each sun rises at the calendar's sunrise and sets at its sunset, as the day wheel shows them, unless it has an `offset`.
+
+### Sun fields
+
+| Field | | |
+| --- | --- | --- |
+| `id` | Required | A key for the sun, unique within its calendar. |
+| `name` | Required | Its name, or a localization key for it. |
+| `color` | Required | Its colour high in the sky, as `#rrggbb`. It reddens towards the horizon, and its glow is drawn from it too. |
+| `size` | Optional | Its size against the usual sun's, by default `1`. |
+| `offset` | Optional | Hours it rises and sets after the calendar's sunrise and sunset, by default `0`; negative to rise before. Only the calendar's own sunrise and sunset set the day wheel, the darkness and dawn. |
+
+The built-in suns are in `scripts/suns.mjs`.
+
 ## What the module reads from a calendar
 
 Simple D&D Calendar works with any calendar D&D 5e can use. These are the parts it reads, and what a calendar without them gets:
@@ -237,9 +266,10 @@ The calendar is `#sdc-calendar`, which carries:
 | `data-theme` | The user's **Calendar Style**: `gilded`, `parchment` or `stone`. |
 | `data-sky-trim` | The sky's decoration: a season (`winter`, `spring`, `summer`, `fall`), a festival (`midwinter`, `greengrass`, `midsummer`, `shieldmeet`, `harvest`, `moonfeast`), or empty. |
 | `data-bar-trim` | The adventure trim's key, such as `ravenloft`, or empty. |
+| `data-day-phase` | The part of the day: `dawn` (the hour before sunrise), `day`, `dusk` (the hour after sunset) or `night`. |
 | `.expanded` | Present while the calendar is open, absent while it's folded up to the bar. |
 
-Moons are `.sdc-moon` elements in `.sdc-moons`, with their colour in `--moon-color`. The Tears are `.sdc-tears`.
+Moons are `.sdc-moon` elements in `.sdc-moons`, with their colour in `--moon-color`. The Tears are `.sdc-tears`. Suns are `.sdc-sun` elements in the same container, before the moons, with their colour at the moment in `--sun-color`.
 
 ## The module's API
 
@@ -248,6 +278,7 @@ Moons are `.sdc-moon` elements in `.sdc-moons`, with their colour in `--moon-col
 | Property | |
 | --- | --- |
 | `moons` | Every calendar's moons, as the `.moons` hook leaves them. Change them in the hook instead: the calendar reads them when it first draws. |
+| `suns` | Every calendar's suns, as the `.suns` hook leaves them. |
 | `sky` | The sky's maths, such as `sky.moonPhase(calendar, moon, time)` (0 new, 0.5 full), `sky.phaseName(phase)`, `sky.nextFullMoon(calendar, moon, time)` and `sky.darkness(hour, sunrise, sunset, hoursPerDay, moonlight)`. |
 | `darknessNow()` | The darkness, from 0 to 1, that **Darken Scenes at Night** would give the active scene at the current time. Use it to keep other scenes, or your own lighting, in step. |
 

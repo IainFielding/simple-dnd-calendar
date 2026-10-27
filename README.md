@@ -20,11 +20,19 @@ Beneath the date, a band of seasonal colours slides gently through the year, sho
 
 ### Animated Day Wheel
 
-At the heart of the display is an animated day wheel that tracks the passage of time. Dawn rises in the east, sunlight reaches its peak at noon, and evening gradually gives way to night as the wheel turns through the day. Clear visual indicators make it easy to see the current phase of the day at a glance, from first light to deepest night.
+At the heart of the display is an animated day wheel that tracks the passage of time. Dawn rises in the east, sunlight reaches its peak at noon, and evening gradually gives way to night as the wheel turns through the day. Day and night blend through the hour either side of sunrise and sunset, so dawn and dusk glow on the wheel, and the sun and moons crossing the sky make the time of day clear at a glance, from first light to deepest night.
 
 | Noon in spring | Dusk at the end of summer |
 | --- | --- |
 | ![Noon in spring](docs/screenshots/day.png) | ![Dusk at the end of summer](docs/screenshots/dusk.png) |
+
+### The Sun
+
+The sun crosses the sky as the day passes: it rises on the right of the bowl, is at the bottom at noon and sets on the left, reddening as it nears the horizon. When a new moon passes over it, the moon eclipses it.
+
+| Climbing through the morning | Eclipsed by a new Selûne |
+| --- | --- |
+| ![The sun climbing on the right of the bowl in the morning](docs/screenshots/sun-morning.png) | ![A new moon passing over the sun](docs/screenshots/sun-eclipse.png) |
 
 ### Moon Tracking
 

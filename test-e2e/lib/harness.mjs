@@ -173,7 +173,7 @@ export function readCalendar(session) {
       time: text(".sdc-time"),
       date: text(".sdc-date"),
       wheel: root.querySelector(".sdc-wheel")?.getAttribute("transform"),
-      phase: root.querySelector(".sdc-phase")?.dataset.phase,
+      phase: root.dataset.dayPhase,
       season: root.querySelector(".sdc-season")?.dataset.seasonName || null,
       seasonTooltip: root.querySelector(".sdc-season")?.dataset.tooltip || null,
       skyTrim: root.dataset.skyTrim || null,
