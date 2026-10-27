@@ -2,7 +2,7 @@
 
 All notable changes to Simple D&D Calendar.
 
-## Unreleased
+## 1.6.0 — 2026-10-27
 
 ### New
 
@@ -11,7 +11,6 @@ All notable changes to Simple D&D Calendar.
   worlds' is the Sun. Hover over it for its name.
 - Modules can rename or recolour a calendar's sun, or give it more suns, in the new
   `sogrom-simple-dnd-calendar.suns` hook.
-
 - **Dawn and dusk glow on the day wheel.** Day and night blend into each other through the hour either side of
   sunrise and sunset, with the gold line between them still marking the moment.
 
