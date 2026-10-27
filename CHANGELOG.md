@@ -2,6 +2,26 @@
 
 All notable changes to Simple D&D Calendar.
 
+## Unreleased
+
+### New
+
+- **The sun crosses the sky.** It rises on the right of the bowl at sunrise, is at the bottom at noon and sets on the
+  left at sunset, reddening near the horizon. A new moon passing over it eclipses it. Oerth's sun is Liga; the other
+  worlds' is the Sun. Hover over it for its name.
+- Modules can rename or recolour a calendar's sun, or give it more suns, in the new
+  `sogrom-simple-dnd-calendar.suns` hook.
+
+- **Dawn and dusk glow on the day wheel.** Day and night blend into each other through the hour either side of
+  sunrise and sunset, with the gold line between them still marking the moment.
+
+### Changed
+
+- **The sun and the sky show the time of day,** in place of the dawn, day, dusk and night icons on the wheel, which
+  are gone. The calendar's `data-day-phase` attribute still says which part of the day it is, for styles and modules.
+- **The moons keep to the season's nights.** With **Long Summer Days** on, the moons follow the season's sun: a full
+  moon rises at sunset and sets at sunrise, so it rides through a short summer night and a long winter one.
+
 ## 1.5.0 — 2026-10-23
 
 ### New

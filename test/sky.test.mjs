@@ -101,6 +101,49 @@ describe("the day wheel", () => {
     expect(sky.sunSkyAngle(0.5)).toBeCloseTo(Math.PI / 2);
     expect(sky.sunSkyAngle(0.75)).toBeCloseTo(Math.PI);
   });
+
+  it("keeps the sun to a long summer day's sunrise and sunset, and under the horizon through the short night", () => {
+    // Sunrise at 04:00 and sunset at 20:00.
+    const [rise, set] = [4 / 24, 20 / 24];
+    expect(sky.sunSkyAngle(rise, rise, set)).toBeCloseTo(0);
+    expect(sky.sunSkyAngle(0.5, rise, set)).toBeCloseTo(Math.PI / 2);
+    expect(sky.sunSkyAngle(set, rise, set)).toBeCloseTo(Math.PI);
+    expect(sky.sunSkyAngle(0, rise, set)).toBeCloseTo(Math.PI * 1.5);
+    expect(sky.aboveHorizon(sky.sunSkyAngle(5 / 24, rise, set))).toBe(true);
+    expect(sky.aboveHorizon(sky.sunSkyAngle(21 / 24, rise, set))).toBe(false);
+  });
+
+  it("moves the moons with the season's sun: a summer full moon rises at sunset", () => {
+    const [rise, set] = [4 / 24, 20 / 24];
+    expect(sky.moonSkyAngle(set, 0.5, rise, set)).toBeCloseTo(0);
+    expect(sky.moonSkyAngle(0, 0.5, rise, set)).toBeCloseTo(Math.PI / 2);
+    expect(sky.moonSkyAngle(0.5, 0, rise, set)).toBeCloseTo(sky.sunSkyAngle(0.5, rise, set));
+  });
+
+  it("lets a second sun trail the first by its offset", () => {
+    const sun = { id: "b", name: "B", color: "#ffffff", offset: 2 };
+    expect(sky.sunAngle(8 / 24, sun, 24)).toBeCloseTo(0);
+    expect(sky.sunAngle(0.5, { ...sun, offset: 0 }, 24)).toBeCloseTo(Math.PI / 2);
+  });
+
+  it("builds the twilight glow from wedges reaching out from sunrise and sunset", () => {
+    const { night, day } = sky.twilightPaths(6, 18, 24, 100, 4);
+    expect(night).toHaveLength(8);
+    expect(day).toHaveLength(8);
+    // The widest dawn wedge runs from five o'clock round to sunrise, on the wheel's left as drawn; the widest morning
+    // wedge from sunrise round to seven.
+    expect(night.at(-2)).toMatch(/^M0,0 L-100,0 A100 100 0 0 1 -96\.\d+,-25\.\d+ Z$/);
+    expect(day.at(-2)).toMatch(/^M0,0 L-96\.\d+,25\.\d+ A100 100 0 0 1 -100,0 Z$/);
+    // A night of an hour has half an hour of glow either side of it, meeting at midnight.
+    const [short] = sky.twilightPaths(0.5, 23.5, 24, 100, 1).night;
+    expect(short).toMatch(/^M0,0 L-?\d+(\.\d+)?,-?\d+(\.\d+)? A100 100 0 0 1 -?0(\.\d+)?,-100 Z$/);
+  });
+
+  it("reddens the sun towards the horizon", () => {
+    expect(sky.sunColor("#ffd45c", Math.PI / 2)).toBe("#ffd45c");
+    expect(sky.sunColor("#ffd45c", 0)).toBe(sky.SUN_LOW_COLOR);
+    expect(sky.mixColor("#000000", "#ffffff", 0.5)).toBe("#808080");
+  });
 });
 
 describe("the length of the day", () => {

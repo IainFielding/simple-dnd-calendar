@@ -125,6 +125,7 @@ Things to know:
 With **Long Summer Days** on, sunrise and sunset move with the seasons, from sixteen hours of daylight at midsummer to eight at midwinter. Everything that asks the calendar for sunrise and sunset follows:
 
 - **The day wheel:** the day half grows and shrinks.
+- **The sun and moons:** the sun crosses the sky slowly on a long day and quickly on a short one, and the moons keep pace, so a full moon rises at sunset and sets at sunrise.
 - **The scene's darkness.**
 - **D&D 5e's dawn and dusk recovery**, and its approximate times of day.
 - **The dawn announcements**, and `/advance dawn` and `/advance dusk`.

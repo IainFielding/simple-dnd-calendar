@@ -52,12 +52,18 @@ export function wheelRotation(fraction) {
 
 /**
  * The sun's angle across the sky bowl, in radians: 0 on the right-hand horizon as it rises, π/2 at the bottom of
- * the bowl at noon, and π on the left-hand horizon as it sets.
- * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
+ * the bowl midway through the day, π on the left-hand horizon as it sets, and on round beneath the horizon through
+ * the night. It crosses the sky at the pace that fits the day's length, so it rises and sets on time in every season.
+ * @param {number} fraction    Fraction of the day, from {@link dayFraction}.
+ * @param {number} [rise=0.25]  Sunrise, as a fraction of the day.
+ * @param {number} [set=0.75]   Sunset, as a fraction of the day.
  * @returns {number}
  */
-export function sunSkyAngle(fraction) {
-  return wrap((fraction - 0.25) * TAU, TAU);
+export function sunSkyAngle(fraction, rise = 0.25, set = 0.75) {
+  const day = wrap(set - rise, 1) || 1;
+  const since = wrap(fraction - rise, 1);
+  if ( since <= day ) return wrap(Math.PI * since / day, TAU);
+  return wrap(Math.PI + (Math.PI * (since - day) / ((1 - day) || 1)), TAU);
 }
 
 /**
@@ -145,14 +151,16 @@ export function darkness(hour, sunrise = 6, sunset = 18, hoursPerDay = 24, moonl
 /**
  * How much moonlight there is, from 0 with no moon up to 1 with a full moon at the top of the sky: the brightest moon's
  * lit face, by how high it rides.
- * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
- * @param {number[]} phases  The phase of each moon, from {@link moonPhase}.
+ * @param {number} fraction     Fraction of the day, from {@link dayFraction}.
+ * @param {number[]} phases     The phase of each moon, from {@link moonPhase}.
+ * @param {number} [rise=0.25]  Sunrise, as a fraction of the day.
+ * @param {number} [set=0.75]   Sunset, as a fraction of the day.
  * @returns {number}
  */
-export function moonlight(fraction, phases) {
+export function moonlight(fraction, phases, rise = 0.25, set = 0.75) {
   let light = 0;
   for ( const phase of phases ) {
-    const angle = moonSkyAngle(fraction, phase);
+    const angle = moonSkyAngle(fraction, phase, rise, set);
     if ( aboveHorizon(angle) ) light = Math.max(light, illumination(phase) * Math.sin(angle));
   }
   return light;
@@ -320,17 +328,60 @@ export function daylight(calendar, components, midsummerDay = midsummer(calendar
  * @returns {{face: string, edges: string}}
  */
 export function dayFacePaths(sunrise, sunset, hoursPerDay, r) {
-  const at = hour => {
-    const a = (270 - (hour / hoursPerDay * 360)) * Math.PI / 180;
-    return `${round(r * Math.cos(a))},${round(r * Math.sin(a))}`;
-  };
   const span = wrap(sunset - sunrise, hoursPerDay) / hoursPerDay * 360;
-  const from = at(sunset);
-  const to = at(sunrise);
+  const from = wheelPoint(sunset, hoursPerDay, r);
+  const to = wheelPoint(sunrise, hoursPerDay, r);
   return {
     face: `M0,0 L${from} A${r} ${r} 0 ${span > 180 ? 1 : 0} 1 ${to} Z`,
     edges: `M${from} L0,0 L${to}`
   };
+}
+
+/** How long dawn's and dusk's glow lasts either side of the night, in hours, as {@link dayPhase} counts them. */
+export const TWILIGHT_HOURS = 1;
+
+/**
+ * The SVG paths of the twilight glow on the day wheel, either side of sunrise and sunset: into the night, for dawn
+ * and dusk, and into the day, for the low sun of early morning and late evening, so the edge between them sits in
+ * the middle of one blend. Each is a wedge reaching out from the edge a little further than the last, so drawn one
+ * over another, faintly, they build a glow that is strongest at the edge and fades out over the hour.
+ * @param {number} sunrise   In hours.
+ * @param {number} sunset    In hours.
+ * @param {number} hoursPerDay
+ * @param {number} r
+ * @param {number} [steps=12]  How many wedges each glow is built from.
+ * @returns {{night: string[], day: string[]}}
+ */
+export function twilightPaths(sunrise, sunset, hoursPerDay, r, steps = 12) {
+  const wedge = (from, to) => `M0,0 L${wheelPoint(to, hoursPerDay, r)} A${r} ${r} 0 0 1 `
+    + `${wheelPoint(from, hoursPerDay, r)} Z`;
+  // On a short night, or a short day, the glows meet in the middle rather than overlap.
+  const glow = (length, outward) => {
+    const paths = [];
+    if ( length <= 0 ) return paths;
+    for ( let i = 1; i <= steps; i++ ) {
+      const reach = length * i / steps;
+      paths.push(...(outward ? [wedge(sunrise - reach, sunrise), wedge(sunset, sunset + reach)]
+        : [wedge(sunrise, sunrise + reach), wedge(sunset - reach, sunset)]));
+    }
+    return paths;
+  };
+  return {
+    night: glow(Math.min(TWILIGHT_HOURS, wrap(sunrise - sunset, hoursPerDay) / 2), true),
+    day: glow(Math.min(TWILIGHT_HOURS, wrap(sunset - sunrise, hoursPerDay) / 2), false)
+  };
+}
+
+/**
+ * The point on the day wheel's rim, about its own centre and before it turns, that is at the bottom at an hour.
+ * @param {number} hour
+ * @param {number} hoursPerDay
+ * @param {number} r
+ * @returns {string}  As `x,y`.
+ */
+function wheelPoint(hour, hoursPerDay, r) {
+  const a = (270 - (hour / hoursPerDay * 360)) * Math.PI / 180;
+  return `${round(r * Math.cos(a))},${round(r * Math.sin(a))}`;
 }
 
 /**
@@ -447,13 +498,69 @@ export function illumination(phase) {
 
 /**
  * A moon's angle across the sky bowl, measured as {@link sunSkyAngle}. A moon trails the sun by its phase: new moons
- * keep company with the sun, and full moons ride highest at midnight.
- * @param {number} fraction  Fraction of the day, from {@link dayFraction}.
- * @param {number} phase     The moon's phase, from {@link moonPhase}.
+ * keep company with the sun, and full moons rise at sunset and ride highest in the middle of the night.
+ * @param {number} fraction     Fraction of the day, from {@link dayFraction}.
+ * @param {number} phase        The moon's phase, from {@link moonPhase}.
+ * @param {number} [rise=0.25]  Sunrise, as a fraction of the day.
+ * @param {number} [set=0.75]   Sunset, as a fraction of the day.
  * @returns {number}
  */
-export function moonSkyAngle(fraction, phase) {
-  return wrap(sunSkyAngle(fraction) - (phase * TAU), TAU);
+export function moonSkyAngle(fraction, phase, rise = 0.25, set = 0.75) {
+  return wrap(sunSkyAngle(fraction, rise, set) - (phase * TAU), TAU);
+}
+
+/* -------------------------------------------- */
+/*  Suns                                        */
+/* -------------------------------------------- */
+
+/**
+ * @typedef SunConfig
+ * @property {string} id            A unique key for the sun.
+ * @property {string} name          Its name, or a localization key for it.
+ * @property {string} color         The colour of its face, high in the sky.
+ * @property {number} [size=1]      Its size, against the usual sun's.
+ * @property {number} [offset=0]    Hours it trails the day's sunrise and sunset by, for a second sun that rises
+ *                                  later; negative to lead.
+ */
+
+/** The colour a sun reddens to as it nears the horizon. */
+export const SUN_LOW_COLOR = "#ff6a3d";
+
+/**
+ * A sun's angle across the sky bowl, measured as {@link sunSkyAngle}, for a sun that may trail the day's own.
+ * @param {number} fraction     Fraction of the day, from {@link dayFraction}.
+ * @param {SunConfig} sun
+ * @param {number} hoursPerDay
+ * @param {number} [rise=0.25]  Sunrise, as a fraction of the day.
+ * @param {number} [set=0.75]   Sunset, as a fraction of the day.
+ * @returns {number}
+ */
+export function sunAngle(fraction, sun, hoursPerDay, rise = 0.25, set = 0.75) {
+  return sunSkyAngle(wrap(fraction - ((sun.offset ?? 0) / hoursPerDay), 1), rise, set);
+}
+
+/**
+ * The colour of a sun's face at a sky angle: its own colour high in the sky, reddening towards the horizon.
+ * @param {string} color  The sun's colour, as `#rrggbb`.
+ * @param {number} angle  Its sky angle.
+ * @returns {string}      As `#rrggbb`.
+ */
+export function sunColor(color, angle) {
+  const low = (1 - Math.max(0, Math.sin(angle))) ** 2;
+  return mixColor(color, SUN_LOW_COLOR, low);
+}
+
+/**
+ * A colour between two others.
+ * @param {string} a  As `#rrggbb`.
+ * @param {string} b  As `#rrggbb`.
+ * @param {number} t  How far towards `b`, from 0 to 1.
+ * @returns {string}  As `#rrggbb`.
+ */
+export function mixColor(a, b, t) {
+  const channels = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const [from, to] = [channels(a), channels(b)];
+  return `#${from.map((c, i) => Math.round(c + ((to[i] - c) * t)).toString(16).padStart(2, "0")).join("")}`;
 }
 
 /**

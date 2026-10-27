@@ -1,5 +1,5 @@
-import { festivalKey as festivalKeyOf, festivalName, formatComponents, moonEventLabels, moonForecast, worldMoons }
-  from "./calendar.mjs";
+import { festivalKey as festivalKeyOf, festivalName, formatComponents, moonEventLabels, moonForecast, worldMoons,
+  worldSuns } from "./calendar.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import * as sky from "./sky.mjs";
 import { BAR_TRIM_CHOICES, barTrim, festivalTrimKind, seededRandom, skyTrim, skyTrimKind } from "./trim.mjs";
@@ -17,19 +17,14 @@ const SEASON_BAR_WIDTH = 460;
 /** A moon's radius on the bowl. */
 const MOON_RADIUS = 13;
 
+/** The usual sun's radius on the bowl. */
+const SUN_RADIUS = 11;
+
 /** How long a change of time takes to play out: this many milliseconds per tenfold step in the days passed. */
 const ANIMATION_MS = 1400;
 
 /** The longest a change of time takes to play out, however far it jumps. */
 const ANIMATION_MAX_MS = 6000;
-
-/** The Font Awesome icon for each part of the day. */
-const PHASE_ICONS = {
-  dawn: "fa-solid fa-sunrise",
-  day: "fa-solid fa-sun",
-  dusk: "fa-solid fa-sunset",
-  night: "fa-solid fa-moon-stars"
-};
 
 /**
  * Build the calendar HUD on top of D&D 5e's own, so it keeps the system's calendar choice, date and time formats,
@@ -97,6 +92,12 @@ export function createCalendarHUD(CalendarHUD) {
      *   label: string|null}[]}
      */
     #moons = [];
+
+    /**
+     * The world's suns, each with its element on the bowl.
+     * @type {{config: object, radius: number, element: HTMLElement, color: string|null}[]}
+     */
+    #suns = [];
 
     /** The last text written to each label, so unchanged text isn't rewritten every frame. */
     #text = {};
@@ -246,8 +247,9 @@ export function createCalendarHUD(CalendarHUD) {
         wheel: find(".sdc-wheel"),
         wheelDay: find(".sdc-wheel-day"),
         wheelDayClip: find(".sdc-wheel-day-clip"),
+        nightTwilight: find(".sdc-wheel-twilight.night"),
+        dayTwilight: find(".sdc-wheel-twilight.day"),
         wheelAxis: find(".sdc-wheel-axis"),
-        phase: find(".sdc-phase"),
         barTrim: find(".sdc-trim-bar"),
         bowlTrim: find(".sdc-trim-bowl"),
         festivalIcon: find(".sdc-festival-icon"),
@@ -258,6 +260,21 @@ export function createCalendarHUD(CalendarHUD) {
       delete this.element.dataset.skyTrim;
       delete this.element.dataset.barTrim;
       const calendar = game.time.calendar;
+      // The suns go in first, so the moons pass in front of them.
+      this.#suns = worldSuns().map(config => {
+        const radius = Math.round(SUN_RADIUS * (config.size ?? 1));
+        const size = radius * 2;
+        const element = document.createElement("div");
+        element.className = "sdc-sun";
+        element.hidden = true;
+        element.style.width = element.style.height = `${size}px`;
+        element.dataset.tooltip = _loc(config.name);
+        element.innerHTML = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true">`
+          + `<circle class="face" cx="${radius}" cy="${radius}" r="${radius - 0.5}"/>`
+          + `<circle class="core" cx="${radius}" cy="${radius}" r="${(radius * 0.55).toFixed(1)}"/></svg>`;
+        this.#el.moons.append(element);
+        return { config, radius, element, color: null };
+      });
       this.#moons = worldMoons().map(config => {
         const size = MOON_RADIUS * 2;
         const element = document.createElement("div");
@@ -304,6 +321,7 @@ export function createCalendarHUD(CalendarHUD) {
       this.#stop();
       this.#el = {};
       this.#moons = [];
+      this.#suns = [];
       this.#shown = null;
     }
 
@@ -419,14 +437,12 @@ export function createCalendarHUD(CalendarHUD) {
         el.wheelDay.setAttribute("d", face);
         el.wheelDayClip.setAttribute("d", face);
         el.wheelAxis.setAttribute("d", edges);
+        const twilight = sky.twilightPaths(sunrise, sunset, hoursPerDay, SKY.wheel);
+        el.nightTwilight.innerHTML = twilight.night.map(d => `<path d="${d}"/>`).join("");
+        el.dayTwilight.innerHTML = twilight.day.map(d => `<path d="${d}"/>`).join("");
       }
-      const phase = sky.dayPhase(hour, sunrise, sunset);
-      if ( this.#text.phase !== phase ) {
-        this.#text.phase = phase;
-        el.phase.className = `sdc-phase ${PHASE_ICONS[phase]}`;
-        el.phase.dataset.phase = phase;
-        el.phase.dataset.tooltip = _loc(`SDC.Phase.${phase.capitalize()}`);
-      }
+      // The part of the day, for styles and other modules to follow.
+      this.element.dataset.dayPhase = sky.dayPhase(hour, sunrise, sunset);
 
       // Any festival, beside the bowl.
       const festival = festivalName(calendar, components);
@@ -450,11 +466,29 @@ export function createCalendarHUD(CalendarHUD) {
           .join("<br>");
       }
 
+      // The suns, crossing the bowl from sunrise to sunset.
+      const orbit = { x: SKY.cx, y: SKY.cy, r: SKY.orbit };
+      const rise = sunrise / hoursPerDay;
+      const set = sunset / hoursPerDay;
+      for ( const sun of this.#suns ) {
+        const angle = sky.sunAngle(fraction, sun.config, hoursPerDay, rise, set);
+        const { x, y } = sky.orbitPoint(angle, orbit);
+        const visible = sky.aboveHorizon(angle) && (y > -sun.radius);
+        sun.element.hidden = !visible;
+        if ( !visible ) continue;
+        sun.element.style.transform = `translate(${x - sun.radius}px, ${y - sun.radius}px)`;
+        const color = sky.sunColor(sun.config.color, angle);
+        if ( sun.color !== color ) {
+          sun.color = color;
+          sun.element.style.setProperty("--sun-color", color);
+        }
+      }
+
       // The moons, riding the bowl while they are above the horizon.
       for ( const moon of this.#moons ) {
         const p = sky.moonPhase(calendar, moon.config, time, moon.epoch);
-        const angle = sky.moonSkyAngle(fraction, p);
-        const { x, y } = sky.orbitPoint(angle, { x: SKY.cx, y: SKY.cy, r: SKY.orbit });
+        const angle = sky.moonSkyAngle(fraction, p, rise, set);
+        const { x, y } = sky.orbitPoint(angle, orbit);
         const visible = sky.aboveHorizon(angle) && (y > -MOON_RADIUS);
         moon.element.hidden = !visible;
         if ( moon.trail ) this.#drawTrail(moon, angle, visible, sky.darkness(hour, sunrise, sunset, hoursPerDay));

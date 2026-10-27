@@ -27,6 +27,12 @@ The moons travel the bowl above the day wheel, following the sun but falling beh
 
 A moon is drawn while it is above the horizon and high enough to clear the bar, lit on the side the sun is on: from the right as it waxes, from the left as it wanes. Hover over a moon for its name and phase.
 
+With **Long Summer Days** on, the moons keep pace with the season's sun: a full moon still rises at sunset and sets at sunrise, so it rides through a short summer night and a long winter one.
+
+### The sun
+
+The sun crosses the bowl from sunrise to sunset: it rises on the right, is at the bottom of the bowl at noon, and sets on the left, reddening as it nears the horizon. The moons pass in front of it, so a new moon crossing it at midday eclipses it. Hover over it for its name: on Oerth it is Liga, as the Spelljammer setting names it, and on the other worlds it is the Sun.
+
 ### Full and new moons
 
 A moon is full on the calendar day that its phase passes full, from one midnight to the next, and new on the day it passes new. Those days are marked on the calendar with a moon beside the date, whose tooltip says which moons are full or new. When more than one moon is full on the same day, they are listed as full together, as Luna and Celene are.
